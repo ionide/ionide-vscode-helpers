@@ -45,7 +45,10 @@ Target "Build" (fun _ ->
     !! "src\*.fsproj"
     |> MSBuildRelease "temp" "Rebuild"
     |> ignore
-    [ "temp\FunScript.TypeScript.Binding.vscode.dll"; "temp\FunScript.TypeScript.Binding.lib.dll"; "temp\FunScript.TypeScript.Binding.node.dll"; "temp\Ionide.Helpers.dll"]
+    [ "temp" </> "FunScript.TypeScript.Binding.vscode.dll"; 
+      "temp" </> "FunScript.TypeScript.Binding.lib.dll"; 
+      "temp" </> "FunScript.TypeScript.Binding.node.dll"; 
+      "temp" </> "Ionide.Helpers.dll"]
     |> Copy "release"
     DeleteDir "temp"
 )
