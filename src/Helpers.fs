@@ -4,6 +4,7 @@ open System
 open FunScript
 open FunScript.TypeScript
 open FunScript.TypeScript.vscode
+open FunScript.TypeScript.vscode.extensions
 open FunScript.TypeScript.child_process
 
 [<AutoOpen>]
@@ -87,10 +88,8 @@ module Helpers =
 
     module VSCode =
         let getPluginPath pluginName =
-            if Globals._process.platform = "win32" then
-                Globals._process.env?USERPROFILE + @"\.vscode\extensions\" + pluginName
-            else
-                Globals._process.env?HOME + "/.vscode/extensions/" + pluginName
+            let ext = Globals.getExtension pluginName
+            ext.extensionPath
 
     module Process =
         let isWin () = Globals._process.platform = "win32"
@@ -121,7 +120,7 @@ module Helpers =
         let spawnWithNotification location linuxCmd (cmd : string) (outputChannel : OutputChannel) =
             spawn location linuxCmd cmd
             |> onOutput(fun e -> e.ToString () |> outputChannel.append)
-            |> onError (fun e -> e.ToString () |> outputChannel.append) 
+            |> onError (fun e -> e.ToString () |> outputChannel.append)
 
         let exec location linuxCmd cmd : Promise<Error * Buffer *Buffer> =
             let options = createEmpty<AnonymousType599> ()
