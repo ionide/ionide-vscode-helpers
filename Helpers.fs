@@ -5,7 +5,7 @@ open Fable.Core
 
 module JS = 
 
-    [<Emit("({0} != undefined)")>]
+    [<Emit("($0 != undefined)")>]
     let isDefined (o: obj) : bool = failwith "never"
 
 //---------------------------------------------------
@@ -124,7 +124,7 @@ module Settings =
     open Fable.Import.Node
 
     module Toml =
-        [<Emit("toml.parse({0})")>]
+        [<Emit("toml.parse($0)")>]
         let parse (str : string) : 'a = failwith "JS"
 
     type FakeSettings = {
