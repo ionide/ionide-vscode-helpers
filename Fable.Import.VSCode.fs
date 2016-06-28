@@ -2,8 +2,24 @@ namespace Fable.Import
 open System
 open Fable.Core
 open Fable.Import.JS
+open Fable.Import.Node
 
 module vscode =
+    type [<Import("EventEmitter", "electron")>] EventEmitter<'T>() =
+
+        member __.addListener(``event``: string, listener: Function): NodeJS.EventEmitter = failwith "JS only"
+        member __.on(``event``: string, listener: Function): NodeJS.EventEmitter = failwith "JS only"
+        member __.once(``event``: string, listener: Function): NodeJS.EventEmitter = failwith "JS only"
+        member __.removeListener(``event``: string, listener: Function): NodeJS.EventEmitter = failwith "JS only"
+        member __.removeAllListeners(?``event``: string): NodeJS.EventEmitter = failwith "JS only"
+        member __.setMaxListeners(n: int): unit = failwith "JS only"
+        member __.getMaxListeners(): int = failwith "JS only"
+        member __.listeners(``event``: string): ResizeArray<Function> = failwith "JS only"
+        member __.listenerCount(``type``: string): int = failwith "JS only"
+        member __.emit(``event``: string, [<ParamArray>] args: obj[]): bool = failwith "JS only"
+        member __.event with get (): 'T = failwith "JS only"
+        member __.fire(arg : 'T) : unit = failwith "JS only"
+
     type Command =
         abstract title: string with get, set
         abstract command: string with get, set
@@ -141,8 +157,8 @@ module vscode =
         member __.query with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
         member __.fragment with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
         member __.fsPath with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
-        member __.file(path: string): Uri = failwith "JS only"
-        member __.parse(value: string): Uri = failwith "JS only"
+        static member file(path: string): Uri = failwith "JS only"
+        static member parse(value: string): Uri = failwith "JS only"
         member __.toString(): string = failwith "JS only"
         member __.toJSON(): obj = failwith "JS only"
 
@@ -281,8 +297,8 @@ module vscode =
     and [<Import("TextEdit","vscode")>] TextEdit(range: Range, newText: string) =
         member __.range with get(): Range = failwith "JS only" and set(v: Range): unit = failwith "JS only"
         member __.newText with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
-        member __.replace(range: Range, newText: string): TextEdit = failwith "JS only"
-        member __.insert(position: Position, newText: string): TextEdit = failwith "JS only"
+        static member replace(range: Range, newText: string): TextEdit = failwith "JS only"
+        static member insert(position: Position, newText: string): TextEdit = failwith "JS only"
         member __.delete(range: Range): TextEdit = failwith "JS only"
 
     and [<Import("WorkspaceEdit","vscode")>] WorkspaceEdit() =
@@ -488,6 +504,9 @@ module vscode =
         abstract document: TextDocument with get, set
         abstract contentChanges: ResizeArray<TextDocumentContentChangeEvent> with get, set
 
+    and TextDocumentContentProvider =
+        abstract provideTextDocumentContent : unit -> string
+
     let [<Import("version","vscode")>] version: string = failwith "JS only"
 
     type [<Import("commands","vscode")>] commands =
@@ -554,6 +573,7 @@ module vscode =
         static member registerDocumentRangeFormattingEditProvider(selector: DocumentSelector, provider: DocumentRangeFormattingEditProvider): Disposable = failwith "JS only"
         static member registerOnTypeFormattingEditProvider(selector: DocumentSelector, provider: OnTypeFormattingEditProvider, firstTriggerCharacter: string, [<ParamArray>] moreTriggerCharacter: string[]): Disposable = failwith "JS only"
         static member registerSignatureHelpProvider(selector: DocumentSelector, provider: SignatureHelpProvider, [<ParamArray>] triggerCharacters: string[]): Disposable = failwith "JS only"
+        static member registerTextDocumentContentProvider(selector : DocumentSelector, provider : TextDocumentContentProvider ) : Disposable = failwith "JS only"
         static member setLanguageConfiguration(language: string, configuration: LanguageConfiguration): Disposable = failwith "JS only"
 
     type [<Import("extensions","vscode")>] extensions =

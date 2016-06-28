@@ -3,7 +3,7 @@ namespace Ionide.VSCode.Helpers
 open System
 open Fable.Core
 
-module JS = 
+module JS =
 
     [<Emit("($0 != undefined)")>]
     let isDefined (o: obj) : bool = failwith "never"
@@ -16,27 +16,26 @@ module Promise =
     open Fable.Core
     open Fable.Import
     open Fable.Import.JS
-    
+
     let success (a : 'T -> 'R) (pr : Promise<'T>) : Promise<'R> =
-        pr?``then`` $ a |> unbox 
+        pr?``then`` $ a |> unbox
 
     let bind (a : 'T -> Promise<'R>) (pr : Promise<'T>) : Promise<'R> =
         pr?``then`` $ a |> unbox
 
     let fail (a : obj -> 'T)  (pr : Promise<'T>) : Promise<'T> =
         pr.catch (unbox<Func<obj, U2<'T, PromiseLike<'T>>>> a)
-        
+
     let either a  (b: Func<obj, U2<'R, JS.PromiseLike<'R>>>) (pr : Promise<'T>) : Promise<'R> =
         pr.``then``(a, b)
 
     let lift<'T> (a : 'T) : Promise<'T> =
         Promise.resolve(U2.Case1 a)
-    
+
     type PromiseBuilder() =
         member inline x.Bind(m,f) = bind f m
-        member inline x.Bind(m,f) = success f m
         member inline x.Return(a) = lift a
-        member inline x.ReturnFrom(a) = a 
+        member inline x.ReturnFrom(a) = a
         member inline x.Zero() = Fable.Import.JS.Promise.resolve()
 
 [<AutoOpen>]
@@ -61,7 +60,7 @@ module VSCode =
 //---------------------------------------------------
 module Process =
     open Fable.Import.JS
-    open Fable.Import.Node 
+    open Fable.Import.Node
     open Fable.Import.vscode
 
 
@@ -81,7 +80,7 @@ module Process =
         proc
 
     let spawn location linuxCmd (cmd : string) =
-        let cmd' = 
+        let cmd' =
             if cmd = "" then [||] else cmd.Split(' ')
             |> ResizeArray
         let options =
@@ -89,7 +88,7 @@ module Process =
                 "cwd" ==> workspace.rootPath
             ]
         if isWin () || linuxCmd = "" then
-            
+
             child_process.spawn(location, cmd', options)
         else
             let prms = seq { yield location; yield! cmd'} |> ResizeArray
