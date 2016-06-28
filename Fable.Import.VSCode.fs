@@ -5,7 +5,7 @@ open Fable.Import.JS
 open Fable.Import.Node
 
 module vscode =
-    type [<Import("EventEmitter", "electron")>] EventEmitter<'T>() =
+    type [<Import("EventEmitter", "vscode")>] EventEmitter<'T>() =
 
         member __.addListener(``event``: string, listener: Function): NodeJS.EventEmitter = failwith "JS only"
         member __.on(``event``: string, listener: Function): NodeJS.EventEmitter = failwith "JS only"
@@ -554,6 +554,8 @@ module vscode =
         static member openTextDocument(uri: Uri): Promise<TextDocument> = failwith "JS only"
         static member openTextDocument(fileName: string): Promise<TextDocument> = failwith "JS only"
         static member getConfiguration(?section: string): WorkspaceConfiguration = failwith "JS only"
+        static member registerTextDocumentContentProvider(selector : DocumentSelector, provider : TextDocumentContentProvider ) : Disposable = failwith "JS only"
+
 
     type [<Import("languages","vscode")>] languages =
         static member getLanguages(): Promise<ResizeArray<string>> = failwith "JS only"
@@ -573,7 +575,6 @@ module vscode =
         static member registerDocumentRangeFormattingEditProvider(selector: DocumentSelector, provider: DocumentRangeFormattingEditProvider): Disposable = failwith "JS only"
         static member registerOnTypeFormattingEditProvider(selector: DocumentSelector, provider: OnTypeFormattingEditProvider, firstTriggerCharacter: string, [<ParamArray>] moreTriggerCharacter: string[]): Disposable = failwith "JS only"
         static member registerSignatureHelpProvider(selector: DocumentSelector, provider: SignatureHelpProvider, [<ParamArray>] triggerCharacters: string[]): Disposable = failwith "JS only"
-        static member registerTextDocumentContentProvider(selector : DocumentSelector, provider : TextDocumentContentProvider ) : Disposable = failwith "JS only"
         static member setLanguageConfiguration(language: string, configuration: LanguageConfiguration): Disposable = failwith "JS only"
 
     type [<Import("extensions","vscode")>] extensions =
