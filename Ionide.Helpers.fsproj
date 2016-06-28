@@ -53,7 +53,9 @@
   <ItemGroup />
   <ItemGroup>
     <Compile Include="Fable.Import.VSCode.fs" />
+    <Compile Include="Fable.Import.Axios.fs" />
     <Compile Include="Helpers.fs" />
+
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <Choose>
