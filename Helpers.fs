@@ -67,15 +67,15 @@ module Process =
     let isWin () = ``process``.platform = "win32"
     let isMono () = ``process``.platform = "win32" |> not
 
-    let onExit (f : obj -> _) (proc : child_process.ChildProcess) =
+    let onExit (f : obj -> _) (proc : child_process_types.ChildProcess) =
         proc.on("exit", f |> unbox) |> ignore
         proc
 
-    let onOutput (f : obj -> _) (proc : child_process.ChildProcess) =
+    let onOutput (f : obj -> _) (proc : child_process_types.ChildProcess) =
         proc.stdout?on $ ("data", f |> unbox) |> ignore
         proc
 
-    let onError (f : obj -> _) (proc : child_process.ChildProcess) =
+    let onError (f : obj -> _) (proc : child_process_types.ChildProcess) =
         proc.stderr?on $ ("data", f |> unbox) |> ignore
         proc
 
