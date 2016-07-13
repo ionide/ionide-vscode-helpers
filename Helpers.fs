@@ -54,6 +54,28 @@ module VSCode =
         let ext = extensions.getExtension pluginName
         ext.extensionPath
 
+    [<Literal>]
+    let FSIPATH_WIN32 = @"C:\Program Files\Microsoft SDKs\F#\4.0\Framework\v4.0\"
+    
+    [<Literal>]
+    let FSIPATH_WIN64 = @"C:\Program Files (x86)\Microsoft SDKs\F#\4.0\Framework\v4.0\"
+    
+    let getFsiFullPathWin exeName = 
+        //first look to see if it exists on path
+        let fullExePath = 
+            System.Environment.GetEnvironmentVariable("PATH").Split ';'
+            |> Array.map (fun s -> System.IO.Path.Combine(s, exeName))
+            |> Array.tryFind (fun s -> System.IO.File.Exists(s))
+        if fullExePath.IsSome then fullExePath.Value
+        else 
+            //next look in default fsi install folder
+            let fsiInstallPath = 
+                if System.Environment.Is64BitOperatingSystem then FSIPATH_WIN64
+                else FSIPATH_WIN32
+            
+            let fullExePath = System.IO.Path.Combine(fsiInstallPath, exeName)
+            if System.IO.File.Exists(fullExePath) then fullExePath
+            else exeName
 
 //---------------------------------------------------
 //Process Helpers
