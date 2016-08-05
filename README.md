@@ -1,5 +1,7 @@
 # Ionide-Helpers
 
+[![](https://ci.appveyor.com/api/projects/status/6kcn1ewp5bf8687e?svg=true)](https://ci.appveyor.com/project/Ionide/ionide-vscode-helpers)
+
 Helper library containing some common functionalities used by other ionide plugins.
 
 ## Contributing and copyright
