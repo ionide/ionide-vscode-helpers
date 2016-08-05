@@ -25,6 +25,7 @@ let npmTool =
     platformTool "npm" ("packages"</>"build"</>"Npm.js"</>"tools"</>"npm.cmd" |> FullName)
 
 Target "RunScript" (fun () ->
+    ensureDirectory "release"
     run npmTool "install" "release"
     run npmTool "run build" "release"
 )

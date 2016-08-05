@@ -1,3 +1,10 @@
-﻿build_script:
-  - ps: .\build.cmd
+﻿os: Visual Studio 2015
+
+build_script:
+  - cmd: .\build.cmd
+
 test: off
+
+artifacts:
+  - path: release
+    name: Fable Transpilation Artifacts
