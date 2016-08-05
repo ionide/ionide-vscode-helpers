@@ -39,6 +39,8 @@ paket-files
 obj/*
 /.vs/*
 
+
+.fake/*
 .DS_Store
 src/bin/
 src/obj/
