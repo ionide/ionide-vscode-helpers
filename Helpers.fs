@@ -18,10 +18,17 @@ module Promise =
     open Fable.Import.JS
 
     let success (a : 'T -> 'R) (pr : Promise<'T>) : Promise<'R> =
-        pr?``then`` $ a |> unbox
+        pr.``then``(   
+            unbox<Func<'T, U2<'R, PromiseLike<'R>>>> a,
+            unbox<Func<obj,unit>>(fun _ -> ())
+        )
+
 
     let bind (a : 'T -> Promise<'R>) (pr : Promise<'T>) : Promise<'R> =
-        pr?``then`` $ a |> unbox
+        pr.``then``(   
+            unbox<Func<'T, U2<'R, PromiseLike<'R>>>> a,
+            unbox<Func<obj,unit>>(fun _ -> ())
+        )
 
     let fail (a : obj -> 'T)  (pr : Promise<'T>) : Promise<'T> =
         pr.catch (unbox<Func<obj, U2<'T, PromiseLike<'T>>>> a)
@@ -62,6 +69,7 @@ module Process =
     open Fable.Import.JS
     open Fable.Import.Node
     open Fable.Import.vscode
+    open Fable.Core.JsInterop
 
 
     let isWin () = ``process``.platform = "win32"
