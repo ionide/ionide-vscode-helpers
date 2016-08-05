@@ -32,11 +32,9 @@ Test/obj/
 Test/bin/
 .paket/paket.exe
 packages
-Test/Script.fsx
-Test/Script.fsx
-typings/FunScript.TypeScript/Output
-typings/FunScript.TypeScript/Types.zip
-typings/FunScript.TypeScript/*.txt
+paket-files
+
+               
 
 obj/*
 /.vs/*
