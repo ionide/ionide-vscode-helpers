@@ -20,24 +20,28 @@ module Promise =
     let success (a : 'T -> 'R) (pr : Promise<'T>) : Promise<'R> =
         pr.``then``(   
             unbox<Func<'T, U2<'R, PromiseLike<'R>>>> a,
-            unbox<Func<obj,unit>>(fun _ -> ())
+            unbox<Func<obj,unit>> None
         )
-
 
     let bind (a : 'T -> Promise<'R>) (pr : Promise<'T>) : Promise<'R> =
         pr.``then``(   
             unbox<Func<'T, U2<'R, PromiseLike<'R>>>> a,
-            unbox<Func<obj,unit>>(fun _ -> ())
+            unbox<Func<obj,unit>> None
         )
 
-    let fail (a : obj -> 'T)  (pr : Promise<'T>) : Promise<'T> =
-        pr.catch (unbox<Func<obj, U2<'T, PromiseLike<'T>>>> a)
+    let fail (a : obj -> 'T) (pr : Promise<'T>) : Promise<'T> =
+        pr.catch (unbox<Func<obj, U2<'T, PromiseLike<'T>>>> (fun reason -> a reason |> ignore; Promise.reject None))
 
     let either a  (b: Func<obj, U2<'R, JS.PromiseLike<'R>>>) (pr : Promise<'T>) : Promise<'R> =
         pr.``then``(a, b)
 
     let lift<'T> (a : 'T) : Promise<'T> =
         Promise.resolve(U2.Case1 a)
+
+    let reject<'T> reason : Promise<'T> =
+        Promise.reject<'T> reason
+
+    let create resolver = Promise.Create resolver
 
     type PromiseBuilder() =
         member inline x.Bind(m,f) = bind f m
