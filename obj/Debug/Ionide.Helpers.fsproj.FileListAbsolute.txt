@@ -1,1 +1,0 @@
-d:\Programowanie\Projekty\Ionide\VSCode\ionide-vscode-helpers\obj\Debug\Ionide.Helpers.fsprojResolveAssemblyReference.cache
