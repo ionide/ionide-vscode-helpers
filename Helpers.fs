@@ -16,8 +16,10 @@ module Promise =
     open Fable.Core
     open Fable.Import
     open Fable.Import.JS
+    
+    let create resolver = Promise.Create resolver
 
-    let success (a : 'T -> 'R) (pr : Promise<'T>) : Promise<'R> =
+    let map (a : 'T -> 'R) (pr : Promise<'T>) : Promise<'R> =
         pr.``then``(   
             unbox<Func<'T, U2<'R, PromiseLike<'R>>>> a,
             unbox<Func<obj,unit>> None
@@ -29,10 +31,13 @@ module Promise =
             unbox<Func<obj,unit>> None
         )
 
-    let fail (a : obj -> 'T) (pr : Promise<'T>) : Promise<'T> =
-        pr.catch (unbox<Func<obj, U2<'T, PromiseLike<'T>>>> (fun reason -> a reason |> ignore; Promise.reject None))
+    let catch (a : obj -> Promise<'R>) (pr : Promise<'T>) : Promise<'R> =
+        pr.``then``(   
+            unbox<Func<'T, U2<'R, PromiseLike<'R>>>> None,
+            unbox<Func<obj,U2<'R, PromiseLike<'R>>>> a
+        )
 
-    let either a  (b: Func<obj, U2<'R, JS.PromiseLike<'R>>>) (pr : Promise<'T>) : Promise<'R> =
+    let either a  (b: Func<obj, U2<'R, PromiseLike<'R>>>) (pr : Promise<'T>) : Promise<'R> =
         pr.``then``(a, b)
 
     let lift<'T> (a : 'T) : Promise<'T> =
@@ -41,7 +46,14 @@ module Promise =
     let reject<'T> reason : Promise<'T> =
         Promise.reject<'T> reason
 
-    let create resolver = Promise.Create resolver
+    let onSuccess (a : 'T -> unit) (pr : Promise<'T>) : Promise<'T> =
+        pr.``then``(   
+            unbox<Func<'T, U2<'T, PromiseLike<'T>>>> (fun value -> a value; value),
+            unbox<Func<obj,unit>> None
+        )
+
+    let onFail (a : obj -> unit) (pr : Promise<'T>) : Promise<'T> =
+        pr.catch (unbox<Func<obj, U2<'T, PromiseLike<'T>>>> (fun reason -> a reason |> ignore; reject reason))
 
     type PromiseBuilder() =
         member inline x.Bind(m,f) = bind f m
