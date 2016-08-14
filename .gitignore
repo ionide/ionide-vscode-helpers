@@ -35,7 +35,7 @@ packages
 paket-files
 
                
-
+bin/*
 obj/*
 /.vs/*
 
