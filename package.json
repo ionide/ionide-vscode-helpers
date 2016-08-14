@@ -23,12 +23,12 @@
   "homepage": "https://github.com/ionide/ionide-vscode-helpers#readme",
   "dependencies": {
     "axios": "^0.13.1",
-    "fable-core": "^0.5.3"
+    "fable-core": "^0.5.4"
   },
   "scripts": {
     "build": "fable ./Ionide.VSCode.Helpers.fsproj -s -o ./release/ -m commonjs --verbose"
   },
   "devDependencies": {
-    "fable-compiler": "^0.5.3"
+    "fable-compiler": "^0.5.4"
   }
 }
