@@ -17,7 +17,9 @@ module Promise =
     open Fable.Import
     open Fable.Import.JS
     
-    let create resolver = Promise.Create resolver
+    let create (body: ('T->unit) -> (obj->unit) -> unit) =
+        Promise.Create(fun (resolverFunc : Func<U2<_, _>, _>) (rejectorFunc : Func<_,_>) ->
+            body (fun v -> resolverFunc.Invoke(U2.Case1 v)) (fun e -> rejectorFunc.Invoke e)) 
 
     let map (a : 'T -> 'R) (pr : Promise<'T>) : Promise<'R> =
         pr.``then``(   
@@ -99,8 +101,12 @@ module Process =
         proc.stdout?on $ ("data", f |> unbox) |> ignore
         proc
 
-    let onError (f : obj -> _) (proc : child_process_types.ChildProcess) =
+    let onErrorOutput (f : obj -> _) (proc : child_process_types.ChildProcess) =
         proc.stderr?on $ ("data", f |> unbox) |> ignore
+        proc
+
+    let onError (f: obj -> _) (proc : child_process_types.ChildProcess) =
+        proc?on $ ("error", f |> unbox) |> ignore
         proc
 
     let spawn location linuxCmd (cmd : string) =
