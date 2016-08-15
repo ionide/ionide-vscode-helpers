@@ -17,22 +17,37 @@ module Promise =
     open Fable.Import
     open Fable.Import.JS
     
+    /// <summary>
+    /// Creates new promise. 
+    /// Constuctor function "body" is called with two arguments: 
+    /// "resolve" - moves promise to fulfilled state, using provided argument as result
+    /// "reject" - moves promise to rejected state
+    /// </summary>
     let create (body: ('T->unit) -> (obj->unit) -> unit) =
         Promise.Create(fun (resolverFunc : Func<U2<_, _>, _>) (rejectorFunc : Func<_,_>) ->
             body (fun v -> resolverFunc.Invoke(U2.Case1 v)) (fun e -> rejectorFunc.Invoke e)) 
 
+    /// <summary>
+    /// Standard map implementation.
+    /// </summary>
     let map (a : 'T -> 'R) (pr : Promise<'T>) : Promise<'R> =
         pr.``then``(   
             unbox<Func<'T, U2<'R, PromiseLike<'R>>>> a,
             unbox<Func<obj,unit>> None
         )
 
+    /// <summary>
+    /// Standard bind implementation.
+    /// </summary>
     let bind (a : 'T -> Promise<'R>) (pr : Promise<'T>) : Promise<'R> =
         pr.``then``(   
             unbox<Func<'T, U2<'R, PromiseLike<'R>>>> a,
             unbox<Func<obj,unit>> None
         )
 
+    /// <summary>
+    /// Bind for rejected promise.
+    /// </summary>
     let catch (a : obj -> Promise<'R>) (pr : Promise<'T>) : Promise<'R> =
         pr.``then``(   
             unbox<Func<'T, U2<'R, PromiseLike<'R>>>> None,
@@ -42,18 +57,32 @@ module Promise =
     let either a  (b: Func<obj, U2<'R, PromiseLike<'R>>>) (pr : Promise<'T>) : Promise<'R> =
         pr.``then``(a, b)
 
+    /// <summary>
+    /// Creates promise (in pending state) from the supplied value.
+    /// </summary>
     let lift<'T> (a : 'T) : Promise<'T> =
         Promise.resolve(U2.Case1 a)
 
+    /// <summary>
+    /// Creates promise (in rejected state) with supplied reason.
+    /// </summary>
     let reject<'T> reason : Promise<'T> =
         Promise.reject<'T> reason
 
+    /// <summary>
+    /// Allows handing promise which is in fulfilled state. 
+    /// Can be used for side-effects. 
+    /// </summary>
     let onSuccess (a : 'T -> unit) (pr : Promise<'T>) : Promise<'T> =
         pr.``then``(   
             unbox<Func<'T, U2<'T, PromiseLike<'T>>>> (fun value -> a value; value),
             unbox<Func<obj,unit>> None
         )
 
+    /// <summary>
+    /// Allows handing promise which is in rejected state. Propagates rejected promise, to allow chaining.
+    /// Can be used for side-effects. 
+    /// </summary>
     let onFail (a : obj -> unit) (pr : Promise<'T>) : Promise<'T> =
         pr.catch (unbox<Func<obj, U2<'T, PromiseLike<'T>>>> (fun reason -> a reason |> ignore; reject reason))
 
