@@ -1,4 +1,4 @@
-﻿@echo off
+@echo off
 cls
 
 .paket\paket.bootstrapper.exe 
