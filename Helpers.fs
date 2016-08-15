@@ -54,8 +54,14 @@ module Promise =
             unbox<Func<obj,U2<'R, PromiseLike<'R>>>> a
         )
 
-    let either a  (b: Func<obj, U2<'R, PromiseLike<'R>>>) (pr : Promise<'T>) : Promise<'R> =
-        pr.``then``(a, b)
+    /// <summary>
+    /// Combination of bind and catch methods. If promise in fulfilled state - a is bound, if in rejected state - then b.
+    /// </summary>
+    let either (a : 'T -> Promise<'R>) (b: obj -> Promise<'R>) (pr : Promise<'T>) : Promise<'R> =
+        pr.``then``(
+            unbox<Func<'T, U2<'R, PromiseLike<'R>>>> a,
+            unbox<Func<obj,U2<'R, PromiseLike<'R>>>> b
+        )
 
     /// <summary>
     /// Creates promise (in pending state) from the supplied value.
