@@ -476,6 +476,13 @@ module vscode =
         abstract hide: unit -> unit
         abstract dispose: unit -> unit
 
+    and Terminal =
+        abstract name: string with get
+        abstract dispose : unit -> unit
+        abstract hide : unit -> unit
+        abstract show : ?prserveFocus : bool -> unit
+        abstract sendText : text : string * ?addNewLine : bool -> unit
+
     and Extension<'T> =
         abstract id: string with get, set
         abstract extensionPath: string with get, set
@@ -537,6 +544,7 @@ module vscode =
         static member setStatusBarMessage(text: string, hideAfterTimeout: float): Disposable = failwith "JS only"
         static member setStatusBarMessage(text: string, hideWhenDone: Promise<obj>): Disposable = failwith "JS only"
         static member createStatusBarItem(?alignment: StatusBarAlignment, ?priority: float): StatusBarItem = failwith "JS only"
+        static member createTerminal(?name : string) : Terminal = failwith "JS only"
 
     type [<Import("workspace","vscode")>] workspace =
         static member rootPath with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
