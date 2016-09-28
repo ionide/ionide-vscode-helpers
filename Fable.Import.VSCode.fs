@@ -514,6 +514,14 @@ module vscode =
     and TextDocumentContentProvider =
         abstract provideTextDocumentContent : unit -> string
 
+    and [<Import("DocumentLink","vscode")>] DocumentLink(range : Range, target: Uri) =
+        member __.target with get(): Uri = failwith "JS only" and set(v: Uri): unit = failwith "JS only"
+        member __.range with get(): Range = failwith "JS only" and set(v: Range): unit = failwith "JS only"
+
+    and DocumentLinkProvider =
+        abstract provideDocumentLinks : document : TextDocument * ct : CancellationToken ->  U2<DocumentLink[], Promise<DocumentLink[]>>
+
+
     let [<Import("version","vscode")>] version: string = failwith "JS only"
 
     type [<Import("commands","vscode")>] commands =
@@ -583,6 +591,7 @@ module vscode =
         static member registerDocumentRangeFormattingEditProvider(selector: DocumentSelector, provider: DocumentRangeFormattingEditProvider): Disposable = failwith "JS only"
         static member registerOnTypeFormattingEditProvider(selector: DocumentSelector, provider: OnTypeFormattingEditProvider, firstTriggerCharacter: string, [<ParamArray>] moreTriggerCharacter: string[]): Disposable = failwith "JS only"
         static member registerSignatureHelpProvider(selector: DocumentSelector, provider: SignatureHelpProvider, [<ParamArray>] triggerCharacters: string[]): Disposable = failwith "JS only"
+        static member registerDocumentLinkProvider(selector : DocumentSelector, provider : DocumentLinkProvider) : Disposable = failwith "JS only"
         static member setLanguageConfiguration(language: string, configuration: LanguageConfiguration): Disposable = failwith "JS only"
 
     type [<Import("extensions","vscode")>] extensions =
