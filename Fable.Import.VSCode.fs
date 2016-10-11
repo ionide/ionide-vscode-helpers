@@ -482,6 +482,7 @@ module vscode =
         abstract hide : unit -> unit
         abstract show : ?prserveFocus : bool -> unit
         abstract sendText : text : string * ?addNewLine : bool -> unit
+        abstract processId: Promise<int> with get
 
     and Extension<'T> =
         abstract id: string with get, set
