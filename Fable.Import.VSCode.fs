@@ -554,6 +554,7 @@ module vscode =
         static member setStatusBarMessage(text: string, hideWhenDone: Promise<obj>): Disposable = failwith "JS only"
         static member createStatusBarItem(?alignment: StatusBarAlignment, ?priority: float): StatusBarItem = failwith "JS only"
         static member createTerminal(?name : string, ?shellPath : string, ?shellArgs : string[]) : Terminal = failwith "JS only"
+        static member onDidCloseTerminal with get(): Event<Terminal> = failwith "JS only"
 
     type [<Import("workspace","vscode")>] workspace =
         static member rootPath with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
