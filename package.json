@@ -7,15 +7,15 @@
     "url": "git+https://github.com/ionide/ionide-vscode-helpers.git"
   },
   "author": "Krzysztof Cieslak",
-  "contributors": 
-  [   { "name": "Krzysztof Cieślak"    
-      , "url": "https://twitter.com/k_cieslak" 
+  "contributors":
+  [   { "name": "Krzysztof Cieślak"
+      , "url": "https://twitter.com/k_cieslak"
       }
   ,   { "name": "Jared Hester"
       , "email": "jared.hester@gmail.com"
       , "url": "https://twitter.com/cloudRoutine"
       }
-  ],  
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ionide/ionide-vscode-helpers/issues"
@@ -23,12 +23,12 @@
   "homepage": "https://github.com/ionide/ionide-vscode-helpers#readme",
   "dependencies": {
     "axios": "^0.13.1",
-    "fable-core": "^0.5.4"
+    "fable-core": "*"
   },
   "scripts": {
     "build": "fable ./Ionide.VSCode.Helpers.fsproj -s -o ./release/ -m commonjs --verbose"
   },
   "devDependencies": {
-    "fable-compiler": "^0.5.4"
+    "fable-compiler": "*"
   }
 }
