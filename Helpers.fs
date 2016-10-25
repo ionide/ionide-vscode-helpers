@@ -170,14 +170,13 @@ module Process =
                 "cwd" ==> workspace.rootPath
             ]
         Promise.Create<Error * Buffer *Buffer>(fun (resolve : Func<U2<Error * Buffer *Buffer,PromiseLike<Error * Buffer *Buffer>>,_>) (error : Func<obj,_>) ->
-            if isWin () then
-                child_process.exec(location + " " + cmd, options, (fun (e : Error) (i : Buffer) (o : Buffer) ->
+            let execCmd =
+                if isWin () then location + " " + cmd
+                else linuxCmd + " " + location + " " + cmd
+            child_process.exec(execCmd, options, 
+                Func<Error,Buffer,Buffer,unit>(fun (e : Error) (i : Buffer) (o : Buffer) ->
                     let arg = e,i,o
-                    resolve.Invoke(arg |> unbox)) |> unbox) |> ignore
-            else
-                child_process.exec(linuxCmd + " " + location + " " + cmd, options, (fun (e : Error) (i : Buffer) (o : Buffer) ->
-                    let arg = e,i,o
-                    resolve.Invoke(arg |> unbox))|> unbox) |> ignore)
+                    resolve.Invoke(U2.Case1 arg))) |> ignore)
 
 
 //---------------------------------------------------
