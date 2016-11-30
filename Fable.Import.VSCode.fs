@@ -446,6 +446,7 @@ module vscode =
         abstract set: entries: ResizeArray<Uri * ResizeArray<Diagnostic>> -> unit
         abstract clear: unit -> unit
         abstract dispose: unit -> unit
+        abstract get: uri: Uri -> ResizeArray<Diagnostic>
 
     and ViewColumn =
         | One = 1
@@ -534,6 +535,8 @@ module vscode =
 
     type [<Import("commands","vscode")>] commands =
         static member registerCommand(command: string, callback: Func<obj, obj>, ?thisArg: obj): Disposable = failwith "JS only"
+        static member registerCommand(command: string, callback: Func<obj, obj, obj>, ?thisArg: obj): Disposable = failwith "JS only"
+        static member registerCommand(command: string, callback: Func<obj, obj, obj, obj>, ?thisArg: obj): Disposable = failwith "JS only"
         static member registerTextEditorCommand(command: string, callback: Func<TextEditor, TextEditorEdit, unit>, ?thisArg: obj): Disposable = failwith "JS only"
         static member executeCommand(command: string, [<ParamArray>] rest: obj[]): Promise<'T> = failwith "JS only"
         static member getCommands(?filterInternal: bool): Promise<ResizeArray<string>> = failwith "JS only"
