@@ -163,6 +163,8 @@ module Process =
         spawn location linuxCmd cmd
         |> onOutput(fun e -> e.ToString () |> outputChannel.append)
         |> onError (fun e -> e.ToString () |> outputChannel.append)
+        |> onErrorOutput(fun e -> e.ToString () |> outputChannel.append)
+
 
     let exec location linuxCmd cmd : Promise<Error * Buffer *Buffer> =
         let options =
