@@ -124,6 +124,24 @@ module VSCode =
 //Process Helpers
 //---------------------------------------------------
 module Process =
+    let splitArgs cmd =
+        if cmd = "" then
+            [||]
+        else
+            cmd.Split(' ')
+            |> Array.toList
+            |> List.fold (fun (quoted : string option,acc) e ->
+                if quoted.IsSome then
+                    if e.EndsWith "\"" then None, (quoted.Value + " " + e).Replace("\"", "")::acc
+                    else Some (quoted.Value + " " + e), acc
+                else
+                    if e.StartsWith "\"" then Some e, acc
+                    else None, e::acc
+            ) (None,[])
+            |> snd
+            |> List.rev
+            |> List.toArray
+
     open Fable.Import.JS
     open Fable.Import.Node
     open Fable.Import.vscode
@@ -131,7 +149,7 @@ module Process =
 
 
     let isWin () = ``process``.platform = "win32"
-    let isMono () = ``process``.platform = "win32" |> not
+    let isMono () = ``process``.platform <> "win32"
 
     let onExit (f : obj -> _) (proc : child_process_types.ChildProcess) =
         proc.on("exit", f |> unbox) |> ignore
@@ -149,10 +167,10 @@ module Process =
         proc?on $ ("error", f |> unbox) |> ignore
         proc
 
+
     let spawn location linuxCmd (cmd : string) =
-        let cmd' =
-            if cmd = "" then [||] else cmd.Split(' ')
-            |> ResizeArray
+        let cmd' = splitArgs cmd |> ResizeArray
+
         let options =
             createObj [
                 "cwd" ==> workspace.rootPath
