@@ -135,7 +135,8 @@ module Process =
                     if e.EndsWith "\"" then None, (quoted.Value + " " + e).Replace("\"", "")::acc
                     else Some (quoted.Value + " " + e), acc
                 else
-                    if e.StartsWith "\"" then Some e, acc
+                    if e.StartsWith "\"" &&  e.EndsWith "\"" then None, e.Replace("\"", "")::acc
+                    elif e.StartsWith "\"" then Some e, acc
                     else None, e::acc
             ) (None,[])
             |> snd
