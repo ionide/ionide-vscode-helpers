@@ -16,22 +16,22 @@ module Promise =
     open Fable.Core
     open Fable.Import
     open Fable.Import.JS
-    
+
     /// <summary>
-    /// Creates new promise. 
-    /// Constuctor function "body" is called with two arguments: 
+    /// Creates new promise.
+    /// Constuctor function "body" is called with two arguments:
     /// "resolve" - moves promise to fulfilled state, using provided argument as result
     /// "reject" - moves promise to rejected state
     /// </summary>
     let create (body: ('T->unit) -> (obj->unit) -> unit) =
         Promise.Create(fun (resolverFunc : Func<U2<_, _>, _>) (rejectorFunc : Func<_,_>) ->
-            body (fun v -> resolverFunc.Invoke(U2.Case1 v)) (fun e -> rejectorFunc.Invoke e)) 
+            body (fun v -> resolverFunc.Invoke(U2.Case1 v)) (fun e -> rejectorFunc.Invoke e))
 
     /// <summary>
     /// Standard map implementation.
     /// </summary>
     let map (a : 'T -> 'R) (pr : Promise<'T>) : Promise<'R> =
-        pr.``then``(   
+        pr.``then``(
             unbox<Func<'T, U2<'R, PromiseLike<'R>>>> a,
             unbox<Func<obj,unit>> None
         )
@@ -40,7 +40,7 @@ module Promise =
     /// Standard bind implementation.
     /// </summary>
     let bind (a : 'T -> Promise<'R>) (pr : Promise<'T>) : Promise<'R> =
-        pr.``then``(   
+        pr.``then``(
             unbox<Func<'T, U2<'R, PromiseLike<'R>>>> a,
             unbox<Func<obj,unit>> None
         )
@@ -49,7 +49,7 @@ module Promise =
     /// Bind for rejected promise.
     /// </summary>
     let catch (a : obj -> Promise<'R>) (pr : Promise<'T>) : Promise<'R> =
-        pr.``then``(   
+        pr.``then``(
             unbox<Func<'T, U2<'R, PromiseLike<'R>>>> None,
             unbox<Func<obj,U2<'R, PromiseLike<'R>>>> a
         )
@@ -76,21 +76,26 @@ module Promise =
         Promise.reject<'T> reason
 
     /// <summary>
-    /// Allows handing promise which is in fulfilled state. 
-    /// Can be used for side-effects. 
+    /// Allows handing promise which is in fulfilled state.
+    /// Can be used for side-effects.
     /// </summary>
     let onSuccess (a : 'T -> unit) (pr : Promise<'T>) : Promise<'T> =
-        pr.``then``(   
+        pr.``then``(
             unbox<Func<'T, U2<'T, PromiseLike<'T>>>> (fun value -> a value; value),
             unbox<Func<obj,unit>> None
         )
 
     /// <summary>
     /// Allows handing promise which is in rejected state. Propagates rejected promise, to allow chaining.
-    /// Can be used for side-effects. 
+    /// Can be used for side-effects.
     /// </summary>
     let onFail (a : obj -> unit) (pr : Promise<'T>) : Promise<'T> =
         pr.catch (unbox<Func<obj, U2<'T, PromiseLike<'T>>>> (fun reason -> a reason |> ignore; reject reason))
+
+    let all (prs : Promise<'T> seq) =
+        Promise.all (unbox prs)
+
+    let empty<'T> = lift (unbox<'T>null)
 
     type PromiseBuilder() =
         member inline x.Bind(m,f) = bind f m
@@ -165,6 +170,13 @@ module Process =
         |> onError (fun e -> e.ToString () |> outputChannel.append)
         |> onErrorOutput(fun e -> e.ToString () |> outputChannel.append)
 
+    let toPromise (proc : child_process_types.ChildProcess) =
+        Promise.Create<string>(fun (resolve : Func<U2<string,PromiseLike<string>>,unit>) (error : Func<obj,_>) ->
+            proc
+            |> onExit(fun (code) -> code.ToString() |> Case1 |> unbox resolve )
+            |> ignore
+        )
+
 
     let exec location linuxCmd cmd : Promise<Error * Buffer *Buffer> =
         let options =
@@ -175,7 +187,7 @@ module Process =
             let execCmd =
                 if isWin () then location + " " + cmd
                 else linuxCmd + " " + location + " " + cmd
-            child_process.exec(execCmd, options, 
+            child_process.exec(execCmd, options,
                 Func<Error,Buffer,Buffer,unit>(fun (e : Error) (i : Buffer) (o : Buffer) ->
                     let arg = e,i,o
                     resolve.Invoke(U2.Case1 arg))) |> ignore)
