@@ -183,8 +183,29 @@ module Process =
             let prms = seq { yield location; yield! cmd'} |> ResizeArray
             child_process.spawn(linuxCmd, prms, options)
 
+    let spawnInDir location linuxCmd (cmd : string) =
+        let cmd' = splitArgs cmd |> ResizeArray
+
+        let options =
+            createObj [
+                "cwd" ==> (path.dirname location)
+            ]
+        if isWin () || linuxCmd = "" then
+
+            child_process.spawn(location, cmd', options)
+        else
+            let prms = seq { yield location; yield! cmd'} |> ResizeArray
+            child_process.spawn(linuxCmd, prms, options)
+
+
     let spawnWithNotification location linuxCmd (cmd : string) (outputChannel : OutputChannel) =
         spawn location linuxCmd cmd
+        |> onOutput(fun e -> e.ToString () |> outputChannel.append)
+        |> onError (fun e -> e.ToString () |> outputChannel.append)
+        |> onErrorOutput(fun e -> e.ToString () |> outputChannel.append)
+
+    let spawnWithNotificationInDir location linuxCmd (cmd : string) (outputChannel : OutputChannel) =
+        spawnInDir location linuxCmd cmd
         |> onOutput(fun e -> e.ToString () |> outputChannel.append)
         |> onError (fun e -> e.ToString () |> outputChannel.append)
         |> onErrorOutput(fun e -> e.ToString () |> outputChannel.append)
