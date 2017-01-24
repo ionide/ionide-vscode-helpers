@@ -18,7 +18,7 @@ module DebugProtocol =
     and [<AllowNullLiteral>] Event =
         inherit ProtocolMessage
         abstract ``event``: string with get, set
-        abstract body: obj  with get, set
+        abstract body: obj option with get, set
 
     and [<AllowNullLiteral>] Response =
         inherit ProtocolMessage
@@ -98,7 +98,7 @@ module DebugProtocol =
 
     and [<AllowNullLiteral>] InitializeResponse =
         inherit Response
-        abstract body: Capabilities with get, set
+        abstract body: Capabilities option with get, set
 
     and [<AllowNullLiteral>] ConfigurationDoneRequest =
         inherit Request
@@ -603,7 +603,7 @@ module DebugProtocol =
         abstract names: ResizeArray<string> with get, set
 
 module Protocol =
-    type [<AllowNullLiteral>] [<Import("*","ProtocolServer")>] ProtocolServer() =
+    type [<AllowNullLiteral>] [<Import("ProtocolServer","protocol")>] ProtocolServer() =
         // interface NodeJS.EventEmitter
         member __.TWO_CRLF with get(): obj = jsNative and set(v: obj): unit = jsNative
         member __._rawData with get(): obj = jsNative and set(v: obj): unit = jsNative
@@ -625,19 +625,19 @@ module Protocol =
 
 module DebugSession =
 
-    type [<AllowNullLiteral>] [<Import("Source", "vscode-debugadapter")>] Source(name: string, ?path: string, ?id: float, ?origin: string, ?data: obj) =
+    type [<AllowNullLiteral>] [<Import("Source","vscode-debugadapter")>] Source(name: string, ?path: string, ?id: float, ?origin: string, ?data: obj) =
         // interface DebugProtocol.Source
         member __.name with get(): string = jsNative and set(v: string): unit = jsNative
         member __.path with get(): string = jsNative and set(v: string): unit = jsNative
         member __.sourceReference with get(): float = jsNative and set(v: float): unit = jsNative
 
-    and [<AllowNullLiteral>] [<Import("Scope", "vscode-debugadapter")>] Scope(name: string, reference: float, ?expensive: bool) =
+    and [<AllowNullLiteral>] [<Import("Scope","vscode-debugadapter")>] Scope(name: string, reference: float, ?expensive: bool) =
         // interface DebugProtocol.Scope
         member __.name with get(): string = jsNative and set(v: string): unit = jsNative
         member __.variablesReference with get(): float = jsNative and set(v: float): unit = jsNative
         member __.expensive with get(): bool = jsNative and set(v: bool): unit = jsNative
 
-    and [<AllowNullLiteral>] [<Import("StackFrame", "vscode-debugadapter")>] StackFrame(i: float, nm: string, ?src: Source, ?ln: float, ?col: float) =
+    and [<AllowNullLiteral>] [<Import("StackFrame","vscode-debugadapter")>] StackFrame(i: float, nm: string, ?src: Source, ?ln: float, ?col: float) =
         // interface DebugProtocol.StackFrame
         member __.id with get(): float = jsNative and set(v: float): unit = jsNative
         member __.source with get(): Source = jsNative and set(v: Source): unit = jsNative
@@ -645,27 +645,27 @@ module DebugSession =
         member __.column with get(): float = jsNative and set(v: float): unit = jsNative
         member __.name with get(): string = jsNative and set(v: string): unit = jsNative
 
-    and [<AllowNullLiteral>] [<Import("Thread", "vscode-debugadapter")>] Thread(id: float, name: string) =
+    and [<AllowNullLiteral>] [<Import("Thread","vscode-debugadapter")>] Thread(id: float, name: string) =
         // interface DebugProtocol.Thread
         member __.id with get(): float = jsNative and set(v: float): unit = jsNative
         member __.name with get(): string = jsNative and set(v: string): unit = jsNative
 
-    and [<AllowNullLiteral>] [<Import("Variable", "vscode-debugadapter")>] Variable(name: string, value: string, ?ref: float, ?indexedVariables: float, ?namedVariables: float) =
+    and [<AllowNullLiteral>] [<Import("Variable","vscode-debugadapter")>] Variable(name: string, value: string, ?ref: float, ?indexedVariables: float, ?namedVariables: float) =
         // interface DebugProtocol.Variable
         member __.name with get(): string = jsNative and set(v: string): unit = jsNative
         member __.value with get(): string = jsNative and set(v: string): unit = jsNative
         member __.variablesReference with get(): float = jsNative and set(v: float): unit = jsNative
 
-    and [<AllowNullLiteral>] [<Import("Breakpoint", "vscode-debugadapter")>] Breakpoint(verified: bool, ?line: float, ?column: float, ?source: Source) =
+    and [<AllowNullLiteral>] [<Import("Breakpoint","vscode-debugadapter")>] Breakpoint(verified: bool, ?line: float, ?column: float, ?source: Source) =
         // interface DebugProtocol.Breakpoint
         member __.verified with get(): bool = jsNative and set(v: bool): unit = jsNative
 
-    and [<AllowNullLiteral>] [<Import("Module", "vscode-debugadapter")>] Module(id: U2<float, string>, name: string) =
+    and [<AllowNullLiteral>] [<Import("Module","vscode-debugadapter")>] Module(id: U2<float, string>, name: string) =
         // interface DebugProtocol.Module
         member __.id with get(): U2<float, string> = jsNative and set(v: U2<float, string>): unit = jsNative
         member __.name with get(): string = jsNative and set(v: string): unit = jsNative
 
-    and [<AllowNullLiteral>] [<Import("CompletionItem", "vscode-debugadapter")>] CompletionItem(label: string, start: float, ?length: float) =
+    and [<AllowNullLiteral>] [<Import("CompletionItem","vscode-debugadapter")>] CompletionItem(label: string, start: float, ?length: float) =
         // interface DebugProtocol.CompletionItem
         member __.label with get(): string = jsNative and set(v: string): unit = jsNative
         member __.start with get(): float = jsNative and set(v: float): unit = jsNative
@@ -675,34 +675,34 @@ module DebugSession =
         // interface DebugProtocol.StoppedEvent
         member __.body with get(): obj = jsNative and set(v: obj): unit = jsNative
 
-    and [<AllowNullLiteral>] [<Import("ContinuedEvent", "vscode-debugadapter")>] ContinuedEvent(threadId: float, ?allThreadsContinued: bool) =
+    and [<AllowNullLiteral>] [<Import("ContinuedEvent","vscode-debugadapter")>] ContinuedEvent(threadId: float, ?allThreadsContinued: bool) =
         // interface DebugProtocol.ContinuedEvent
         member __.body with get(): obj = jsNative and set(v: obj): unit = jsNative
 
-    and [<AllowNullLiteral>] [<Import("InitializedEvent", "vscode-debugadapter")>] InitializedEvent() =
+    and [<AllowNullLiteral>] [<Import("InitializedEvent","vscode-debugadapter")>] InitializedEvent() =
         // interface DebugProtocol.InitializedEvent
         member __.body with get(): obj = jsNative and set(v: obj): unit = jsNative
 
 
 
-    and [<AllowNullLiteral>] [<Import("TerminatedEvent", "vscode-debugadapter")>] TerminatedEvent(?restart: bool) =
+    and [<AllowNullLiteral>] [<Import("TerminatedEvent","vscode-debugadapter")>] TerminatedEvent(?restart: bool) =
         // interface DebugProtocol.TerminatedEvent
         member __.body with get(): obj = jsNative and set(v: obj): unit = jsNative
 
 
-    and [<AllowNullLiteral>] [<Import("OutputEvent", "vscode-debugadapter")>] OutputEvent(output: string, ?category: string, ?data: obj) =
+    and [<AllowNullLiteral>] [<Import("OutputEvent","vscode-debugadapter")>] OutputEvent(output: string, ?category: string, ?data: obj) =
         // interface DebugProtocol.OutputEvent
         member __.body with get(): obj = jsNative and set(v: obj): unit = jsNative
 
-    and [<AllowNullLiteral>] [<Import("ThreadEvent", "vscode-debugadapter")>] ThreadEvent(reason: string, threadId: float) =
+    and [<AllowNullLiteral>] [<Import("ThreadEvent","vscode-debugadapter")>] ThreadEvent(reason: string, threadId: float) =
         // interface DebugProtocol.ThreadEvent
         member __.body with get(): obj = jsNative and set(v: obj): unit = jsNative
 
-    and [<AllowNullLiteral>] [<Import("BreakpointEvent", "vscode-debugadapter")>] BreakpointEvent(reason: string, breakpoint: Breakpoint) =
+    and [<AllowNullLiteral>] [<Import("BreakpointEvent","vscode-debugadapter")>] BreakpointEvent(reason: string, breakpoint: Breakpoint) =
         // interface DebugProtocol.BreakpointEvent
         member __.body with get(): obj = jsNative and set(v: obj): unit = jsNative
 
-    and [<AllowNullLiteral>] [<Import("ModuleEvent", "vscode-debugadapter")>] ModuleEvent(reason: (* TODO StringEnum new | changed | removed *) string, ``module``: Module) =
+    and [<AllowNullLiteral>] [<Import("ModuleEvent","vscode-debugadapter")>] ModuleEvent(reason: (* TODO StringEnum new | changed | removed *) string, ``module``: Module) =
         // interface DebugProtocol.ModuleEvent
         member __.body with get(): obj = jsNative and set(v: obj): unit = jsNative
 
