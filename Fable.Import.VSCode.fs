@@ -5,7 +5,15 @@ open Fable.Import.JS
 open Fable.Import.Node
 
 module vscode =
-    type [<Import("EventEmitter", "vscode")>] EventEmitter<'T>() =
+    type [<Import("Disposable","vscode")>] Disposable(callOnDispose: Function) =
+        member __.from([<ParamArray>] disposableLikes: obj[]): Disposable = failwith "JS only"
+        member __.dispose(): obj = failwith "JS only"
+
+    and Event<'T> =
+        [<Emit("$0($1...)")>] abstract Invoke: listener: Func<'T, obj> * ?thisArgs: obj * ?disposables: ResizeArray<Disposable> -> Disposable
+
+
+    and [<Import("EventEmitter", "vscode")>] EventEmitter<'T>() =
 
         member __.addListener(``event``: string, listener: Function): NodeJS.EventEmitter = failwith "JS only"
         member __.on(``event``: string, listener: Function): NodeJS.EventEmitter = failwith "JS only"
@@ -17,7 +25,7 @@ module vscode =
         member __.listeners(``event``: string): ResizeArray<Function> = failwith "JS only"
         member __.listenerCount(``type``: string): int = failwith "JS only"
         member __.emit(``event``: string, [<ParamArray>] args: obj[]): bool = failwith "JS only"
-        member __.event with get (): 'T = failwith "JS only"
+        member __.event with get (): Event<'T> = failwith "JS only"
         member __.fire(arg : 'T) : unit = failwith "JS only"
 
     type Command =
@@ -171,12 +179,6 @@ module vscode =
         member __.cancel(): unit = failwith "JS only"
         member __.dispose(): unit = failwith "JS only"
 
-    and [<Import("Disposable","vscode")>] Disposable(callOnDispose: Function) =
-        member __.from([<ParamArray>] disposableLikes: obj[]): Disposable = failwith "JS only"
-        member __.dispose(): obj = failwith "JS only"
-
-    and Event<'T> =
-        [<Emit("$0($1...)")>] abstract Invoke: listener: Func<'T, obj> * ?thisArgs: obj * ?disposables: ResizeArray<Disposable> -> Disposable
 
     and FileSystemWatcher =
         abstract from: [<ParamArray>] disposableLikes: obj[] -> Disposable
@@ -227,6 +229,7 @@ module vscode =
     and CodeLensProvider =
         abstract provideCodeLenses: document: TextDocument * token: CancellationToken -> U2<ResizeArray<CodeLens>, Promise<ResizeArray<CodeLens>>>
         abstract resolveCodeLens: codeLens: CodeLens * token: CancellationToken -> U2<CodeLens, Promise<CodeLens>>
+        abstract onDidChangeCodeLenses : Event<unit>
 
     and Definition =
         U2<Location, ResizeArray<Location>>
