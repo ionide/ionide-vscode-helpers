@@ -526,12 +526,17 @@ module vscode =
     and DocumentLinkProvider =
         abstract provideDocumentLinks : document : TextDocument * ct : CancellationToken ->  U2<DocumentLink[], Promise<DocumentLink[]>>
 
-    and TreeExplorerNodeProvider<'T> =
-        abstract provideRootNode: unit -> U2<'T, Promise<'T>>
-        abstract resolveChildren: node: 'T -> U2<'T [], Promise<'T []>>
-        abstract getLabel: node: 'T -> string
-        abstract getHasChildren: node: 'T -> bool
-        abstract getClickCommand: node: 'T -> string
+    and TreeDataProvider<'T> =
+        abstract onDidChangeTreeData: Event<'T> with get
+        abstract getTreeItem: 'T -> TreeItem
+        abstract getChildren: 'T -> ResizeArray<'T>
+
+    and TreeItem =
+        abstract label: string with get, set
+        abstract iconPath: string option with get, set
+        abstract command: Command option with get, set
+        abstract contextValue: string option with get, set
+        abstract collapsibleState: int option with get, set
 
 
     let [<Import("version","vscode")>] version: string = failwith "JS only"
@@ -568,7 +573,7 @@ module vscode =
         static member createStatusBarItem(?alignment: StatusBarAlignment, ?priority: float): StatusBarItem = failwith "JS only"
         static member createTerminal(?name : string, ?shellPath : string, ?shellArgs : string[]) : Terminal = failwith "JS only"
         static member onDidCloseTerminal with get(): Event<Terminal> = failwith "JS only"
-        static member registerTreeExplorerNodeProvider<'T>(providerId: string, provider: TreeExplorerNodeProvider<'T>): Disposable = failwith "JS only"
+        static member registerTreeDataProviderForView<'T>(viewId: string, provider: TreeDataProvider<'T>): Disposable = failwith "JS only"
 
     type [<Import("workspace","vscode")>] workspace =
         static member rootPath with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
