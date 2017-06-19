@@ -531,14 +531,30 @@ module vscode =
         abstract getTreeItem: 'T -> TreeItem
         abstract getChildren: 'T -> ResizeArray<'T>
 
+    and TreeIconPath =
+        abstract light: string with get, set
+        abstract dark: string with get, set
+
     and TreeItem =
         abstract label: string with get, set
-        abstract iconPath: string option with get, set
+        abstract iconPath: TreeIconPath option with get, set
         abstract command: Command option with get, set
         abstract contextValue: string option with get, set
         abstract collapsibleState: int option with get, set
 
+    and ProgressLocation =
+        | SourceControl = 1
+        | Window = 10
 
+    and ProgressOptions =
+        abstract location: ProgressLocation with get, set
+        abstract title : string option with get,set
+
+    and ProgressMessage =
+        abstract message: string with get,set
+
+    and Progress<'T> =
+        abstract report: 'T -> unit
     let [<Import("version","vscode")>] version: string = failwith "JS only"
 
     type [<Import("commands","vscode")>] commands =
@@ -574,6 +590,7 @@ module vscode =
         static member createTerminal(?name : string, ?shellPath : string, ?shellArgs : string[]) : Terminal = failwith "JS only"
         static member onDidCloseTerminal with get(): Event<Terminal> = failwith "JS only"
         static member registerTreeDataProvider<'T>(viewId: string, provider: TreeDataProvider<'T>): Disposable = failwith "JS only"
+        static member withProgress(options : ProgressOptions, func: Progress<ProgressMessage> -> Promise<'T> ) : Promise<'T> = failwith "JS only"
 
     type [<Import("workspace","vscode")>] workspace =
         static member rootPath with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
