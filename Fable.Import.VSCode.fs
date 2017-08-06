@@ -542,6 +542,11 @@ module vscode =
         abstract contextValue: string option with get, set
         abstract collapsibleState: int option with get, set
 
+    and TreeItemCollapsibleState =
+        | None = 0
+        | Collapsed = 1
+        | Expanded = 2
+
     and ProgressLocation =
         | SourceControl = 1
         | Window = 10
