@@ -540,7 +540,7 @@ module vscode =
         abstract iconPath: TreeIconPath option with get, set
         abstract command: Command option with get, set
         abstract contextValue: string option with get, set
-        abstract collapsibleState: int option with get, set
+        abstract collapsibleState: TreeItemCollapsibleState option with get, set
 
     and TreeItemCollapsibleState =
         | None = 0
