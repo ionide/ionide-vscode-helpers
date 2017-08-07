@@ -517,7 +517,7 @@ module vscode =
         abstract contentChanges: ResizeArray<TextDocumentContentChangeEvent> with get, set
 
     and TextDocumentContentProvider =
-        abstract provideTextDocumentContent : unit -> string
+        abstract provideTextDocumentContent : uri: Uri -> string
 
     and [<Import("DocumentLink","vscode")>] DocumentLink(range : Range, target: Uri) =
         member __.target with get(): Uri = failwith "JS only" and set(v: Uri): unit = failwith "JS only"
