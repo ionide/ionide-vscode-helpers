@@ -138,9 +138,42 @@ module vscode =
         abstract light: ThemableDecorationRenderOptions option with get, set
         abstract dark: ThemableDecorationRenderOptions option with get, set
 
+    and ThemableDecorationAttachmentRenderOptions =
+        /// Defines a text content that is shown in the attachment. Either an icon or a text can be shown, but not both.
+        abstract contentText: string option with get, set
+        /// An **absolute path** or an URI to an image to be rendered in the attachment. Either an icon
+        /// or a text can be shown, but not both.
+        abstract contentIconPath: U2<string, Uri> option with get, set
+        /// CSS styling property that will be applied to the decoration attachment.
+        abstract border: string option with get, set
+        /// CSS styling property that will be applied to text enclosed by a decoration.
+        abstract borderColor: string option with get, set
+        /// CSS styling property that will be applied to the decoration attachment.
+        abstract textDecoration: string option with get, set
+        /// CSS styling property that will be applied to the decoration attachment.
+        abstract color: string option with get, set
+        /// CSS styling property that will be applied to the decoration attachment.
+        abstract backgroundColor: string option with get, set
+        /// CSS styling property that will be applied to the decoration attachment.
+        abstract margin: string option with get, set
+        /// CSS styling property that will be applied to the decoration attachment.
+        abstract width: string option with get, set
+        /// CSS styling property that will be applied to the decoration attachment.
+        abstract height: string option with get, set
+
+    and ThemableDecorationInstanceRenderOptions =
+        abstract before: ThemableDecorationAttachmentRenderOptions option with get, set
+        abstract after: ThemableDecorationAttachmentRenderOptions option with get, set
+
+    and DecorationInstanceRenderOptions =
+        inherit ThemableDecorationInstanceRenderOptions
+        abstract light: ThemableDecorationInstanceRenderOptions option with get, set
+        abstract dark: ThemableDecorationInstanceRenderOptions option with get, set
+
     and DecorationOptions =
         abstract range: Range with get, set
         abstract hoverMessage: U2<MarkedString, ResizeArray<MarkedString>> with get, set
+        abstract renderOptions: DecorationInstanceRenderOptions option with get, set
 
     and TextEditor =
         abstract document: TextDocument with get, set
