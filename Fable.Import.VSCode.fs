@@ -593,6 +593,22 @@ module vscode =
 
     and Progress<'T> =
         abstract report: 'T -> unit
+
+    and DebugSession =
+        abstract id: string with get,set
+        abstract name: string with get,set
+        abstract ``type``: string with get,set
+
+    and DebugSessionCustomEvent =
+        abstract body: obj option with get,set
+        abstract event: string with get,set
+        abstract session: DebugSession with get,set
+
+    and WorkspaceFolder =
+        abstract id: string with get,set
+        abstract name: string with get,set
+        abstract uri: Uri with get,set
+
     let [<Import("version","vscode")>] version: string = failwith "JS only"
 
     type [<Import("commands","vscode")>] commands =
@@ -602,6 +618,15 @@ module vscode =
         static member registerTextEditorCommand(command: string, callback: Func<TextEditor, TextEditorEdit, unit>, ?thisArg: obj): Disposable = failwith "JS only"
         static member executeCommand(command: string, [<ParamArray>] rest: obj[]): Promise<'T> = failwith "JS only"
         static member getCommands(?filterInternal: bool): Promise<ResizeArray<string>> = failwith "JS only"
+
+    type [<Import("debug", "vscode")>] debug =
+        static member activeDebugSessionwith with get() : DebugSession = failwith "JS only"
+        static member onDidChangeActiveDebugSession with get() : Event<DebugSession> = failwith "JS only"
+        static member onDidReceiveDebugSessionCustomEvent with get() : Event<DebugSessionCustomEvent> = failwith "JS only"
+        static member onDidTerminateDebugSession with get() : Event<DebugSession> = failwith "JS only"
+        static member onDidStartDebugSession with get() : Event<DebugSession> = failwith "JS only"
+        static member startDebugging(folder: WorkspaceFolder,  nameOrConfiguration: U2<string, obj>) : Promise<bool>= failwith "JS only"
+
 
     type [<Import("window","vscode")>] window =
         static member activeTextEditor with get(): TextEditor = failwith "JS only" and set(v: TextEditor): unit = failwith "JS only"
@@ -632,6 +657,7 @@ module vscode =
 
     type [<Import("workspace","vscode")>] workspace =
         static member rootPath with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
+        static member workspaceFolders with get(): WorkspaceFolder[] = failwith "JS only"
         static member textDocuments with get(): ResizeArray<TextDocument> = failwith "JS only" and set(v: ResizeArray<TextDocument>): unit = failwith "JS only"
         static member onDidOpenTextDocument with get(): Event<TextDocument> = failwith "JS only" and set(v: Event<TextDocument>): unit = failwith "JS only"
         static member onDidCloseTextDocument with get(): Event<TextDocument> = failwith "JS only" and set(v: Event<TextDocument>): unit = failwith "JS only"
