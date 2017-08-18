@@ -197,6 +197,23 @@ module Process =
             let prms = seq { yield location; yield! cmd'} |> ResizeArray
             child_process.spawn(linuxCmd, prms, options)
 
+    let spawnWithShell location linuxCmd (cmd : string) =
+        let cmd' = splitArgs cmd |> ResizeArray
+
+        let options =
+            createObj [
+                "cwd" ==> workspace.rootPath
+                "detached" ==> true
+                "shell" ==> true
+
+            ]
+        if isWin () || linuxCmd = "" then
+
+            child_process.spawn(location, cmd', options)
+        else
+            let prms = seq { yield location; yield! cmd'} |> ResizeArray
+            child_process.spawn(linuxCmd, prms, options)
+
 
     let spawnWithNotification location linuxCmd (cmd : string) (outputChannel : OutputChannel) =
         spawn location linuxCmd cmd
