@@ -561,8 +561,10 @@ module vscode =
         abstract globalState: Memento with get, set
         abstract extensionPath: string with get, set
         abstract asAbsolutePath: relativePath: string -> string
+        abstract storagePath: string option with get, set
 
     and Memento =
+        abstract get<'T> : key: string -> 'T option
         abstract get: key: string * ?defaultValue: 'T -> 'T
         abstract update: key: string * value: obj -> Promise<unit>
 
