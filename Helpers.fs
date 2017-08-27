@@ -92,7 +92,7 @@ module Promise =
     let onFail (a : obj -> unit) (pr : Promise<'T>) : Promise<'T> =
         pr.catch (unbox<Func<obj, U2<'T, PromiseLike<'T>>>> (fun reason -> a reason |> ignore; reject reason))
 
-    let all (prs : Promise<'T> seq) =
+    let all (prs : Promise<'T> seq): JS.Promise<ResizeArray<'T>> =
         Promise.all (unbox prs)
 
     let empty<'T> = lift (unbox<'T>null)

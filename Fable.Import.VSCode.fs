@@ -14,7 +14,6 @@ module vscode =
 
 
     and [<Import("EventEmitter", "vscode")>] EventEmitter<'T>() =
-
         member __.addListener(``event``: string, listener: Function): NodeJS.EventEmitter = failwith "JS only"
         member __.on(``event``: string, listener: Function): NodeJS.EventEmitter = failwith "JS only"
         member __.once(``event``: string, listener: Function): NodeJS.EventEmitter = failwith "JS only"
@@ -88,9 +87,20 @@ module vscode =
         member __.active with get(): Position = failwith "JS only" and set(v: Position): unit = failwith "JS only"
         member __.isReversed with get(): bool = failwith "JS only" and set(v: bool): unit = failwith "JS only"
 
+    /// Represents sources that can cause selection change events.
+    and TextEditorSelectionChangeKind =
+        /// Selection changed due to typing in the editor.
+        | Keyboard = 1
+        /// Selection change due to clicking in the editor.
+        | Mouse = 2
+        /// Selection changed because a command ran.
+        | Command = 3
+
     and TextEditorSelectionChangeEvent =
         abstract textEditor: TextEditor with get, set
         abstract selections: ResizeArray<Selection> with get, set
+        /// The change kind which has triggered this event.
+        abstract kind: TextEditorSelectionChangeKind option with get, set
 
     and TextEditorOptionsChangeEvent =
         abstract textEditor: TextEditor with get, set
@@ -115,25 +125,41 @@ module vscode =
         | Right = 4
         | Full = 7
 
+    and DecorationRangeBehavior =
+        /// The decoration's range will widen when edits occur at the start or end.
+        | OpenOpen = 0
+        /// The decoration's range will not widen when edits occur at the start of end.
+        | ClosedClosed = 1
+        /// The decoration's range will widen when edits occur at the start, but not at the end.
+        | OpenClosed = 2
+        /// The decoration's range will widen when edits occur at the end, but not at the start.
+        | ClosedOpen = 3
+
+    and [<Import("ThemeColor","vscode")>] ThemeColor(id: string) =
+        class end
+
     and ThemableDecorationRenderOptions =
-        abstract backgroundColor: string option with get, set
-        abstract outlineColor: string option with get, set
+        abstract backgroundColor: U2<string, ThemeColor> option with get, set
+        abstract outlineColor: U2<string, ThemeColor> option with get, set
         abstract outlineStyle: string option with get, set
         abstract outlineWidth: string option with get, set
-        abstract borderColor: string option with get, set
+        abstract borderColor: U2<string, ThemeColor> option with get, set
         abstract borderRadius: string option with get, set
         abstract borderSpacing: string option with get, set
         abstract borderStyle: string option with get, set
         abstract borderWidth: string option with get, set
         abstract textDecoration: string option with get, set
         abstract cursor: string option with get, set
-        abstract color: string option with get, set
+        abstract color: U2<string, ThemeColor> option with get, set
         abstract gutterIconPath: string option with get, set
-        abstract overviewRulerColor: string option with get, set
+        abstract overviewRulerColor: U2<string, ThemeColor> option with get, set
 
     and DecorationRenderOptions =
         inherit ThemableDecorationRenderOptions
         abstract isWholeLine: bool option with get, set
+        /// Customize the growing behavior of the decoration when edits occur at the edges of the decoration's range.
+        /// Defaults to `DecorationRangeBehavior.OpenOpen`.
+        abstract rangeBehavior: DecorationRangeBehavior option with get, set
         abstract overviewRulerLane: OverviewRulerLane option with get, set
         abstract light: ThemableDecorationRenderOptions option with get, set
         abstract dark: ThemableDecorationRenderOptions option with get, set
@@ -147,13 +173,13 @@ module vscode =
         /// CSS styling property that will be applied to the decoration attachment.
         abstract border: string option with get, set
         /// CSS styling property that will be applied to text enclosed by a decoration.
-        abstract borderColor: string option with get, set
+        abstract borderColor: U2<string, ThemeColor> option with get, set
         /// CSS styling property that will be applied to the decoration attachment.
         abstract textDecoration: string option with get, set
         /// CSS styling property that will be applied to the decoration attachment.
-        abstract color: string option with get, set
+        abstract color: U2<string, ThemeColor> option with get, set
         /// CSS styling property that will be applied to the decoration attachment.
-        abstract backgroundColor: string option with get, set
+        abstract backgroundColor: U2<string, ThemeColor> option with get, set
         /// CSS styling property that will be applied to the decoration attachment.
         abstract margin: string option with get, set
         /// CSS styling property that will be applied to the decoration attachment.
@@ -535,8 +561,10 @@ module vscode =
         abstract globalState: Memento with get, set
         abstract extensionPath: string with get, set
         abstract asAbsolutePath: relativePath: string -> string
+        abstract storagePath: string option with get, set
 
     and Memento =
+        abstract get<'T> : key: string -> 'T option
         abstract get: key: string * ?defaultValue: 'T -> 'T
         abstract update: key: string * value: obj -> Promise<unit>
 
