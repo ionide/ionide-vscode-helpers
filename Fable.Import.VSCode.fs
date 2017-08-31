@@ -6,7 +6,7 @@ open Fable.Import.Node
 
 module vscode =
     type [<Import("Disposable","vscode")>] Disposable(callOnDispose: Function) =
-        member __.from([<ParamArray>] disposableLikes: obj[]): Disposable = failwith "JS only"
+        static member from([<ParamArray>] disposableLikes: obj[]): Disposable = failwith "JS only"
         member __.dispose(): obj = failwith "JS only"
 
     and Event<'T> =
@@ -660,6 +660,7 @@ module vscode =
         static member activeTextEditor with get(): TextEditor = failwith "JS only" and set(v: TextEditor): unit = failwith "JS only"
         static member visibleTextEditors with get(): ResizeArray<TextEditor> = failwith "JS only" and set(v: ResizeArray<TextEditor>): unit = failwith "JS only"
         static member onDidChangeActiveTextEditor with get(): Event<TextEditor> = failwith "JS only" and set(v: Event<TextEditor>): unit = failwith "JS only"
+        static member onDidChangeVisibleTextEditors with get(): Event<ResizeArray<TextEditor>> = failwith "JS only" and set(v: Event<ResizeArray<TextEditor>>): unit = failwith "JS only"
         static member onDidChangeTextEditorSelection with get(): Event<TextEditorSelectionChangeEvent> = failwith "JS only" and set(v: Event<TextEditorSelectionChangeEvent>): unit = failwith "JS only"
         static member onDidChangeTextEditorOptions with get(): Event<TextEditorOptionsChangeEvent> = failwith "JS only" and set(v: Event<TextEditorOptionsChangeEvent>): unit = failwith "JS only"
         static member showTextDocument(document: TextDocument, ?column: ViewColumn): Promise<TextEditor> = failwith "JS only"
