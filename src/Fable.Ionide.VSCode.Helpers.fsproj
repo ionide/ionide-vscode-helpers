@@ -6,6 +6,7 @@
     <Compile Include="Fable.Import.VSCodeDebugger.fs" />
     <Compile Include="Fable.Import.VSCode.fs" />
     <Compile Include="Fable.Import.Axios.fs" />
+    <Compile Include="Fable.Import.ws.fs" />
     <Compile Include="Helpers.fs" />
   </ItemGroup>
   <!-- Add source files to package -->
