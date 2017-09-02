@@ -2,6 +2,7 @@
   "name": "ionide-vscode-helpers",
   "version": "1.0.0",
   "description": "Helper library containing some common functionalities used by other ionide plugins.",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ionide/ionide-vscode-helpers.git"

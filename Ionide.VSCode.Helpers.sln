@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Ionide.VSCode.Helpers", "Ionide.VSCode.Helpers.fsproj", "{9AD05869-2AF0-4B54-8022-6253AC0848E6}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Ionide.VSCode.Helpers", "src\Ionide.VSCode.Helpers.fsproj", "{9AD05869-2AF0-4B54-8022-6253AC0848E6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "project", "project", "{117D4B4C-8411-41E9-8882-F55D9A6D2942}"
 	ProjectSection(SolutionItems) = preProject
