@@ -236,17 +236,19 @@ module Process =
             |> ignore
         )
 
-    let exec location linuxCmd cmd : Promise<ExecError option * U2<string, Buffer.Buffer> * U2<string, Buffer.Buffer>> =
+    let exec location linuxCmd cmd : Promise<ExecError option * string * string> =
         let options = createEmpty<ExecOptions>
         options.cwd <- Some workspace.rootPath
 
-        Promise.Create<ExecError option * U2<string, Buffer.Buffer> * U2<string, Buffer.Buffer>>(fun resolve error ->
+        Promise.Create<ExecError option * string * string>(fun resolve error ->
             let execCmd =
                 if isWin () then location + " " + cmd
                 else linuxCmd + " " + location + " " + cmd
             ChildProcess.exec(execCmd, options,
                 (fun (e : ExecError option) (i : U2<string, Buffer.Buffer>) (o : U2<string, Buffer.Buffer>) ->
-                    let arg = e,i,o
+                    // As we don't specify an encoding, the documentation specifies that we'll receive strings
+                    // "By default, Node.js will decode the output as UTF-8 and pass strings to the callback"
+                    let arg = e, unbox<string> i, unbox<string> o
                     resolve.Invoke(U2.Case1 arg))) |> ignore)
 
 
