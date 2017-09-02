@@ -8,14 +8,16 @@
     "url": "git+https://github.com/ionide/ionide-vscode-helpers.git"
   },
   "author": "Krzysztof Cieslak",
-  "contributors":
-  [   { "name": "Krzysztof Cieślak"
-      , "url": "https://twitter.com/k_cieslak"
-      }
-  ,   { "name": "Jared Hester"
-      , "email": "jared.hester@gmail.com"
-      , "url": "https://twitter.com/cloudRoutine"
-      }
+  "contributors": [
+    {
+      "name": "Krzysztof Cieślak",
+      "url": "https://twitter.com/k_cieslak"
+    },
+    {
+      "name": "Jared Hester",
+      "email": "jared.hester@gmail.com",
+      "url": "https://twitter.com/cloudRoutine"
+    }
   ],
   "license": "MIT",
   "bugs": {
@@ -24,12 +26,19 @@
   "homepage": "https://github.com/ionide/ionide-vscode-helpers#readme",
   "dependencies": {
     "axios": "^0.13.1",
-    "fable-core": "0.6.x"
+    "babel-runtime": "6.26.0",
+    "vscode": "^1.1.5"
   },
   "scripts": {
-    "build": "fable ./Ionide.VSCode.Helpers.fsproj -s -o ./release/ -m commonjs --verbose"
+    "build": "webpack"
   },
   "devDependencies": {
-    "fable-compiler": "0.6.x"
+    "babel-core": "6.26.0",
+    "babel-loader": "7.1.2",
+    "babel-plugin-transform-runtime": "6.23.0",
+    "babel-preset-es2015": "6.24.1",
+    "fable-loader": "1.0.7",
+    "fable-utils": "^1.0.2",
+    "webpack": "3.5.5"
   }
 }
