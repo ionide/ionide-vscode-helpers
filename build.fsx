@@ -7,6 +7,9 @@ open Fake.DotNetCli
 Target "YarnInstall" <| fun () ->
     Yarn (fun p -> { p with Command = Install Standard })
 
+Target "DotNetRestore" <| fun () ->
+    DotNetCli.Restore (fun p -> { p with WorkingDir = "src" } )
+
 Target "BuildDotnet" <| fun () ->
     DotNetCli.Build (fun p -> { p with WorkingDir = "src" } )
 
@@ -15,7 +18,12 @@ Target "BuildFable" <| fun () ->
 
 Target "Default" DoNothing
 
-"YarnInstall" ==> "BuildFable"
+"YarnInstall" ?=> "BuildFable"
+"DotNetRestore" ?=> "BuildDotnet"
+"DotNetRestore" ?=> "BuildFable"
+
+"YarnInstall" ==> "Default"
+"DotNetRestore" ==> "Default"
 "BuildFable" ==> "Default"
 
 RunTargetOrDefault "Default"

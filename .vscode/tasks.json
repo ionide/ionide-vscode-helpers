@@ -8,6 +8,7 @@
                 "command": "${workspaceRoot}/build.cmd"
             },
             "taskName": "Build",
+            "args": ["BuildFable"],
             "group": {
                 "kind": "build",
                 "isDefault": true
