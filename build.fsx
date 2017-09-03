@@ -1,34 +1,21 @@
-﻿// --------------------------------------------------------------------------------------
-// FAKE build script
-// --------------------------------------------------------------------------------------
+﻿#r "packages/build/FAKE/tools/FakeLib.dll"
 
-#I "packages/build/FAKE/tools"
-#r "FakeLib.dll"
-open System
-open System.Diagnostics
-open System.IO
 open Fake
+open Fake.YarnHelper
+open Fake.DotNetCli
 
-let run cmd args dir =
-    if execProcess( fun info ->
-        info.FileName <- cmd
-        if not( String.IsNullOrWhiteSpace dir) then
-            info.WorkingDirectory <- dir
-        info.Arguments <- args
-    ) System.TimeSpan.MaxValue = false then
-        traceError <| sprintf "Error while running '%s' with args: %s" cmd args
+Target "YarnInstall" <| fun () ->
+    Yarn (fun p -> { p with Command = Install Standard })
 
-let platformTool tool path =
-    isUnix |> function | true -> tool | _ -> path
+Target "BuildDotnet" <| fun () ->
+    DotNetCli.Build (fun p -> { p with WorkingDir = "src" } )
 
-let npmTool =
-    platformTool "npm" ("packages"</>"build"</>"Npm.js"</>"tools"</>"npm.cmd" |> FullName)
+Target "BuildFable" <| fun () ->
+    DotNetCli.RunCommand (fun p -> { p with WorkingDir = "src" } ) "fable yarn-build -- -p"
 
-Target "RunScript" (fun () ->
-    ensureDirectory "release"
-    run npmTool "install" "release"
-    run npmTool "run build" "release"
-)
+Target "Default" DoNothing
 
+"YarnInstall" ==> "BuildFable"
+"BuildFable" ==> "Default"
 
-RunTargetOrDefault "RunScript"
+RunTargetOrDefault "Default"

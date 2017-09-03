@@ -1,0 +1,22 @@
+{
+	"version": "2.0.0",
+
+    "tasks": [
+        {
+            "command": "${workspaceRoot}/build.sh",
+            "windows": {
+                "command": "${workspaceRoot}/build.cmd"
+            },
+            "taskName": "Build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "silent"
+            },
+            "type": "shell"
+        }
+    ]
+
+}
