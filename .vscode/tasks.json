@@ -17,6 +17,19 @@
                 "reveal": "silent"
             },
             "type": "shell"
+        },
+        {
+            "command": "${workspaceRoot}/build.sh",
+            "windows": {
+                "command": "${workspaceRoot}/build.cmd"
+            },
+            "taskName": "Restore and Build",
+            "args": ["Default"],
+            "group": "build",
+            "presentation": {
+                "reveal": "always"
+            },
+            "type": "shell"
         }
     ]
 
