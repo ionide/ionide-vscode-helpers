@@ -160,11 +160,11 @@ module Process =
         proc.on("exit", f |> unbox<obj -> unit>) |> ignore
         proc
 
-    let onOutput (f : obj -> _) (proc : ChildProcess) =
+    let onOutput (f : Buffer.Buffer -> _) (proc : ChildProcess) =
         proc.stdout?on $ ("data", f |> unbox) |> ignore
         proc
 
-    let onErrorOutput (f : obj -> _) (proc : ChildProcess) =
+    let onErrorOutput (f : Buffer.Buffer -> _) (proc : ChildProcess) =
         proc.stderr?on $ ("data", f |> unbox) |> ignore
         proc
 
@@ -219,15 +219,15 @@ module Process =
 
     let spawnWithNotification location linuxCmd (cmd : string) (outputChannel : OutputChannel) =
         spawn location linuxCmd cmd
-        |> onOutput(fun e -> e.ToString () |> outputChannel.append)
+        |> onOutput(fun e -> e.toString () |> outputChannel.append)
         |> onError (fun e -> e.ToString () |> outputChannel.append)
-        |> onErrorOutput(fun e -> e.ToString () |> outputChannel.append)
+        |> onErrorOutput(fun e -> e.toString () |> outputChannel.append)
 
     let spawnWithNotificationInDir location linuxCmd (cmd : string) (outputChannel : OutputChannel) =
         spawnInDir location linuxCmd cmd
-        |> onOutput(fun e -> e.ToString () |> outputChannel.append)
+        |> onOutput(fun e -> e.toString () |> outputChannel.append)
         |> onError (fun e -> e.ToString () |> outputChannel.append)
-        |> onErrorOutput(fun e -> e.ToString () |> outputChannel.append)
+        |> onErrorOutput(fun e -> e.toString () |> outputChannel.append)
 
     let toPromise (proc : ChildProcess) =
         Promise.Create<string>(fun (resolve : Func<U2<string,PromiseLike<string>>,unit>) (error : Func<obj,_>) ->
