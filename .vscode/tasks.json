@@ -1,0 +1,36 @@
+{
+	"version": "2.0.0",
+
+    "tasks": [
+        {
+            "command": "${workspaceRoot}/build.sh",
+            "windows": {
+                "command": "${workspaceRoot}/build.cmd"
+            },
+            "taskName": "Build",
+            "args": ["BuildFable"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "silent"
+            },
+            "type": "shell"
+        },
+        {
+            "command": "${workspaceRoot}/build.sh",
+            "windows": {
+                "command": "${workspaceRoot}/build.cmd"
+            },
+            "taskName": "Restore and Build",
+            "args": ["Default"],
+            "group": "build",
+            "presentation": {
+                "reveal": "always"
+            },
+            "type": "shell"
+        }
+    ]
+
+}

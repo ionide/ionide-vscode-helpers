@@ -1,7 +1,11 @@
 source https://www.nuget.org/api/v2
+storage:none
+
+clitool dotnet-fable
+nuget Fable.Core
+nuget Fable.Import.Node
+nuget FSharp.Core
 
 group build
-source https://www.nuget.org/api/v2
-
-nuget Fake
-nuget npm.js
+    source https://www.nuget.org/api/v2
+    nuget Fake

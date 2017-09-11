@@ -1,9 +1,13 @@
-﻿os: Visual Studio 2015
+﻿os: Visual Studio 2017
 
 build_script:
   - cmd: .\build.cmd
 
 test: off
+
+cache:
+  - "%LocalAppData%\\NuGet\\Cache -> paket.lock"
+  - "node_modules -> yarn.lock"
 
 artifacts:
   - path: release

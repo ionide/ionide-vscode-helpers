@@ -145,29 +145,32 @@ module Process =
 
     open Fable.Import.JS
     open Fable.Import.Node
+    open Fable.Import.Node.Exports
+    open Fable.Import.Node.ChildProcess
     open Fable.Import.vscode
     open Fable.Core.JsInterop
 
+    [<Emit("process.platform")>]
+    let private platform: string = jsNative
 
-    let isWin () = ``process``.platform = "win32"
-    let isMono () = ``process``.platform <> "win32"
+    let isWin () = platform = "win32"
+    let isMono () = platform <> "win32"
 
-    let onExit (f : obj -> _) (proc : child_process_types.ChildProcess) =
-        proc.on("exit", f |> unbox) |> ignore
+    let onExit (f : obj -> _) (proc : ChildProcess) =
+        proc.on("exit", f |> unbox<obj -> unit>) |> ignore
         proc
 
-    let onOutput (f : obj -> _) (proc : child_process_types.ChildProcess) =
+    let onOutput (f : Buffer.Buffer -> _) (proc : ChildProcess) =
         proc.stdout?on $ ("data", f |> unbox) |> ignore
         proc
 
-    let onErrorOutput (f : obj -> _) (proc : child_process_types.ChildProcess) =
+    let onErrorOutput (f : Buffer.Buffer -> _) (proc : ChildProcess) =
         proc.stderr?on $ ("data", f |> unbox) |> ignore
         proc
 
-    let onError (f: obj -> _) (proc : child_process_types.ChildProcess) =
+    let onError (f: obj -> _) (proc : ChildProcess) =
         proc?on $ ("error", f |> unbox) |> ignore
         proc
-
 
     let spawn location linuxCmd (cmd : string) =
         let cmd' = splitArgs cmd |> ResizeArray
@@ -177,25 +180,24 @@ module Process =
                 "cwd" ==> workspace.rootPath
             ]
         if isWin () || linuxCmd = "" then
-
-            child_process.spawn(location, cmd', options)
+            ChildProcess.spawn(location, cmd', options)
         else
             let prms = seq { yield location; yield! cmd'} |> ResizeArray
-            child_process.spawn(linuxCmd, prms, options)
+            ChildProcess.spawn(linuxCmd, prms, options)
 
     let spawnInDir location linuxCmd (cmd : string) =
         let cmd' = splitArgs cmd |> ResizeArray
 
         let options =
             createObj [
-                "cwd" ==> (path.dirname location)
+                "cwd" ==> (Path.dirname location)
             ]
         if isWin () || linuxCmd = "" then
 
-            child_process.spawn(location, cmd', options)
+            ChildProcess.spawn(location, cmd', options)
         else
             let prms = seq { yield location; yield! cmd'} |> ResizeArray
-            child_process.spawn(linuxCmd, prms, options)
+            ChildProcess.spawn(linuxCmd, prms, options)
 
     let spawnWithShell location linuxCmd (cmd : string) =
         let cmd' = splitArgs cmd |> ResizeArray
@@ -209,44 +211,44 @@ module Process =
             ]
         if isWin () || linuxCmd = "" then
 
-            child_process.spawn(location, cmd', options)
+            ChildProcess.spawn(location, cmd', options)
         else
             let prms = seq { yield location; yield! cmd'} |> ResizeArray
-            child_process.spawn(linuxCmd, prms, options)
+            ChildProcess.spawn(linuxCmd, prms, options)
 
 
     let spawnWithNotification location linuxCmd (cmd : string) (outputChannel : OutputChannel) =
         spawn location linuxCmd cmd
-        |> onOutput(fun e -> e.ToString () |> outputChannel.append)
+        |> onOutput(fun e -> e.toString () |> outputChannel.append)
         |> onError (fun e -> e.ToString () |> outputChannel.append)
-        |> onErrorOutput(fun e -> e.ToString () |> outputChannel.append)
+        |> onErrorOutput(fun e -> e.toString () |> outputChannel.append)
 
     let spawnWithNotificationInDir location linuxCmd (cmd : string) (outputChannel : OutputChannel) =
         spawnInDir location linuxCmd cmd
-        |> onOutput(fun e -> e.ToString () |> outputChannel.append)
+        |> onOutput(fun e -> e.toString () |> outputChannel.append)
         |> onError (fun e -> e.ToString () |> outputChannel.append)
-        |> onErrorOutput(fun e -> e.ToString () |> outputChannel.append)
+        |> onErrorOutput(fun e -> e.toString () |> outputChannel.append)
 
-    let toPromise (proc : child_process_types.ChildProcess) =
+    let toPromise (proc : ChildProcess) =
         Promise.Create<string>(fun (resolve : Func<U2<string,PromiseLike<string>>,unit>) (error : Func<obj,_>) ->
             proc
             |> onExit(fun (code) -> code.ToString() |> Case1 |> unbox resolve )
             |> ignore
         )
 
+    let exec location linuxCmd cmd : Promise<ExecError option * string * string> =
+        let options = createEmpty<ExecOptions>
+        options.cwd <- Some workspace.rootPath
 
-    let exec location linuxCmd cmd : Promise<Error * Buffer *Buffer> =
-        let options =
-            createObj [
-                "cwd" ==> workspace.rootPath
-            ]
-        Promise.Create<Error * Buffer *Buffer>(fun (resolve : Func<U2<Error * Buffer *Buffer,PromiseLike<Error * Buffer *Buffer>>,_>) (error : Func<obj,_>) ->
+        Promise.Create<ExecError option * string * string>(fun resolve error ->
             let execCmd =
                 if isWin () then location + " " + cmd
                 else linuxCmd + " " + location + " " + cmd
-            child_process.exec(execCmd, options,
-                Func<Error,Buffer,Buffer,unit>(fun (e : Error) (i : Buffer) (o : Buffer) ->
-                    let arg = e,i,o
+            ChildProcess.exec(execCmd, options,
+                (fun (e : ExecError option) (i : U2<string, Buffer.Buffer>) (o : U2<string, Buffer.Buffer>) ->
+                    // As we don't specify an encoding, the documentation specifies that we'll receive strings
+                    // "By default, Node.js will decode the output as UTF-8 and pass strings to the callback"
+                    let arg = e, unbox<string> i, unbox<string> o
                     resolve.Invoke(U2.Case1 arg))) |> ignore)
 
 
@@ -256,6 +258,7 @@ module Process =
 module Settings =
     open Fable.Import.vscode
     open Fable.Import.Node
+    open Fable.Import.Node.Exports
 
     module Toml =
         [<Emit("toml.parse($0)")>]
@@ -289,7 +292,7 @@ module Settings =
     let loadOrDefault<'a> (map : Settings -> 'a)  (def :'a) =
         try
             let path = workspace.rootPath + "/.ionide"
-            let t = fs.readFileSync(path).toString ()
+            let t = Fs.readFileSync(path).toString ()
                     |> Toml.parse
                     |> map
             if JS.isDefined t then t else def

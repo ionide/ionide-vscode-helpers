@@ -14,11 +14,11 @@ module vscode =
 
 
     and [<Import("EventEmitter", "vscode")>] EventEmitter<'T>() =
-        member __.addListener(``event``: string, listener: Function): NodeJS.EventEmitter = failwith "JS only"
-        member __.on(``event``: string, listener: Function): NodeJS.EventEmitter = failwith "JS only"
-        member __.once(``event``: string, listener: Function): NodeJS.EventEmitter = failwith "JS only"
-        member __.removeListener(``event``: string, listener: Function): NodeJS.EventEmitter = failwith "JS only"
-        member __.removeAllListeners(?``event``: string): NodeJS.EventEmitter = failwith "JS only"
+        member __.addListener(``event``: string, listener: Function): Events.EventEmitter = failwith "JS only"
+        member __.on(``event``: string, listener: Function): Events.EventEmitter = failwith "JS only"
+        member __.once(``event``: string, listener: Function): Events.EventEmitter = failwith "JS only"
+        member __.removeListener(``event``: string, listener: Function): Events.EventEmitter = failwith "JS only"
+        member __.removeAllListeners(?``event``: string): Events.EventEmitter = failwith "JS only"
         member __.setMaxListeners(n: int): unit = failwith "JS only"
         member __.getMaxListeners(): int = failwith "JS only"
         member __.listeners(``event``: string): ResizeArray<Function> = failwith "JS only"
