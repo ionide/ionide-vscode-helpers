@@ -483,6 +483,7 @@ module vscode =
         [<Emit("$0[$1]{{=$2}}")>] abstract Item: key: string -> obj with get, set
         abstract get: section: string * ?defaultValue: 'T -> 'T
         abstract has: section: string -> bool
+        abstract update: section: string * value: 'T * configurationTarget: bool -> Promise<unit>
 
     and [<Import("Location","vscode")>] Location(uri: Uri, rangeOrPosition: U2<Range, Position>) =
         member __.uri with get(): Uri = failwith "JS only" and set(v: Uri): unit = failwith "JS only"
