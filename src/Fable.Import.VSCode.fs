@@ -296,8 +296,14 @@ module vscode =
     and DefinitionProvider =
         abstract provideDefinition: document: TextDocument * position: Position * token: CancellationToken -> U2<Definition, Promise<Definition>>
 
+    and [<Import("MarkdownString","vscode")>] MarkdownString(?value: string) =
+        member __.value with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
+        member __.isTrusted with get(): bool = failwith "JS only" and set(v: bool): unit = failwith "JS only"
+        member __.appendText(value: string): MarkdownString = failwith "JS only"
+        member __.appendMarkdown(value: string): MarkdownString = failwith "JS only"
+
     and MarkedString =
-        U2<string, obj>
+        U3<MarkdownString, string, obj>
 
     and [<Import("Hover","vscode")>] Hover(contents: U2<MarkedString, ResizeArray<MarkedString>>, ?range: Range) =
         member __.contents with get(): ResizeArray<MarkedString> = failwith "JS only" and set(v: ResizeArray<MarkedString>): unit = failwith "JS only"
@@ -390,13 +396,13 @@ module vscode =
     and OnTypeFormattingEditProvider =
         abstract provideOnTypeFormattingEdits: document: TextDocument * position: Position * ch: string * options: FormattingOptions * token: CancellationToken -> U2<ResizeArray<TextEdit>, Promise<ResizeArray<TextEdit>>>
 
-    and [<Import("ParameterInformation","vscode")>] ParameterInformation(label: string, ?documentation: string) =
+    and [<Import("ParameterInformation","vscode")>] ParameterInformation(label: string, ?documentation: U2<string, MarkdownString>) =
         member __.label with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
-        member __.documentation with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
+        member __.documentation with get(): U2<string, MarkdownString> = failwith "JS only" and set(v: U2<string, MarkdownString>): unit = failwith "JS only"
 
-    and [<Import("SignatureInformation","vscode")>] SignatureInformation(label: string, ?documentation: string) =
+    and [<Import("SignatureInformation","vscode")>] SignatureInformation(label: string, ?documentation: U2<string, MarkdownString>) =
         member __.label with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
-        member __.documentation with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
+        member __.documentation with get(): U2<string, MarkdownString> = failwith "JS only" and set(v: U2<string, MarkdownString>): unit = failwith "JS only"
         member __.parameters with get(): ResizeArray<ParameterInformation> = failwith "JS only" and set(v: ResizeArray<ParameterInformation>): unit = failwith "JS only"
 
     and [<Import("SignatureHelp","vscode")>] SignatureHelp() =
@@ -431,7 +437,7 @@ module vscode =
         member __.label with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
         member __.kind with get(): CompletionItemKind = failwith "JS only" and set(v: CompletionItemKind): unit = failwith "JS only"
         member __.detail with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
-        member __.documentation with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
+        member __.documentation with get(): U2<string, MarkdownString> = failwith "JS only" and set(v: U2<string, MarkdownString>): unit = failwith "JS only"
         member __.sortText with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
         member __.filterText with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
         member __.insertText with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
