@@ -644,6 +644,19 @@ module vscode =
         abstract name: string with get,set
         abstract uri: Uri with get,set
 
+    and SaveDialogOptions =
+        abstract defaultUri: Uri option with get,set
+        abstract filters: obj option with get,set
+        abstract saveLabel: string option with get,set
+
+    and OpenDialogOptions =
+        abstract canSelectFiles: bool option with get,set
+        abstract canSelectFolders: bool option with get, set
+        abstract canSelectMany: bool option with get,set
+        abstract defaultUri: Uri option with get,set
+        abstract filters: obj option with get,set
+        abstract openLabel: string option with get,set
+
     let [<Import("version","vscode")>] version: string = failwith "JS only"
 
     type [<Import("commands","vscode")>] commands =
@@ -690,6 +703,8 @@ module vscode =
         static member onDidCloseTerminal with get(): Event<Terminal> = failwith "JS only"
         static member registerTreeDataProvider<'T>(viewId: string, provider: TreeDataProvider<'T>): Disposable = failwith "JS only"
         static member withProgress(options : ProgressOptions, func: Progress<ProgressMessage> -> Promise<'T> ) : Promise<'T> = failwith "JS only"
+        static member showOpenDialog(options: OpenDialogOptions) : Promise<Uri[]> = failwith "JS only"
+        static member showSaveDialog(options : SaveDialogOptions) : Promise<Uri> = failwith "JS only"
 
     type [<Import("workspace","vscode")>] workspace =
         static member rootPath with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
