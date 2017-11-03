@@ -296,6 +296,9 @@ module vscode =
     and DefinitionProvider =
         abstract provideDefinition: document: TextDocument * position: Position * token: CancellationToken -> U2<Definition, Promise<Definition>>
 
+    and TypeDefinitionProvider =
+        abstract provideTypeDefinition: document: TextDocument * position: Position * token: CancellationToken -> U2<Definition, Promise<Definition>>
+
     and [<Import("MarkdownString","vscode")>] MarkdownString(?value: string) =
         member __.value with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
         member __.isTrusted with get(): bool = failwith "JS only" and set(v: bool): unit = failwith "JS only"
@@ -734,6 +737,7 @@ module vscode =
         static member registerCodeActionsProvider(selector: DocumentSelector, provider: CodeActionProvider): Disposable = failwith "JS only"
         static member registerCodeLensProvider(selector: DocumentSelector, provider: CodeLensProvider): Disposable = failwith "JS only"
         static member registerDefinitionProvider(selector: DocumentSelector, provider: DefinitionProvider): Disposable = failwith "JS only"
+        static member registerTypeDefinitionProvider(selector: DocumentSelector, provider: TypeDefinitionProvider): Disposable = failwith "JS only"
         static member registerHoverProvider(selector: DocumentSelector, provider: HoverProvider): Disposable = failwith "JS only"
         static member registerDocumentHighlightProvider(selector: DocumentSelector, provider: DocumentHighlightProvider): Disposable = failwith "JS only"
         static member registerDocumentSymbolProvider(selector: DocumentSelector, provider: DocumentSymbolProvider): Disposable = failwith "JS only"
