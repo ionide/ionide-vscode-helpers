@@ -68,7 +68,7 @@ module rec ws =
             static member connect(address: string, ?openListener: Function): unit = jsNative
             static member createConnection(address: string, ?openListener: Function): unit = jsNative
 
-    type [<AllowNullLiteral>] [<Import("","ws")>] WebSocket(address: string, ?protocols: U2<string, ResizeArray<string>>, ?options: WebSocket.IClientOptions) =
+    type [<AllowNullLiteral>] [<Import("default","ws")>] WebSocket(address: string, ?protocols: U2<string, ResizeArray<string>>, ?options: WebSocket.IClientOptions) =
         member __.CONNECTING with get(): float = jsNative and set(v: float): unit = jsNative
         member __.OPEN with get(): float = jsNative and set(v: float): unit = jsNative
         member __.CLOSING with get(): float = jsNative and set(v: float): unit = jsNative
