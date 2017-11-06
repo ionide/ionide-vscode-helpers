@@ -445,6 +445,8 @@ module vscode =
         member __.filterText with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
         member __.insertText with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
         member __.textEdit with get(): TextEdit = failwith "JS only" and set(v: TextEdit): unit = failwith "JS only"
+        member __.additionalTextEdits with get(): TextEdit[] = failwith "JS only" and set(v: TextEdit[]): unit = failwith "JS only"
+
 
     and CompletionItemProvider =
         abstract provideCompletionItems: document: TextDocument * position: Position * token: CancellationToken -> U2<ResizeArray<CompletionItem>, Promise<ResizeArray<CompletionItem>>>
