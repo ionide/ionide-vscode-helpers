@@ -535,8 +535,8 @@ module vscode =
         abstract dispose: unit -> unit
 
     and StatusBarAlignment =
-        | Left = 0
-        | Right = 1
+        | Right = 0
+        | Left = 1
 
     and StatusBarItem =
         abstract alignment: StatusBarAlignment with get, set
