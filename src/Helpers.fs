@@ -137,6 +137,7 @@ module Process =
                 else
                     if e.StartsWith "\"" &&  e.EndsWith "\"" then None, e.Replace("\"", "")::acc
                     elif e.StartsWith "\"" then Some e, acc
+                    elif String.IsNullOrEmpty e then None, acc
                     else None, e::acc
             ) (None,[])
             |> snd
