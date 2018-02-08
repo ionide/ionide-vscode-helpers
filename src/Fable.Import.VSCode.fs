@@ -600,7 +600,7 @@ module vscode =
         abstract provideDocumentLinks : document : TextDocument * ct : CancellationToken ->  U2<DocumentLink[], Promise<DocumentLink[]>>
 
     and TreeDataProvider<'T> =
-        abstract onDidChangeTreeData: Event<'T> with get
+        abstract onDidChangeTreeData: Event<'T option> with get
         abstract getTreeItem: 'T -> TreeItem
         abstract getChildren: 'T -> ResizeArray<'T>
 
@@ -711,6 +711,10 @@ module vscode =
         static member showOpenDialog(options: OpenDialogOptions) : Promise<Uri[]> = failwith "JS only"
         static member showSaveDialog(options : SaveDialogOptions) : Promise<Uri> = failwith "JS only"
 
+    type ConfigurationChangeEvent =
+        /// Returns `true` if the given section for the given resource (if provided) is affected.
+        member __.affectsConfiguration(section: string, ?resource: Uri) : bool = failwith "JS only"
+
     type [<Import("workspace","vscode")>] workspace =
         static member rootPath with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
         static member workspaceFolders with get(): WorkspaceFolder[] = failwith "JS only"
@@ -719,7 +723,7 @@ module vscode =
         static member onDidCloseTextDocument with get(): Event<TextDocument> = failwith "JS only" and set(v: Event<TextDocument>): unit = failwith "JS only"
         static member onDidChangeTextDocument with get(): Event<TextDocumentChangeEvent> = failwith "JS only" and set(v: Event<TextDocumentChangeEvent>): unit = failwith "JS only"
         static member onDidSaveTextDocument with get(): Event<TextDocument> = failwith "JS only" and set(v: Event<TextDocument>): unit = failwith "JS only"
-        static member onDidChangeConfiguration with get(): Event<unit> = failwith "JS only" and set(v: Event<unit>): unit = failwith "JS only"
+        static member onDidChangeConfiguration with get(): Event<ConfigurationChangeEvent> = failwith "JS only" and set(v: Event<ConfigurationChangeEvent>): unit = failwith "JS only"
         static member createFileSystemWatcher(globPattern: string, ?ignoreCreateEvents: bool, ?ignoreChangeEvents: bool, ?ignoreDeleteEvents: bool): FileSystemWatcher = failwith "JS only"
         static member asRelativePath(pathOrUri: U2<string, Uri>): string = failwith "JS only"
         static member findFiles(``include``: string, exclude: string, ?maxResults: float): Promise<ResizeArray<Uri>> = failwith "JS only"
@@ -727,9 +731,8 @@ module vscode =
         static member applyEdit(edit: WorkspaceEdit): Promise<bool> = failwith "JS only"
         static member openTextDocument(uri: Uri): Promise<TextDocument> = failwith "JS only"
         static member openTextDocument(fileName: string): Promise<TextDocument> = failwith "JS only"
-        static member getConfiguration(?section: string): WorkspaceConfiguration = failwith "JS only"
+        static member getConfiguration(?section: string, ?resource: Uri): WorkspaceConfiguration = failwith "JS only"
         static member registerTextDocumentContentProvider(selector : DocumentSelector, provider : TextDocumentContentProvider ) : Disposable = failwith "JS only"
-
 
     type [<Import("languages","vscode")>] languages =
         static member getLanguages(): Promise<ResizeArray<string>> = failwith "JS only"
