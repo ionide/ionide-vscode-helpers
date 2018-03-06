@@ -673,7 +673,7 @@ module vscode =
         static member getCommands(?filterInternal: bool): Promise<ResizeArray<string>> = failwith "JS only"
 
     type [<Import("debug", "vscode")>] debug =
-        static member activeDebugSessionwith with get() : DebugSession = failwith "JS only"
+        static member activeDebugSession with get() : DebugSession = failwith "JS only"
         static member onDidChangeActiveDebugSession with get() : Event<DebugSession> = failwith "JS only"
         static member onDidReceiveDebugSessionCustomEvent with get() : Event<DebugSessionCustomEvent> = failwith "JS only"
         static member onDidTerminateDebugSession with get() : Event<DebugSession> = failwith "JS only"
