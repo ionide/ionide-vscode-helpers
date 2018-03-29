@@ -157,7 +157,7 @@ module Process =
     let isWin () = platform = "win32"
     let isMono () = platform <> "win32"
 
-    let onExit (f : obj -> _) (proc : ChildProcess) =
+    let onExit (f : int option -> string option -> unit) (proc : ChildProcess) =
         proc.on("exit", f |> unbox<obj -> unit>) |> ignore
         proc
 
@@ -230,10 +230,15 @@ module Process =
         |> onError (fun e -> e.ToString () |> outputChannel.append)
         |> onErrorOutput(fun e -> e.toString () |> outputChannel.append)
 
+    type ChildProcessExit = {
+        Code: int option
+        Signal: string option
+    }
+
     let toPromise (proc : ChildProcess) =
-        Promise.Create<string>(fun (resolve : Func<U2<string,PromiseLike<string>>,unit>) (error : Func<obj,_>) ->
+        Promise.Create<ChildProcessExit>(fun (resolve : Func<U2<ChildProcessExit,PromiseLike<ChildProcessExit>>,unit>) (_error : Func<obj,_>) ->
             proc
-            |> onExit(fun (code) -> code.ToString() |> Case1 |> unbox resolve )
+            |> onExit(fun code signal -> { Code = code; Signal = signal } |> Case1 |> unbox resolve )
             |> ignore
         )
 
