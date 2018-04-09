@@ -1,6 +1,5 @@
 namespace Fable.Import
 open System
-open System.Text.RegularExpressions
 open Fable.Core
 open Fable.Import.JS
 
@@ -8,6 +7,15 @@ module Axios =
     type AxiosHttpBasicAuth =
         abstract username: string with get, set
         abstract password: string with get, set
+
+    and AxiosProxyAuthConfig =
+        abstract username: string with get, set
+        abstract password: string with get, set
+
+    and AxiosProxyConfig =
+        abstract host: string with get, set
+        abstract port: int with get, set
+        abstract auth: AxiosProxyAuthConfig option with get, set
 
     and AxiosXHRConfigBase<'T> =
         abstract baseURL: string option with get, set
@@ -22,6 +30,7 @@ module Axios =
         abstract xsrfHeaderName: string option with get, set
         abstract transformRequest: U2<Func<'T, 'U>, Func<'T, 'U>> option with get, set
         abstract transformResponse: Func<'T, 'U> option with get, set
+        abstract proxy: U2<AxiosProxyConfig, bool> option with get, set
 
     and AxiosXHRConfig<'T> =
         inherit AxiosXHRConfigBase<'T>
