@@ -605,15 +605,23 @@ module vscode =
         abstract getChildren: 'T -> ResizeArray<'T>
 
     and TreeIconPath =
-        abstract light: string with get, set
-        abstract dark: string with get, set
+        abstract light: U3<string, Uri, ThemeIcon> with get, set
+        abstract dark: U3<string, Uri, ThemeIcon> with get, set
 
-    and TreeItem =
-        abstract label: string with get, set
-        abstract iconPath: TreeIconPath option with get, set
-        abstract command: Command option with get, set
-        abstract contextValue: string option with get, set
-        abstract collapsibleState: TreeItemCollapsibleState option with get, set
+    and [<Import("ThemeIcon","vscode")>] ThemeIcon =
+        static member File with get(): ThemeIcon = failwith "JS only"
+        static member Folder with get(): ThemeIcon = failwith "JS only"
+        member __.id with get(): string = jsNative
+
+    and [<Import("TreeItem","vscode")>] TreeItem(label: string, ?collapsibleState: TreeItemCollapsibleState) =
+        member __.label with get(): string option = jsNative and set(v: string option) = jsNative
+        member __.id with get(): string option = jsNative and set(v: string option) = jsNative
+        member __.iconPath with get(): U4<string, Uri, TreeIconPath, ThemeIcon> option = jsNative and set(v: U4<string, Uri, TreeIconPath, ThemeIcon> option) = jsNative
+        member __.resourceUri with get(): Uri option = jsNative and set(v: Uri option) = jsNative
+        member __.tooltip with get(): string option = jsNative and set(v: string option) = jsNative
+        member __.command with get(): Command option = jsNative and set(v: Command option) = jsNative
+        member __.contextValue with get(): string option = jsNative and set(v: string option) = jsNative
+        member __.collapsibleState with get(): TreeItemCollapsibleState option = jsNative and set(v: TreeItemCollapsibleState option) = jsNative
 
     and TreeItemCollapsibleState =
         | None = 0

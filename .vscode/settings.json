@@ -1,3 +1,4 @@
 {
-    "FSharp.linter": false
+    "FSharp.linter": false,
+    "FSharp.unusedDeclarationsAnalyzer": false
 }
