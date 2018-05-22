@@ -603,6 +603,7 @@ module vscode =
         abstract onDidChangeTreeData: Event<'T option> with get
         abstract getTreeItem: 'T -> TreeItem
         abstract getChildren: 'T -> ResizeArray<'T>
+        abstract getParent: ('T -> 'T option) option with get
 
     and TreeIconPath =
         abstract light: U3<string, Uri, ThemeIcon> with get, set
@@ -670,6 +671,16 @@ module vscode =
         abstract filters: obj option with get,set
         abstract openLabel: string option with get,set
 
+    and CreateTreeViewOptions<'T> =
+        abstract treeDataProvider: TreeDataProvider<'T> with get,set
+
+    and TreeViewRevealOptions =
+        abstract select: bool option with get,set
+
+    and TreeView<'T> =
+        abstract member reveal: element: 'T * ?options: TreeViewRevealOptions -> Promise<unit>
+        abstract member dispose: unit -> obj
+
     let [<Import("version","vscode")>] version: string = failwith "JS only"
 
     type [<Import("commands","vscode")>] commands =
@@ -687,7 +698,6 @@ module vscode =
         static member onDidTerminateDebugSession with get() : Event<DebugSession> = failwith "JS only"
         static member onDidStartDebugSession with get() : Event<DebugSession> = failwith "JS only"
         static member startDebugging(folder: WorkspaceFolder,  nameOrConfiguration: U2<string, obj>) : Promise<bool>= failwith "JS only"
-
 
     type [<Import("window","vscode")>] window =
         static member activeTextEditor with get(): TextEditor = failwith "JS only" and set(v: TextEditor): unit = failwith "JS only"
@@ -715,6 +725,7 @@ module vscode =
         static member createTerminal(?name : string, ?shellPath : string, ?shellArgs : string[]) : Terminal = failwith "JS only"
         static member onDidCloseTerminal with get(): Event<Terminal> = failwith "JS only"
         static member registerTreeDataProvider<'T>(viewId: string, provider: TreeDataProvider<'T>): Disposable = failwith "JS only"
+        static member createTreeView<'T>(viewId: string, options: CreateTreeViewOptions<'T>): TreeView<'T> = failwith "JS only"
         static member withProgress(options : ProgressOptions, func: Progress<ProgressMessage> -> Promise<'T> ) : Promise<'T> = failwith "JS only"
         static member showOpenDialog(options: OpenDialogOptions) : Promise<Uri[]> = failwith "JS only"
         static member showSaveDialog(options : SaveDialogOptions) : Promise<Uri> = failwith "JS only"
