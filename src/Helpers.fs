@@ -202,7 +202,14 @@ module Process =
             node.childProcess.spawn(linuxCmd, prms, options)
 
     let spawnWithShell location linuxCmd (cmd : string) =
-        let cmd' = splitArgs cmd |> ResizeArray
+        let cmd' =
+            if isWin() then
+                splitArgs cmd
+                |> Seq.map (fun c -> if c.Contains " " then sprintf "\"%s\"" c else c )
+                |> ResizeArray
+            else
+                splitArgs cmd
+                |> ResizeArray
 
         let options =
             createObj [
