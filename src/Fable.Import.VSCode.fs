@@ -506,12 +506,17 @@ module vscode =
         | Information = 2
         | Hint = 3
 
+    and [<RequireQualifiedAccess>] DiagnosticTag =
+        | Unnecessary = 1
+
     and [<Import("Diagnostic","vscode")>] Diagnostic(range: Range, message: string, ?severity: DiagnosticSeverity) =
         member __.range with get(): Range = failwith "JS only" and set(v: Range): unit = failwith "JS only"
         member __.message with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
         member __.source with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
         member __.severity with get(): DiagnosticSeverity = failwith "JS only" and set(v: DiagnosticSeverity): unit = failwith "JS only"
         member __.code with get(): U2<string, float> = failwith "JS only" and set(v: U2<string, float>): unit = failwith "JS only"
+        /// Additional metadata about the diagnostic.
+        member __.tags with get() : ResizeArray<DiagnosticTag> = jsNative and set(v: ResizeArray<DiagnosticTag>) : unit = jsNative
 
     and DiagnosticCollection =
         abstract name: string with get, set
