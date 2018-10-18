@@ -206,24 +206,16 @@ module Process =
             if isWin() then
                 splitArgs cmd
                 |> Seq.map (fun c -> if c.Contains " " then sprintf "\"%s\"" c else c )
-                |> ResizeArray
+                |> Seq.toArray
             else
                 splitArgs cmd
-                |> ResizeArray
+                |> Seq.toArray
 
-        let options =
-            createObj [
-                "cwd" ==> workspace.rootPath
-                "detached" ==> true
-                "shell" ==> true
-
-            ]
         if isWin () || linuxCmd = "" then
-
-            node.childProcess.spawn(location, cmd', options)
+            window.createTerminal("F# Application", location, cmd')
         else
-            let prms = seq { yield location; yield! cmd'} |> ResizeArray
-            node.childProcess.spawn(linuxCmd, prms, options)
+            let prms = seq { yield location; yield! cmd'} |> Seq.toArray
+            window.createTerminal("F# Application", linuxCmd, prms)
 
 
     let spawnWithNotification location linuxCmd (cmd : string) (outputChannel : OutputChannel) =
