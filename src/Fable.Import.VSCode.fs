@@ -681,8 +681,25 @@ module vscode =
 
     and TreeViewRevealOptions =
         abstract select: bool option with get,set
+        abstract focus: bool option with get,set
+        abstract expand: U2<bool, int> option with get,set
+
+    and TreeViewExpansionEvent<'T> =
+        abstract element: 'T with get
+
+    and TreeViewSelectionChangeEvent<'T> =
+        abstract selection: 'T [] with get
+
+    and TreeViewVisibilityChangeEvent =
+        abstract visible: bool with get
 
     and TreeView<'T> =
+        abstract onDidExpandElement: Event<TreeViewExpansionEvent<'T>> with get
+        abstract onDidCollapseElement: Event<TreeViewExpansionEvent<'T>> with get
+        abstract selection: 'T [] with get
+        abstract onDidChangeSelection: Event<TreeViewSelectionChangeEvent<'T>> with get
+        abstract visible: bool with get
+        abstract onDidChangeVisibility: Event<TreeViewVisibilityChangeEvent> with get
         abstract member reveal: element: 'T * ?options: TreeViewRevealOptions -> Promise<unit>
         abstract member dispose: unit -> obj
 
