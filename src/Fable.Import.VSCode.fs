@@ -703,6 +703,147 @@ module vscode =
         abstract member reveal: element: 'T * ?options: TreeViewRevealOptions -> Promise<unit>
         abstract member dispose: unit -> obj
 
+    /// Content settings for a webview.
+    and [<AllowNullLiteral>] WebviewOptions =
+        /// Controls whether scripts are enabled in the webview content or not.
+        ///
+        /// Defaults to false (scripts-disabled).
+        abstract enableScripts: bool option
+        /// Controls whether command uris are enabled in webview content or not.
+        ///
+        /// Defaults to false.
+        abstract enableCommandUris: bool option
+        /// Root paths from which the webview can load local (filesystem) resources using the `vscode-resource:` scheme.
+        ///
+        /// Default to the root folders of the current workspace plus the extension's install directory.
+        ///
+        /// Pass in an empty array to disallow access to any local resources.
+        abstract localResourceRoots: ReadonlyArray<Uri> option
+
+    /// A webview displays html content, like an iframe.
+    and [<AllowNullLiteral>] Webview =
+        /// Content settings for the webview.
+        abstract options: WebviewOptions with get, set
+        /// Contents of the webview.
+        ///
+        /// Should be a complete html document.
+        abstract html: string with get, set
+        /// Fired when the webview content posts a message.
+        abstract onDidReceiveMessage: Event<obj option>
+        /// <summary>Post a message to the webview content.
+        ///
+        /// Messages are only delivered if the webview is visible.</summary>
+        /// <param name="message">Body of the message.</param>
+        abstract postMessage: message: obj option -> Promise<bool>
+
+    /// Content settings for a webview panel.
+    and [<AllowNullLiteral>] WebviewPanelOptions =
+        /// Controls if the find widget is enabled in the panel.
+        ///
+        /// Defaults to false.
+        abstract enableFindWidget: bool option
+        /// Controls if the webview panel's content (iframe) is kept around even when the panel
+        /// is no longer visible.
+        ///
+        /// Normally the webview panel's html context is created when the panel becomes visible
+        /// and destroyed when it is hidden. Extensions that have complex state
+        /// or UI can set the `retainContextWhenHidden` to make VS Code keep the webview
+        /// context around, even when the webview moves to a background tab. When a webview using
+        /// `retainContextWhenHidden` becomes hidden, its scripts and other dynamic content are suspended.
+        /// When the panel becomes visible again, the context is automatically restored
+        /// in the exact same state it was in originally. You cannot send messages to a
+        /// hidden webview, even with `retainContextWhenHidden` enabled.
+        ///
+        /// `retainContextWhenHidden` has a high memory overhead and should only be used if
+        /// your panel's context cannot be quickly saved and restored.
+        abstract retainContextWhenHidden: bool option
+
+    /// A panel that contains a webview.
+    and [<AllowNullLiteral>] WebviewPanel =
+        /// Identifies the type of the webview panel, such as `'markdown.preview'`.
+        abstract viewType: string
+        /// Title of the panel shown in UI.
+        abstract title: string with get, set
+        /// Icon for the panel shown in UI.
+        abstract iconPath: U2<Uri, obj> option with get, set
+        /// Webview belonging to the panel.
+        abstract webview: Webview
+        /// Content settings for the webview panel.
+        abstract options: WebviewPanelOptions
+        /// Editor position of the panel. This property is only set if the webview is in
+        /// one of the editor view columns.
+        abstract viewColumn: ViewColumn option
+        /// Whether the panel is active (focused by the user).
+        abstract active: bool
+        /// Whether the panel is visible.
+        abstract visible: bool
+        /// Fired when the panel's view state changes.
+        abstract onDidChangeViewState: Event<WebviewPanelOnDidChangeViewStateEvent>
+        /// Fired when the panel is disposed.
+        ///
+        /// This may be because the user closed the panel or because `.dispose()` was
+        /// called on it.
+        ///
+        /// Trying to use the panel after it has been disposed throws an exception.
+        abstract onDidDispose: Event<unit>
+        /// <summary>Show the webview panel in a given column.
+        ///
+        /// A webview panel may only show in a single column at a time. If it is already showing, this
+        /// method moves it to a new column.</summary>
+        /// <param name="viewColumn">View column to show the panel in. Shows in the current `viewColumn` if undefined.</param>
+        /// <param name="preserveFocus">When `true`, the webview will not take focus.</param>
+        abstract reveal: ?viewColumn: ViewColumn * ?preserveFocus: bool -> unit
+        /// Dispose of the webview panel.
+        ///
+        /// This closes the panel if it showing and disposes of the resources owned by the webview.
+        /// Webview panels are also disposed when the user closes the webview panel. Both cases
+        /// fire the `onDispose` event.
+        abstract dispose: unit -> obj option
+
+    /// Event fired when a webview panel's view state changes.
+    and [<AllowNullLiteral>] WebviewPanelOnDidChangeViewStateEvent =
+        /// Webview panel whose view state changed.
+        abstract webviewPanel: WebviewPanel
+
+    /// Restore webview panels that have been persisted when vscode shuts down.
+    ///
+    /// There are two types of webview persistence:
+    ///
+    /// - Persistence within a session.
+    /// - Persistence across sessions (across restarts of VS Code).
+    ///
+    /// A `WebviewPanelSerializer` is only required for the second case: persisting a webview across sessions.
+    ///
+    /// Persistence within a session allows a webview to save its state when it becomes hidden
+    /// and restore its content from this state when it becomes visible again. It is powered entirely
+    /// by the webview content itself. To save off a persisted state, call `acquireVsCodeApi().setState()` with
+    /// any json serializable object. To restore the state again, call `getState()`
+    ///
+    /// ```js
+    /// // Within the webview
+    /// const vscode = acquireVsCodeApi();
+    ///
+    /// // Get existing state
+    /// const oldState = vscode.getState() || { value: 0 };
+    ///
+    /// // Update state
+    /// setState({ value: oldState.value + 1 })
+    /// ```
+    ///
+    /// A `WebviewPanelSerializer` extends this persistence across restarts of VS Code. When the editor is shutdown,
+    /// VS Code will save off the state from `setState` of all webviews that have a serializer. When the
+    /// webview first becomes visible after the restart, this state is passed to `deserializeWebviewPanel`.
+    /// The extension can then restore the old `WebviewPanel` from this state.
+    and [<AllowNullLiteral>] WebviewPanelSerializer =
+        /// <summary>Restore a webview panel from its serialized `state`.
+        ///
+        /// Called when a serialized webview first becomes visible.</summary>
+        /// <param name="webviewPanel">Webview panel to restore. The serializer should take ownership of this panel. The
+        /// serializer must restore the webview's `.html` and hook up all webview events.</param>
+        /// <param name="state">Persisted state from the webview content.</param>
+        abstract deserializeWebviewPanel: webviewPanel: WebviewPanel * state: obj option -> Promise<unit>
+
+
     let [<Import("version","vscode")>] version: string = failwith "JS only"
 
     type [<Import("commands","vscode")>] commands =
@@ -740,6 +881,12 @@ module vscode =
         static member showQuickPick(items: U2<ResizeArray<'T>, Promise<ResizeArray<'T>>>, ?options: QuickPickOptions): Promise<'T> = failwith "JS only"
         static member showInputBox(?options: InputBoxOptions): Promise<string> = failwith "JS only"
         static member createOutputChannel(name: string): OutputChannel = failwith "JS only"
+        /// <summary>Create and show a new webview panel.</summary>
+        /// <param name="viewType">Identifies the type of the webview panel.</param>
+        /// <param name="title">Title of the panel.</param>
+        /// <param name="showOptions">Where to show the webview in the editor. If preserveFocus is set, the new webview will not take focus.</param>
+        /// <param name="options">Settings for the new panel.</param>
+        static member createWebviewPanel(viewType: string, title: string, showOptions: U2<ViewColumn, obj>, ?options: obj): WebviewPanel = jsNative
         static member setStatusBarMessage(text: string): Disposable = failwith "JS only"
         static member setStatusBarMessage(text: string, hideAfterTimeout: float): Disposable = failwith "JS only"
         static member setStatusBarMessage(text: string, hideWhenDone: Promise<obj>): Disposable = failwith "JS only"
