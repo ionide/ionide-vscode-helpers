@@ -12,6 +12,8 @@ the project and submit pull requests.
 The library is available under [MIT license](https://github.com/ionide/ionide-helpers/blob/master/LICENSE.md), which allows modification and
 redistribution for both commercial and non-commercial purposes.
 
+Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
+
 ## Building
 
 Building this project require a few things :
@@ -22,9 +24,3 @@ Building this project require a few things :
 * [Yarn](https://yarnpkg.com/en/docs/install)
 
 With that installed the project should build using `build.sh` / `build.cmd` or when Ctrl+Shift+B is used in VSCode.
-
-## Code of Conduct
-
-This project adheres to No Code of Conduct. We are all adults. We accept everyone's contributions. Nothing else matters.
-
-For more information please visit the [No Code of Conduct](https://github.com/domgetter/NCoC) homepage.
