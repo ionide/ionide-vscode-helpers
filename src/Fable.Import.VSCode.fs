@@ -352,6 +352,14 @@ module vscode =
         member __.containerName with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
         member __.kind with get(): SymbolKind = failwith "JS only" and set(v: SymbolKind): unit = failwith "JS only"
         member __.location with get(): Location = failwith "JS only" and set(v: Location): unit = failwith "JS only"
+        
+    and [<Import("DocumentSymbol","vscode")>] DocumentSymbol(name: string, detail: string, kind: SymbolKind, range: Range, selectionRange: Range) =
+        member __.children with get(): ResizeArray<DocumentSymbol> = failwith "JS only" and set(v: ResizeArray<DocumentSymbol>): unit = failwith "JS only"
+        member __.name with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
+        member __.detail with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
+        member __.kind with get(): SymbolKind = failwith "JS only" and set(v: SymbolKind): unit = failwith "JS only"
+        member __.range with get(): Range = failwith "JS only" and set(v: Range): unit = failwith "JS only"
+        member __.selectionRange with get(): Range = failwith "JS only" and set(v: Range): unit = failwith "JS only"
 
     and DocumentSymbolProvider =
         abstract provideDocumentSymbols: document: TextDocument * token: CancellationToken -> U2<ResizeArray<SymbolInformation>, Promise<ResizeArray<SymbolInformation>>>
