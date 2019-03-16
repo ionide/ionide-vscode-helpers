@@ -650,6 +650,7 @@ module vscode =
     and ProgressOptions =
         abstract location: ProgressLocation with get, set
         abstract title : string option with get,set
+        abstract cancellable : bool option with get,set
 
     and ProgressMessage =
         abstract message: string with get,set
