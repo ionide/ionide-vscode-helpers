@@ -645,6 +645,7 @@ module vscode =
     and ProgressLocation =
         | SourceControl = 1
         | Window = 10
+        | Notification = 15
 
     and ProgressOptions =
         abstract location: ProgressLocation with get, set
