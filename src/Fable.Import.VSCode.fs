@@ -296,6 +296,9 @@ module vscode =
     and DefinitionProvider =
         abstract provideDefinition: document: TextDocument * position: Position * token: CancellationToken -> U2<Definition, Promise<Definition>>
 
+    and ImplementationProvider =
+        abstract provideImplementation: document: TextDocument * position: Position * token: CancellationToken -> U2<Definition, Promise<Definition>>
+
     and TypeDefinitionProvider =
         abstract provideTypeDefinition: document: TextDocument * position: Position * token: CancellationToken -> U2<Definition, Promise<Definition>>
 
@@ -352,7 +355,7 @@ module vscode =
         member __.containerName with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
         member __.kind with get(): SymbolKind = failwith "JS only" and set(v: SymbolKind): unit = failwith "JS only"
         member __.location with get(): Location = failwith "JS only" and set(v: Location): unit = failwith "JS only"
-        
+
     and [<Import("DocumentSymbol","vscode")>] DocumentSymbol(name: string, detail: string, kind: SymbolKind, range: Range, selectionRange: Range) =
         member __.children with get(): ResizeArray<DocumentSymbol> = failwith "JS only" and set(v: ResizeArray<DocumentSymbol>): unit = failwith "JS only"
         member __.name with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
@@ -940,6 +943,7 @@ module vscode =
         static member registerCodeActionsProvider(selector: DocumentSelector, provider: CodeActionProvider): Disposable = failwith "JS only"
         static member registerCodeLensProvider(selector: DocumentSelector, provider: CodeLensProvider): Disposable = failwith "JS only"
         static member registerDefinitionProvider(selector: DocumentSelector, provider: DefinitionProvider): Disposable = failwith "JS only"
+        static member registerImplementationProvider(selector: DocumentSelector, provider: ImplementationProvider): Disposable = failwith "JS only"
         static member registerTypeDefinitionProvider(selector: DocumentSelector, provider: TypeDefinitionProvider): Disposable = failwith "JS only"
         static member registerHoverProvider(selector: DocumentSelector, provider: HoverProvider): Disposable = failwith "JS only"
         static member registerDocumentHighlightProvider(selector: DocumentSelector, provider: DocumentHighlightProvider): Disposable = failwith "JS only"
