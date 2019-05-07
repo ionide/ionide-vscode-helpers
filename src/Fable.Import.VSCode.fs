@@ -561,7 +561,7 @@ module vscode =
         abstract priority: float with get, set
         abstract text: string with get, set
         abstract tooltip: string with get, set
-        abstract color: string with get, set
+        abstract color: U2<string, ThemeColor> with get, set
         abstract command: string with get, set
         abstract show: unit -> unit
         abstract hide: unit -> unit
