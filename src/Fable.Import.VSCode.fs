@@ -468,7 +468,7 @@ module vscode =
         member __.parent with get(): SelectionRange option = failwith "JS only" and set(v: SelectionRange option): unit = failwith "JS only"
 
     and SelectionRangeProvider =
-        abstract provideSelectionRanges: document: TextDocument * position: Position * token: CancellationToken -> U2<ResizeArray<SelectionRange>, Promise<ResizeArray<SelectionRange>>>
+        abstract provideSelectionRanges: document: TextDocument * positions: ResizeArray<Position> * token: CancellationToken -> U2<ResizeArray<SelectionRange>, Promise<ResizeArray<SelectionRange>>>
 
     and CharacterPair =
         string * string
