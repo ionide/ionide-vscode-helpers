@@ -463,6 +463,13 @@ module vscode =
         abstract provideCompletionItems: document: TextDocument * position: Position * token: CancellationToken -> U2<ResizeArray<CompletionItem>, Promise<ResizeArray<CompletionItem>>>
         abstract resolveCompletionItem: item: CompletionItem * token: CancellationToken -> U2<CompletionItem, Promise<CompletionItem>>
 
+    and [<Import("SelectionRange","vscode")>] SelectionRange(range: Range, ?parent: SelectionRange) =
+        member __.range with get(): Range = failwith "JS only" and set(v: Range): unit = failwith "JS only"
+        member __.parent with get(): SelectionRange option = failwith "JS only" and set(v: SelectionRange option): unit = failwith "JS only"
+
+    and SelectionRangeProvider =
+        abstract provideSelectionRanges: document: TextDocument * position: Position * token: CancellationToken -> U2<ResizeArray<SelectionRange>, Promise<ResizeArray<SelectionRange>>>
+
     and CharacterPair =
         string * string
 
@@ -956,6 +963,7 @@ module vscode =
         static member registerOnTypeFormattingEditProvider(selector: DocumentSelector, provider: OnTypeFormattingEditProvider, firstTriggerCharacter: string, [<ParamArray>] moreTriggerCharacter: string[]): Disposable = failwith "JS only"
         static member registerSignatureHelpProvider(selector: DocumentSelector, provider: SignatureHelpProvider, [<ParamArray>] triggerCharacters: string[]): Disposable = failwith "JS only"
         static member registerDocumentLinkProvider(selector : DocumentSelector, provider : DocumentLinkProvider) : Disposable = failwith "JS only"
+        static member registerSelectionRangeProvider(selector : DocumentSelector, provider : SelectionRangeProvider) : Disposable = failwith "JS only"
         static member setLanguageConfiguration(language: string, configuration: LanguageConfiguration): Disposable = failwith "JS only"
 
     type [<Import("extensions","vscode")>] extensions =
