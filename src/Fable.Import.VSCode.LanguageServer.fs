@@ -20,9 +20,7 @@ module rec LanguageServer =
         type RequestHandler0 = obj
         type GenericRequestHandler = obj
         type NotificationType = obj
-        type NotificationType0 = obj
-        type NotificationHandler = obj
-        type NotificationHandler0 = obj
+        type NotificationHandler<'a> = 'a -> unit
         type GenericNotificationHandler = obj
         type MessageReader = obj
         type MessageWriter = obj
@@ -180,12 +178,12 @@ module rec LanguageServer =
             abstract sendRequest: ``method``: string * param: obj option * ?token: CancellationToken -> Promise<'R>
             abstract onRequest: ``type``: RequestType0 * handler: RequestHandler0 -> unit
             abstract onRequest: ``method``: string * handler: GenericRequestHandler -> unit
-            abstract sendNotification: ``type``: NotificationType0 -> unit
+            abstract sendNotification: ``type``: NotificationHandler<'a> -> unit
             abstract sendNotification: ``type``: NotificationType * ?``params``: 'P -> unit
             abstract sendNotification: ``method``: string -> unit
             abstract sendNotification: ``method``: string * ``params``: obj option -> unit
-            abstract onNotification: ``type``: NotificationType0 * handler: NotificationHandler0 -> unit
-            abstract onNotification: ``method``: string * handler: GenericNotificationHandler -> unit
+            abstract onNotification: ``type``: NotificationType * handler: NotificationHandler<'a> -> unit
+            abstract onNotification: ``method``: string * handler: NotificationHandler<'a> -> unit
             abstract clientOptions: LanguageClientOptions
             abstract onTelemetry: Event<obj option>
             abstract onDidChangeState: Event<StateChangeEvent>
@@ -292,7 +290,8 @@ module rec LanguageServer =
         member __.sendRequest<'P, 'R>(``type``: Client.RequestType, ``params``: 'P, ?token: CancellationToken) : Promise<'R>  = jsNative
         member __.onRequest(``type``: Client.RequestType, handler: Client.RequestHandler) : unit  = jsNative
         member __.sendNotification(``type``: Client.NotificationType, ?``params``: 'P) : unit  = jsNative
-        member __.onNotification(``type``: Client.NotificationType, handler: Client.NotificationHandler0): unit  = jsNative
+        member __.onNotification(``type``: Client.NotificationType, handler: Client.NotificationHandler<'a>): unit  = jsNative
+        member __.onNotification(``method``: string, handler: Client.NotificationHandler<'a>): unit  = jsNative
         member __.clientOptions: Client.LanguageClientOptions  = jsNative
         member __.onTelemetry: Event<obj option>  = jsNative
         member __.onDidChangeState: Event<Client.StateChangeEvent>  = jsNative
