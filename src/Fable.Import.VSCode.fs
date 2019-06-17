@@ -875,6 +875,34 @@ module vscode =
         static member executeCommand(command: string, [<ParamArray>] rest: obj[]): Promise<'T> = failwith "JS only"
         static member getCommands(?filterInternal: bool): Promise<ResizeArray<string>> = failwith "JS only"
 
+    type ConfigurationTarget =
+        | Global = 1
+        | Workspace = 2
+        | WorkspaceFolder = 3
+
+    type [<AllowNullLiteral>] ProcessExecutionOptions =
+        abstract member cwd : string option with get, set
+        abstract member env : obj option with get, set
+
+    type [<Import("ProcessExecution","vscode")>] ProcessExecution(process: string, args: string[], ?options: ProcessExecutionOptions) =
+        member __.args with get(): string[] = jsNative
+        member __.options with get(): ProcessExecutionOptions option = jsNative
+        member __.process with get(): string = jsNative
+
+    type [<AllowNullLiteral>] TaskDefinition =
+        abstract member ``type`` : string option with get, set
+    
+    type [<Import("Task","vscode")>] Task(taskDefinition: TaskDefinition, scope: ConfigurationTarget, name: string, source: string, ?execution: ProcessExecution) =
+        member __.name with get(): string = jsNative
+
+    type [<AllowNullLiteral>] TaskExecution =
+        abstract member task : Task with get
+        abstract member terminate : unit -> unit
+
+    type [<Import("tasks", "vscode")>] tasks =
+        static member taskExecutions with get() : ReadonlyArray<TaskExecution> = failwith "JS only"
+        static member executeTask(task: Task) : Promise<TaskExecution>= failwith "JS only"
+
     type [<Import("debug", "vscode")>] debug =
         static member activeDebugSession with get() : DebugSession = failwith "JS only"
         static member onDidChangeActiveDebugSession with get() : Event<DebugSession> = failwith "JS only"
@@ -882,7 +910,7 @@ module vscode =
         static member onDidTerminateDebugSession with get() : Event<DebugSession> = failwith "JS only"
         static member onDidStartDebugSession with get() : Event<DebugSession> = failwith "JS only"
         static member startDebugging(folder: WorkspaceFolder,  nameOrConfiguration: U2<string, obj>) : Promise<bool>= failwith "JS only"
-
+    
     type [<Import("window","vscode")>] window =
         static member activeTextEditor with get(): TextEditor = failwith "JS only" and set(v: TextEditor): unit = failwith "JS only"
         static member visibleTextEditors with get(): ResizeArray<TextEditor> = failwith "JS only" and set(v: ResizeArray<TextEditor>): unit = failwith "JS only"
