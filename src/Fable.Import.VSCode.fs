@@ -698,6 +698,7 @@ module vscode =
 
     and CreateTreeViewOptions<'T> =
         abstract treeDataProvider: TreeDataProvider<'T> with get,set
+        abstract showCollapseAll: bool option with get,set
 
     and TreeViewRevealOptions =
         abstract select: bool option with get,set
