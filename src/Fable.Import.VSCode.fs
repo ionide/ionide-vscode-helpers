@@ -906,7 +906,7 @@ module vscode =
     type [<Import("tasks", "vscode")>] tasks =
         static member taskExecutions with get() : ReadonlyArray<TaskExecution> = failwith "JS only"
         static member executeTask(task: Task) : Promise<TaskExecution> = failwith "JS only"
-        static member registerTaskProvider(type: string, provider: TaskProvider) : Disposable = failwith "JS only"
+        static member registerTaskProvider(``type``: string, provider: TaskProvider) : Disposable = failwith "JS only"
 
     type [<Import("debug", "vscode")>] debug =
         static member activeDebugSession with get() : DebugSession = failwith "JS only"
