@@ -891,9 +891,13 @@ module vscode =
 
     type [<AllowNullLiteral>] TaskDefinition =
         abstract member ``type`` : string option with get, set
-    
+
     type [<Import("Task","vscode")>] Task(taskDefinition: TaskDefinition, scope: ConfigurationTarget, name: string, source: string, ?execution: ProcessExecution) =
         member __.name with get(): string = jsNative
+
+    type TaskProvider =
+        abstract provideTasks: unit -> U2<ResizeArray<Task>, Promise<ResizeArray<Task>>>
+        abstract resolveTask: task: Task -> U2<Task, ResizeArray<Task>>
 
     type [<AllowNullLiteral>] TaskExecution =
         abstract member task : Task with get
@@ -901,7 +905,8 @@ module vscode =
 
     type [<Import("tasks", "vscode")>] tasks =
         static member taskExecutions with get() : ReadonlyArray<TaskExecution> = failwith "JS only"
-        static member executeTask(task: Task) : Promise<TaskExecution>= failwith "JS only"
+        static member executeTask(task: Task) : Promise<TaskExecution> = failwith "JS only"
+        static member registerTaskProvider(type: string, provider: TaskProvider) : Disposable = failwith "JS only"
 
     type [<Import("debug", "vscode")>] debug =
         static member activeDebugSession with get() : DebugSession = failwith "JS only"
@@ -910,7 +915,7 @@ module vscode =
         static member onDidTerminateDebugSession with get() : Event<DebugSession> = failwith "JS only"
         static member onDidStartDebugSession with get() : Event<DebugSession> = failwith "JS only"
         static member startDebugging(folder: WorkspaceFolder,  nameOrConfiguration: U2<string, obj>) : Promise<bool>= failwith "JS only"
-    
+
     type [<Import("window","vscode")>] window =
         static member activeTextEditor with get(): TextEditor = failwith "JS only" and set(v: TextEditor): unit = failwith "JS only"
         static member visibleTextEditors with get(): ResizeArray<TextEditor> = failwith "JS only" and set(v: ResizeArray<TextEditor>): unit = failwith "JS only"
