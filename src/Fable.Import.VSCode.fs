@@ -864,6 +864,17 @@ module vscode =
         /// <param name="state">Persisted state from the webview content.</param>
         abstract deserializeWebviewPanel: webviewPanel: WebviewPanel * state: obj option -> Promise<unit>
 
+    and [<Import("SemanticTokensLegend","vscode")>] SemanticTokensLegend(tokenTypes: string[]) =
+        member __.tokenTypes with get(): string[] = jsNative
+
+    and [<Import("SemanticTokensBuilder","vscode")>] SemanticTokensBuilder(legend: SemanticTokensLegend) =
+        member __.push(line: int, char: int, lenght:int, tokenType:int) : unit = jsNative
+        member __.push(range: Range, tokenType: string) : unit = jsNative
+        member __.build() : obj = jsNative
+
+    and DocumentSemanticTokensProvider =
+        abstract provideDocumentSemanticTokens: document: TextDocument * token: CancellationToken -> Promise<obj>
+
 
     let [<Import("version","vscode")>] version: string = failwith "JS only"
 
@@ -998,6 +1009,7 @@ module vscode =
         static member registerSignatureHelpProvider(selector: DocumentSelector, provider: SignatureHelpProvider, [<ParamArray>] triggerCharacters: string[]): Disposable = failwith "JS only"
         static member registerDocumentLinkProvider(selector : DocumentSelector, provider : DocumentLinkProvider) : Disposable = failwith "JS only"
         static member registerSelectionRangeProvider(selector : DocumentSelector, provider : SelectionRangeProvider) : Disposable = failwith "JS only"
+        static member registerDocumentSemanticTokensProvider(selector: DocumentSeletor, provider: DocumentSemanticTokensProvider, legend: SemanticTokensLegend): Disposable = failwith "JS only"
         static member setLanguageConfiguration(language: string, configuration: LanguageConfiguration): Disposable = failwith "JS only"
 
     type [<Import("extensions","vscode")>] extensions =
