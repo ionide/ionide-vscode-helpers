@@ -1009,7 +1009,7 @@ module vscode =
         static member registerSignatureHelpProvider(selector: DocumentSelector, provider: SignatureHelpProvider, [<ParamArray>] triggerCharacters: string[]): Disposable = failwith "JS only"
         static member registerDocumentLinkProvider(selector : DocumentSelector, provider : DocumentLinkProvider) : Disposable = failwith "JS only"
         static member registerSelectionRangeProvider(selector : DocumentSelector, provider : SelectionRangeProvider) : Disposable = failwith "JS only"
-        static member registerDocumentSemanticTokensProvider(selector: DocumentSeletor, provider: DocumentSemanticTokensProvider, legend: SemanticTokensLegend): Disposable = failwith "JS only"
+        static member registerDocumentSemanticTokensProvider(selector: DocumentSelector, provider: DocumentSemanticTokensProvider, legend: SemanticTokensLegend): Disposable = failwith "JS only"
         static member setLanguageConfiguration(language: string, configuration: LanguageConfiguration): Disposable = failwith "JS only"
 
     type [<Import("extensions","vscode")>] extensions =
