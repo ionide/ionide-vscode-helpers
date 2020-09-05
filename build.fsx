@@ -16,7 +16,7 @@ Target.create "BuildDotnet" <| fun _ ->
     DotNet.build id "src"
 
 Target.create "BuildFable" <| fun _ ->
-    Yarn.exec "run build -p" id
+    Yarn.exec "build --mode production" id
 
 Target.create "Default" ignore
 
