@@ -1,22 +1,24 @@
-﻿#r "packages/build/FAKE/tools/FakeLib.dll"
+﻿#r "paket: groupref build //"
+#load ".fake/build.fsx/intellisense.fsx"
 
-open Fake
-open Fake.YarnHelper
-open Fake.DotNetCli
+open Fake.Core
+open Fake.Core.TargetOperators
+open Fake.JavaScript
+open Fake.DotNet
 
-Target "YarnInstall" <| fun () ->
-    Yarn (fun p -> { p with Command = Install Standard })
+Target.create "YarnInstall" <| fun _ ->
+    Yarn.install id
 
-Target "DotNetRestore" <| fun () ->
-    DotNetCli.Restore (fun p -> { p with WorkingDir = "src" } )
+Target.create "DotNetRestore" <| fun _ ->
+    DotNet.restore id "src"
 
-Target "BuildDotnet" <| fun () ->
-    DotNetCli.Build (fun p -> { p with WorkingDir = "src" } )
+Target.create "BuildDotnet" <| fun _ ->
+    DotNet.build id "src"
 
-Target "BuildFable" <| fun () ->
-    DotNetCli.RunCommand (fun p -> { p with WorkingDir = "src" } ) "fable yarn-build -- -p"
+Target.create "BuildFable" <| fun _ ->
+    Yarn.exec "run build -p" id
 
-Target "Default" DoNothing
+Target.create "Default" ignore
 
 "YarnInstall" ?=> "BuildFable"
 "DotNetRestore" ?=> "BuildDotnet"
@@ -26,4 +28,4 @@ Target "Default" DoNothing
 "DotNetRestore" ==> "Default"
 "BuildFable" ==> "Default"
 
-RunTargetOrDefault "Default"
+Target.runOrDefault "Default"

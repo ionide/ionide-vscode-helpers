@@ -24,14 +24,15 @@
     "url": "https://github.com/ionide/ionide-vscode-helpers/issues"
   },
   "homepage": "https://github.com/ionide/ionide-vscode-helpers#readme",
+  "scripts": {
+    "build": "webpack",
+    "watch": "webpack --watch"
+  },
   "dependencies": {
     "axios": "^0.13.1",
     "babel-runtime": "6.26.0",
     "vscode": "^1.1.5",
     "webpack-node-externals": "^1.6.0"
-  },
-  "scripts": {
-    "build": "webpack"
   },
   "devDependencies": {
     "babel-core": "6.26.0",
