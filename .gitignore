@@ -31,6 +31,7 @@ Test/
 Test/obj/
 Test/bin/
 packages
+.paket/
 paket-files
 
 
