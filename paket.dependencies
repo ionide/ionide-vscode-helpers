@@ -1,9 +1,8 @@
 source https://api.nuget.org/v3/index.json
 storage:none
 
-clitool dotnet-fable
 nuget Fable.Core
-nuget Fable.Import.Node
+nuget Fable.Node
 nuget FSharp.Core
 
 
