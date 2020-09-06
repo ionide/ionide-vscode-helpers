@@ -1,8 +1,12 @@
 namespace Fable.Import
 open System
 open Fable.Core
-open Fable.Import.JS
-open Fable.Import.Node
+open Fable.Core.JS
+open Node
+
+type Function = System.Action
+type RegExp = System.Text.RegularExpressions.Regex
+type ReadonlyArray<'T> = System.Collections.Generic.IReadOnlyList<'T>
 
 module vscode =
     type [<Import("Disposable","vscode")>] Disposable(callOnDispose: Function) =
