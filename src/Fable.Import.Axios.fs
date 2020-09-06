@@ -21,15 +21,15 @@ module Axios =
         abstract baseURL: string option with get, set
         abstract headers: obj option with get, set
         abstract ``params``: obj option with get, set
-        abstract paramsSerializer: Func<obj, string> option with get, set
+        abstract paramsSerializer: (obj -> string) option with get, set
         abstract timeout: float option with get, set
         abstract withCredentials: bool option with get, set
         abstract auth: AxiosHttpBasicAuth option with get, set
         abstract responseType: string option with get, set
         abstract xsrfCookieName: string option with get, set
         abstract xsrfHeaderName: string option with get, set
-        abstract transformRequest: U2<Func<'T, 'U>, Func<'T, 'U>> option with get, set
-        abstract transformResponse: Func<'T, 'U> option with get, set
+        abstract transformRequest: U2<('T -> 'U), ('T -> 'U)> option with get, set
+        abstract transformResponse: ('T -> 'U) option with get, set
         abstract proxy: U2<AxiosProxyConfig, bool> option with get, set
 
     and AxiosXHRConfig<'T> =
@@ -53,13 +53,13 @@ module Axios =
         float
 
     and RequestInterceptor =
-        abstract ``use``: fulfilledFn: Func<AxiosXHRConfig<'U>, AxiosXHRConfig<'U>> -> InterceptorId
-        abstract ``use``: fulfilledFn: Func<AxiosXHRConfig<'U>, AxiosXHRConfig<'U>> * rejectedFn: Func<obj, obj> -> InterceptorId
+        abstract ``use``: fulfilledFn: (AxiosXHRConfig<'U> -> AxiosXHRConfig<'U>) -> InterceptorId
+        abstract ``use``: fulfilledFn: (AxiosXHRConfig<'U> -> AxiosXHRConfig<'U>) * rejectedFn: (obj -> obj) -> InterceptorId
         abstract eject: interceptorId: InterceptorId -> unit
 
     and ResponseInterceptor =
-        abstract ``use``: fulfilledFn: Func<AxiosXHR<'T>, AxiosXHR<'T>> -> InterceptorId
-        abstract ``use``: fulfilledFn: Func<AxiosXHR<'T>, AxiosXHR<'T>> * rejectedFn: Func<obj, obj> -> InterceptorId
+        abstract ``use``: fulfilledFn: (AxiosXHR<'T> -> AxiosXHR<'T>) -> InterceptorId
+        abstract ``use``: fulfilledFn: (AxiosXHR<'T> -> AxiosXHR<'T>) * rejectedFn: (obj -> obj) -> InterceptorId
         abstract eject: interceptorId: InterceptorId -> unit
 
     and AxiosInstance =
@@ -76,7 +76,7 @@ module Axios =
         abstract all: values: U2<'T1, Promise<AxiosXHR<'T1>>> * U2<'T2, Promise<AxiosXHR<'T2>>> * U2<'T3, Promise<AxiosXHR<'T3>>> * U2<'T4, Promise<AxiosXHR<'T4>>> -> Promise<AxiosXHR<'T1> * AxiosXHR<'T2> * AxiosXHR<'T3> * AxiosXHR<'T4>>
         abstract all: values: U2<'T1, Promise<AxiosXHR<'T1>>> * U2<'T2, Promise<AxiosXHR<'T2>>> * U2<'T3, Promise<AxiosXHR<'T3>>> -> Promise<AxiosXHR<'T1> * AxiosXHR<'T2> * AxiosXHR<'T3>>
         abstract all: values: U2<'T1, Promise<AxiosXHR<'T1>>> * U2<'T2, Promise<AxiosXHR<'T2>>> -> Promise<AxiosXHR<'T1> * AxiosXHR<'T2>>
-        abstract spread: fn: Func<'T1, 'T2, 'U> -> Func<'T1 * 'T2, 'U>
+        abstract spread: fn: ('T1 -> 'T2 -> 'U) -> ('T1 * 'T2 -> 'U)
         abstract get: url: string * ?config: AxiosXHRConfigBase<'T> -> Promise<AxiosXHR<'T>>
         abstract delete: url: string * ?config: AxiosXHRConfigBase<'T> -> Promise<AxiosXHR<'T>>
         abstract head: url: string * ?config: AxiosXHRConfigBase<'T> -> Promise<AxiosXHR<'T>>
