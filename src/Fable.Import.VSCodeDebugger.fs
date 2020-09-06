@@ -2,8 +2,7 @@ namespace Fable.Import
 open System
 open System.Text.RegularExpressions
 open Fable.Core
-open Fable.Import.JS
-open Fable.Import.Node
+open Node
 
 module DebugProtocol =
     type [<AllowNullLiteral>] ProtocolMessage =
@@ -603,7 +602,7 @@ module DebugProtocol =
         abstract names: ResizeArray<string> with get, set
 
 module Protocol =
-    type [<AllowNullLiteral>] [<Import("ProtocolServer","protocol")>] ProtocolServer() =
+    type [<AllowNullLiteral>] [<Import("ProtocolServer","vscode-debugadapter")>] ProtocolServer() =
         // interface NodeJS.EventEmitter
         member __.TWO_CRLF with get(): obj = jsNative and set(v: obj): unit = jsNative
         member __._rawData with get(): obj = jsNative and set(v: obj): unit = jsNative
