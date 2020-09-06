@@ -14,7 +14,7 @@ module vscode =
         member __.dispose(): obj = failwith "JS only"
 
     and Event<'T> =
-        [<Emit("$0($1...)")>] abstract Invoke: listener: Func<'T, obj> * ?thisArgs: obj * ?disposables: ResizeArray<Disposable> -> Disposable
+        [<Emit("$0($1...)")>] abstract Invoke: listener: ('T -> obj) * ?thisArgs: obj * ?disposables: ResizeArray<Disposable> -> Disposable
 
 
     and [<Import("EventEmitter", "vscode")>] EventEmitter<'T>() =
@@ -210,7 +210,7 @@ module vscode =
         abstract selection: Selection with get, set
         abstract selections: ResizeArray<Selection> with get, set
         abstract options: TextEditorOptions with get, set
-        abstract edit: callback: Func<TextEditorEdit, unit> -> Promise<bool>
+        abstract edit: callback: (TextEditorEdit -> unit) -> Promise<bool>
         abstract setDecorations: decorationType: TextEditorDecorationType * rangesOrOptions: U2<ResizeArray<Range>, ResizeArray<DecorationOptions>> -> unit
         abstract revealRange: range: Range * ?revealType: TextEditorRevealType -> unit
         abstract show: ?column: ViewColumn -> unit
@@ -883,10 +883,10 @@ module vscode =
     let [<Import("version","vscode")>] version: string = failwith "JS only"
 
     type [<Import("commands","vscode")>] commands =
-        static member registerCommand(command: string, callback: Func<obj, obj>, ?thisArg: obj): Disposable = failwith "JS only"
-        static member registerCommand(command: string, callback: Func<obj, obj, obj>, ?thisArg: obj): Disposable = failwith "JS only"
-        static member registerCommand(command: string, callback: Func<obj, obj, obj, obj>, ?thisArg: obj): Disposable = failwith "JS only"
-        static member registerTextEditorCommand(command: string, callback: Func<TextEditor, TextEditorEdit, unit>, ?thisArg: obj): Disposable = failwith "JS only"
+        static member registerCommand(command: string, callback: (obj -> obj), ?thisArg: obj): Disposable = failwith "JS only"
+        static member registerCommand(command: string, callback: (obj -> obj -> obj), ?thisArg: obj): Disposable = failwith "JS only"
+        static member registerCommand(command: string, callback: (obj -> obj -> obj -> obj), ?thisArg: obj): Disposable = failwith "JS only"
+        static member registerTextEditorCommand(command: string, callback: (TextEditor -> TextEditorEdit -> unit), ?thisArg: obj): Disposable = failwith "JS only"
         static member executeCommand(command: string, [<ParamArray>] rest: obj[]): Promise<'T> = failwith "JS only"
         static member getCommands(?filterInternal: bool): Promise<ResizeArray<string>> = failwith "JS only"
 
