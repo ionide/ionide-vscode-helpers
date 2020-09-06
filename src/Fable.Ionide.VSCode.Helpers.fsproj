@@ -8,7 +8,7 @@
     <Compile Include="Fable.Import.VSCode.LanguageServer.fs" />
     <Compile Include="Fable.Import.Axios.fs" />
     <Compile Include="Fable.Import.ws.fs" />
-    <!-- <Compile Include="Helpers.fs" /> -->
+    <Compile Include="Helpers.fs" />
   </ItemGroup>
   <!-- Add source files to package -->
   <ItemGroup>
