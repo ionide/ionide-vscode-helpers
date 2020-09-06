@@ -1,7 +1,7 @@
 namespace Fable.Import
 open System
 open Fable.Core
-open Fable.Import.JS
+open Fable.Core.JS
 
 module Axios =
     type AxiosHttpBasicAuth =
