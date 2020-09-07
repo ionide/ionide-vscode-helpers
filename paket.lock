@@ -1,6 +1,22 @@
 STORAGE: NONE
 NUGET
   remote: https://api.nuget.org/v3/index.json
+    Fable.Browser.Blob (1.1) - restriction: >= netstandard2.0
+      Fable.Core (>= 3.0) - restriction: >= netstandard2.0
+      FSharp.Core (>= 4.6.2) - restriction: >= netstandard2.0
+    Fable.Browser.Dom (2.0.1)
+      Fable.Browser.Blob (>= 1.1) - restriction: >= netstandard2.0
+      Fable.Browser.Event (>= 1.2.1) - restriction: >= netstandard2.0
+      Fable.Browser.WebStorage (>= 1.0) - restriction: >= netstandard2.0
+      Fable.Core (>= 3.0) - restriction: >= netstandard2.0
+      FSharp.Core (>= 4.7) - restriction: >= netstandard2.0
+    Fable.Browser.Event (1.2.1) - restriction: >= netstandard2.0
+      Fable.Core (>= 3.0) - restriction: >= netstandard2.0
+      FSharp.Core (>= 4.7) - restriction: >= netstandard2.0
+    Fable.Browser.WebStorage (1.0) - restriction: >= netstandard2.0
+      Fable.Browser.Event (>= 1.0) - restriction: >= netstandard2.0
+      Fable.Core (>= 3.0) - restriction: >= netstandard2.0
+      FSharp.Core (>= 4.5.2) - restriction: >= netstandard2.0
     Fable.Core (3.1.5)
       FSharp.Core (>= 4.7) - restriction: >= netstandard2.0
     Fable.Node (1.0.2)
@@ -9,7 +25,7 @@ NUGET
     Fable.Promise (2.1)
       Fable.Core (>= 3.1.5) - restriction: >= netstandard2.0
       FSharp.Core (>= 4.7) - restriction: >= netstandard2.0
-    FSharp.Core (4.7.2)
+    FSharp.Core (4.7.2) - restriction: >= netstandard2.0
 
 GROUP build
 RESTRICTION: == netstandard2.0

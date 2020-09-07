@@ -3,8 +3,7 @@ module rec Fable.Import.Showdown
 
 open System
 open Fable.Core
-open Fable.Import.JS
-open Fable.Import.Browser
+open Browser.Types
 
 let [<Import("*","showdown")>] showdown: Showdown.IExports = jsNative
 
