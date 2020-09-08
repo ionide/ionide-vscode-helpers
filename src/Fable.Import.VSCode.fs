@@ -899,10 +899,10 @@ module vscode =
         abstract member cwd : string option with get, set
         abstract member env : obj option with get, set
 
-    type [<Import("ProcessExecution","vscode")>] ProcessExecution(process: string, args: string[], ?options: ProcessExecutionOptions) =
+    type [<Import("ProcessExecution","vscode")>] ProcessExecution(``process``: string, args: string[], ?options: ProcessExecutionOptions) =
         member __.args with get(): string[] = jsNative
         member __.options with get(): ProcessExecutionOptions option = jsNative
-        member __.process with get(): string = jsNative
+        member __.``process`` with get(): string = jsNative
 
     type [<AllowNullLiteral>] TaskDefinition =
         abstract member ``type`` : string option with get, set
