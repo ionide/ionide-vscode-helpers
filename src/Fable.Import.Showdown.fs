@@ -4,6 +4,7 @@ module rec Fable.Import.Showdown
 open System
 open Fable.Core
 open Browser.Types
+open System.Text.RegularExpressions
 
 let [<Import("*","showdown")>] showdown: Showdown.IExports = jsNative
 
@@ -56,7 +57,7 @@ module Showdown =
         ///
         /// Keep in mind that, if a string is used, it will automatically be given a g modifier,
         /// that is, it is assumed to be a global replacement.
-        abstract regex: U2<string, RegExp> option with get, set
+        abstract regex: U2<string, Regex> option with get, set
         /// Can be either a string or a function. If replace is a string,
         /// it can use the $1 syntax for group substitution,
         /// exactly as if it were making use of string.replace (internally it does this actually).

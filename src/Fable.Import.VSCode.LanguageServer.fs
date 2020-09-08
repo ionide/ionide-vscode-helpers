@@ -3,13 +3,12 @@ namespace Fable.Import
 open System
 open Fable.Core
 open Fable.Core.JS
-open Fable.Core.JsInterop
 open Fable.Import.vscode
 open Node.ChildProcess
 
 module rec LanguageServer =
 
-    type Error = System.Exception
+    // type Error = System.Exception
 
 // ts2fable 0.0.0
     module Client =
@@ -62,14 +61,14 @@ module rec LanguageServer =
             /// <param name="message">- the message to be delivered to the server if know.</param>
             /// <param name="count">- a count indicating how often an error is received. Will
             /// be reset if a message got successfully send or received.</param>
-            abstract error: error: Error * message: Message * count: float -> ErrorAction
+            abstract error: error: Exception * message: Message * count: float -> ErrorAction
             /// The connection to the server got closed.
             abstract closed: unit -> CloseAction
 
         /// A handler that is invoked when the initialization of the server failed.
         type [<AllowNullLiteral>] InitializationFailedHandler =
             /// <param name="error">The error returned from the server</param>
-            [<Emit "$0($1...)">] abstract Invoke: error: U3<ResponseError, Error, obj option> -> bool
+            [<Emit "$0($1...)">] abstract Invoke: error: U3<ResponseError, Exception, obj option> -> bool
 
         type [<AllowNullLiteral>] SynchronizeOptions =
             /// The configuration sections to synchronize. Pushing settings from the

@@ -1,5 +1,4 @@
 namespace Fable.Import
-open System
 open Fable.Core
 open Fable.Core.JS
 
