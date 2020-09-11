@@ -58,7 +58,7 @@ module Process =
     let isMono () = platform <> "win32"
 
     let onExit (f : int option -> string option -> unit) (proc : ChildProcess) =
-        proc.on("exit", f |> unbox<obj -> unit>) |> ignore
+        proc.on("exit", f) |> ignore
         proc
 
     let onOutput (f : Buffer.Buffer -> _) (proc : ChildProcess) =
