@@ -460,10 +460,12 @@ module vscode =
         member __.documentation with get(): U2<string, MarkdownString> = failwith "JS only" and set(v: U2<string, MarkdownString>): unit = failwith "JS only"
         member __.sortText with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
         member __.filterText with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
-        member __.insertText with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
+        member __.insertText with get(): U2<string, SnippetString> = failwith "JS only" and set(v: U2<string, SnippetString>): unit = failwith "JS only"
         member __.textEdit with get(): TextEdit = failwith "JS only" and set(v: TextEdit): unit = failwith "JS only"
         member __.additionalTextEdits with get(): TextEdit[] = failwith "JS only" and set(v: TextEdit[]): unit = failwith "JS only"
 
+    and [<Import("SnippetString","vscode")>] SnippetString(value: string) =
+        member __.value with get(): string = failwith "JS only" and set(v: string): unit = failwith "JS only"
 
     and CompletionItemProvider =
         abstract provideCompletionItems: document: TextDocument * position: Position * token: CancellationToken -> U2<ResizeArray<CompletionItem>, Promise<ResizeArray<CompletionItem>>>
