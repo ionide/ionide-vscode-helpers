@@ -1022,5 +1022,4 @@ module vscode =
 
     type [<Import("extensions","vscode")>] extensions =
         static member all with get(): ResizeArray<Extension<obj>> = failwith "JS only" and set(v: ResizeArray<Extension<obj>>): unit = failwith "JS only"
-        static member getExtension(extensionId: string): Extension<obj> = failwith "JS only"
         static member getExtension(extensionId: string): Extension<'T> = failwith "JS only"
