@@ -1,5 +1,4 @@
 var path = require("path");
-var nodeExternals = require('webpack-node-externals');
 
 function resolve(filePath) {
   return path.join(__dirname, filePath)
@@ -23,7 +22,7 @@ module.exports = function(env, argv) {
     target: 'node',
     mode: isProduction ? "production" : "development",
     devtool: "source-map",
-    entry: resolve('./src/Fable.Ionide.VSCode.Helpers.fsproj'),
+    entry: resolve('./src/Helpers.js'),
     output: {
       filename: 'bundle.js',
       path: resolve('./release'),
@@ -42,16 +41,6 @@ module.exports = function(env, argv) {
   },
     module: {
       rules: [
-        {
-          test: /\.fs(x|proj)?$/,
-          use: {
-            loader: "fable-loader",
-            options: {
-              babel: babelOptions,
-              define: isProduction ? [] : ["DEBUG"]
-            }
-          }
-        },
         {
           test: /\.js$/,
           exclude: /node_modules/,
