@@ -5,6 +5,7 @@ open Fake.Core
 open Fake.Core.TargetOperators
 open Fake.JavaScript
 open Fake.DotNet
+open Fake.IO
 
 let runFable args = 
     DotNet.exec id "fable" args
@@ -17,7 +18,7 @@ Target.create "DotNetRestore" <| fun _ ->
     DotNet.restore id "src"
 
 Target.create "CleanFable" <| fun _ ->
-    runFable "clean release --extension --extension .js* --yes"    // delete .js.map too
+    Shell.cleanDir "release"
 
 Target.create "BuildDotnet" <| fun _ ->
     DotNet.build id "src"
