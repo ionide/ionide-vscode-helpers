@@ -22,7 +22,7 @@ module.exports = function(env, argv) {
     target: 'node',
     mode: isProduction ? "production" : "development",
     devtool: "source-map",
-    entry: resolve('./src/Helpers.js'),
+    entry: resolve('./release/Helpers.js'),
     output: {
       filename: 'bundle.js',
       path: resolve('./release'),
