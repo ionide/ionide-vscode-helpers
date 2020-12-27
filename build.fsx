@@ -16,7 +16,8 @@ Target.create "BuildDotnet" <| fun _ ->
     DotNet.build id "src"
 
 Target.create "BuildFable" <| fun _ ->
-    Yarn.exec "build --mode production" id
+    DotNet.exec id "fable" "src --outDir release --run webpack"
+    |> fun res -> if not res.OK then failwithf "ExitCode was %i" res.ExitCode
 
 Target.create "Default" ignore
 
