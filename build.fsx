@@ -20,11 +20,11 @@ Target.create "BuildDotnet" <| fun _ ->
     DotNet.build id "src"
 
 Target.create "BuildFable" <| fun _ ->
-    DotNet.exec id "fable" "src --outDir release"
+    DotNet.exec id "fable" "src --outDir release --run webpack"
     |> fun res -> if not res.OK then failwithf "ExitCode was %i" res.ExitCode
 
 Target.create "WatchFable" <| fun _ ->
-    DotNet.exec id "fable" "watch src --outDir release"
+    DotNet.exec id "fable" "watch src --outDir release --run webpack"
     |> fun res -> if not res.OK then failwithf "ExitCode was %i" res.ExitCode
 
 Target.create "Default" ignore
