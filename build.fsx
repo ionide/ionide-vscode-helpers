@@ -33,7 +33,7 @@ Target.create "WatchFable" <| fun _ ->
     runFable "watch src --outDir release"
 
 Target.create "WatchFableWithWebpack" <| fun _ ->
-    runFable "watch src --outDir release --run webpack"
+    runFable "watch src --outDir release --runWatch webpack"
 
 Target.create "Webpack" ignore
 Target.create "Default" ignore
