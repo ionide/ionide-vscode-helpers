@@ -633,7 +633,7 @@ module vscode =
     and TreeDataProvider<'T> =
         abstract onDidChangeTreeData: Event<'T option> with get
         abstract getTreeItem: 'T -> TreeItem
-        abstract getChildren: 'T -> ResizeArray<'T>
+        abstract getChildren: 'T option -> ResizeArray<'T>
         abstract getParent: ('T -> 'T option) option with get
 
     and TreeIconPath =
