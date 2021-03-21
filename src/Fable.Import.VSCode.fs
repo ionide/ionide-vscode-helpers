@@ -640,7 +640,7 @@ module vscode =
         abstract light: U3<string, Uri, ThemeIcon> with get, set
         abstract dark: U3<string, Uri, ThemeIcon> with get, set
 
-    and [<Import("ThemeIcon","vscode")>] ThemeIcon =
+    and [<Import("ThemeIcon","vscode")>] ThemeIcon(id: string) =
         static member File with get(): ThemeIcon = failwith "JS only"
         static member Folder with get(): ThemeIcon = failwith "JS only"
         member __.id with get(): string = jsNative
