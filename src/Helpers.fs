@@ -13,11 +13,11 @@ module JS =
 //VS Code Helpers
 //---------------------------------------------------
 module VSCode =
-    open Fable.Import.vscode
+    open Fable.Import.VSCode.Vscode
 
     let getPluginPath pluginName =
-        let ext = extensions.getExtension pluginName
-        ext.extensionPath
+        extensions.getExtension pluginName
+        |> Option.map (fun e -> e.extensionPath)
 
 
 //---------------------------------------------------
@@ -46,7 +46,7 @@ module Process =
 
     open Node
     open Node.ChildProcess
-    open Fable.Import.vscode
+    open Fable.Import.VSCode.Vscode
     open Fable.Core.JsInterop
 
     module node = Node.Api
@@ -105,15 +105,16 @@ module Process =
             if isWin() then
                 splitArgs cmd
                 |> Seq.map (fun c -> if c.Contains " " then sprintf "\"%s\"" c else c )
-                |> Seq.toArray
+                |> ResizeArray
             else
                 splitArgs cmd
                 |> Seq.toArray
+                |> ResizeArray
 
         if isWin () || linuxCmd = "" then
-            window.createTerminal("F# Application", location, cmd')
+            window.createTerminal("F# Application", location, U2.Case1 cmd')
         else
-            let prms = seq { yield location; yield! cmd'} |> Seq.toArray
+            let prms = seq { yield location; yield! cmd'} |> ResizeArray |> U2.Case1
             window.createTerminal("F# Application", linuxCmd, prms)
 
 
@@ -143,7 +144,7 @@ module Process =
 
     let exec location linuxCmd cmd : JS.Promise<ExecError option * string * string> =
         let options = createEmpty<ExecOptions>
-        options.cwd <- Some workspace.rootPath
+        options.cwd <- workspace.rootPath
         
         Promise.create (fun resolve error ->
             let execCmd =
@@ -163,7 +164,7 @@ module Process =
 //Settings Helpers
 //---------------------------------------------------
 module Settings =
-    open Fable.Import.vscode
+    open Fable.Import.VSCode.Vscode
     open Node
     module node =  Node.Api
 
@@ -198,10 +199,16 @@ module Settings =
 
     let loadOrDefault<'a> (map : Settings -> 'a)  (def :'a) =
         try
-            let path = workspace.rootPath + "/.ionide"
-            let t = node.fs.readFileSync(path).ToString ()
-                    |> Toml.parse
-                    |> map
-            if JS.isDefined t then t else def
+            let path = workspace.rootPath |> Option.map (fun root -> root + "/.ionide")
+            let t =
+                path
+                |> Option.map node.fs.readFileSync
+                |> Option.map string
+                |> Option.map Toml.parse
+                |> Option.map map
+            match t with
+            | Some t when JS.isDefined t -> t
+            | Some t -> def
+            | None -> def
         with
         | _ -> def
