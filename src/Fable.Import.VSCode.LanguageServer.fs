@@ -3,7 +3,7 @@ namespace Fable.Import
 open System
 open Fable.Core
 open Fable.Core.JS
-open Fable.Import.vscode
+open Fable.Import.VSCode.Vscode
 open Node.ChildProcess
 
 module rec LanguageServer =
