@@ -3547,10 +3547,10 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
 
-ts2fable@^0.7.1:
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/ts2fable/-/ts2fable-0.7.1.tgz#b7b0dbf230572c64d99bf24a096965cd445a8c88"
-  integrity sha512-4CiCzuWF9ueSLlr+OozcwaehhCno1frnPZbHM7Jd4EfKzSlHk3hyjrhFKttnXQ2Sx0tGe8C4xwjDhnZaOSqFkw==
+ts2fable@^0.8.0-build.616:
+  version "0.8.0-build.616"
+  resolved "https://registry.yarnpkg.com/ts2fable/-/ts2fable-0.8.0-build.616.tgz#b8198d47d3625734f31c79c4e605fb782e770f20"
+  integrity sha512-fLudugsLJjEXsiPSu9dAk1RjjokT2WMi6N3pyqwgOdwdAX1eLpfGa0luKRrWqYnMbBkg9tR4zvWCadIDobTaLQ==
   dependencies:
     typescript "3.7.4"
 
