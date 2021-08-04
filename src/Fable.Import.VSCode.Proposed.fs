@@ -182,6 +182,7 @@ module Vscode =
     module Authentication =
 
         type [<AllowNullLiteral>] IExports =
+            inherit Fable.Import.VSCode.Vscode.Authentication.IExports
             /// <summary>
             /// Get an authentication session matching the desired scopes. Rejects if a provider with providerId is not
             /// registered, or if the user does not consent to sharing authentication information with
@@ -200,6 +201,7 @@ module Vscode =
     module Workspace =
 
         type [<AllowNullLiteral>] IExports =
+            inherit Fable.Import.VSCode.Vscode.Workspace.IExports
             /// <summary>
             /// Forwards a port. If the current resolver implements RemoteAuthorityResolver:forwardPort then that will be used to make the tunnel.
             /// By default, openTunnel only support localhost; however, RemoteAuthorityResolver:tunnelFactory can be used to support other ips.
@@ -312,6 +314,7 @@ module Vscode =
     module Window =
 
         type [<AllowNullLiteral>] IExports =
+            inherit Fable.Import.VSCode.Vscode.Window.IExports
             abstract createWebviewTextEditorInset: editor: TextEditor * line: float * height: float * ?options: WebviewOptions -> WebviewEditorInset
             /// An event which fires when the terminal's child pseudo-device is written to (the shell).
             /// In other words, this provides access to the raw data stream from the process running
@@ -588,6 +591,7 @@ module Vscode =
     module Commands =
 
         type [<AllowNullLiteral>] IExports =
+            inherit Fable.Import.VSCode.Vscode.Commands.IExports
             /// <summary>
             /// Registers a diff information command that can be invoked via a keyboard shortcut,
             /// a menu item, an action, or directly.
@@ -801,6 +805,7 @@ module Vscode =
     module Notebooks =
 
         type [<AllowNullLiteral>] IExports =
+            inherit Fable.Import.VSCode.Vscode.Notebooks.IExports
             /// <summary>An <see cref="Event" /> which fires when the execution state of a cell has changed.</summary>
             abstract onDidChangeNotebookCellExecutionState: Event<NotebookCellExecutionStateChangeEvent>
             abstract onDidSaveNotebookDocument: Event<NotebookDocument>
@@ -1123,6 +1128,7 @@ module Vscode =
     module Languages =
 
         type [<AllowNullLiteral>] IExports =
+            inherit Fable.Import.VSCode.Vscode.Languages.IExports
             abstract getTokenInformationAtPosition: document: TextDocument * position: Position -> Thenable<TokenInformation>
             /// <summary>
             /// Register a inlay hints provider.
@@ -1423,6 +1429,7 @@ module Vscode =
     module Env =
 
         type [<AllowNullLiteral>] IExports =
+            inherit Fable.Import.VSCode.Vscode.Env.IExports
             abstract openExternal: target: Uri * ?options: OpenExternalOptions -> Thenable<bool>
 
     type [<AllowNullLiteral>] OpenEditorInfo =
