@@ -23,7 +23,7 @@ type RegExp = System.Text.RegularExpressions.Regex
 /// - Add <c>"enableProposedApi": true</c> to your package.json.
 /// - Copy this file to your project.
 /// </summary>
-let [<Import("*","vscode.proposed")>] vscode: Vscode.IExports = jsNative
+let [<Import("*","vscode")>] vscode: Vscode.IExports = jsNative
 
 /// <summary>
 /// This is the place for API experiments and proposals.
@@ -36,15 +36,15 @@ let [<Import("*","vscode.proposed")>] vscode: Vscode.IExports = jsNative
 /// - Copy this file to your project.
 /// </summary>
 module Vscode =
-    let [<Import("authentication","vscode.proposed/vscode")>] authentication: Authentication.IExports = jsNative
-    let [<Import("workspace","vscode.proposed/vscode")>] workspace: Workspace.IExports = jsNative
+    let [<Import("authentication","vscode")>] authentication: Authentication.IExports = jsNative
+    let [<Import("workspace","vscode")>] workspace: Workspace.IExports = jsNative
     /// Be aware that this API will not ever be finalized.
-    let [<Import("window","vscode.proposed/vscode")>] window: Window.IExports = jsNative
-    let [<Import("commands","vscode.proposed/vscode")>] commands: Commands.IExports = jsNative
-    let [<Import("notebooks","vscode.proposed/vscode")>] notebooks: Notebooks.IExports = jsNative
-    let [<Import("languages","vscode.proposed/vscode")>] languages: Languages.IExports = jsNative
-    let [<Import("tests","vscode.proposed/vscode")>] tests: Tests.IExports = jsNative
-    let [<Import("env","vscode.proposed/vscode")>] env: Env.IExports = jsNative
+    let [<Import("window","vscode")>] window: Window.IExports = jsNative
+    let [<Import("commands","vscode")>] commands: Commands.IExports = jsNative
+    let [<Import("notebooks","vscode")>] notebooks: Notebooks.IExports = jsNative
+    let [<Import("languages","vscode")>] languages: Languages.IExports = jsNative
+    let [<Import("tests","vscode")>] tests: Tests.IExports = jsNative
+    let [<Import("env","vscode")>] env: Env.IExports = jsNative
 
     type [<AllowNullLiteral>] IExports =
         abstract ResolvedAuthority: ResolvedAuthorityStatic
