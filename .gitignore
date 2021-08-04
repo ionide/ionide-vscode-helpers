@@ -54,3 +54,4 @@ release.cmd
 *.js
 release
 .ionide/
+vscode.proposed.d.ts
