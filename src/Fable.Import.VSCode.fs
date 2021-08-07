@@ -1525,7 +1525,7 @@ This method shows unexpected behavior and will be removed in the next major upda
     /// being cancelled or when an operation is being cancelled by the
     /// executor of that operation.
     /// </summary>
-    type [<AllowNullLiteral>] CancellationError =
+    type [<ImportMember("vscode"); AllowNullLiteral; AbstractClass>] CancellationError =
         inherit Error
 
     /// <summary>
