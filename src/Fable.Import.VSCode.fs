@@ -5604,7 +5604,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// This class has factory methods for common error-cases, like <c>FileNotFound</c> when
     /// a file or folder doesn't exist, use them like so: <c>throw vscode.FileSystemError.FileNotFound(someUri);</c>
     /// </summary>
-    type [<AllowNullLiteral>] FileSystemError =
+    type [<ImportMember("vscode"); AbstractClass; AllowNullLiteral>] FileSystemError =
         inherit Error
         /// <summary>
         /// A code that identifies this error.
