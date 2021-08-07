@@ -853,10 +853,10 @@
   resolved "https://registry.yarnpkg.com/@types/showdown/-/showdown-1.9.3.tgz#eaa881b03a32d3720184731754d3025fc450b970"
   integrity sha512-akvzSmrvY4J5d3tHzUUiQr0xpjd4Nb3uzWW6dtwzYJ+qW/KdWw5F8NLatnor5q/1LURHnzDA1ReEwCVqcatRnw==
 
-"@types/vscode@^1.48.0":
-  version "1.58.1"
-  resolved "https://registry.yarnpkg.com/@types/vscode/-/vscode-1.58.1.tgz#7deae08792adc73fa57383244a0c79d3530df4f7"
-  integrity sha512-sa76rDXiSif09he8KoaWWUQxsuBr2+uND0xn1GUbEODkuEjp2p7Rqd3t5qlvklfmAedLFdL7MdnsPa57uzwcOw==
+"@types/vscode@^1.59.0":
+  version "1.59.0"
+  resolved "https://registry.yarnpkg.com/@types/vscode/-/vscode-1.59.0.tgz#11c93f5016926126bf30b47b9ece3bd617eeef31"
+  integrity sha512-Zg38rusx2nU6gy6QdF7v4iqgxNfxzlBlDhrRCjOiPQp+sfaNrp3f9J6OHIhpGNN1oOAca4+9Hq0+8u3jwzPMlQ==
 
 "@types/ws@^7.2.6":
   version "7.4.7"
@@ -3573,9 +3573,9 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     safe-regex "^1.1.0"
 
 ts2fable@^0.8.0-build.616:
-  version "0.8.0-build.616"
-  resolved "https://registry.yarnpkg.com/ts2fable/-/ts2fable-0.8.0-build.616.tgz#b8198d47d3625734f31c79c4e605fb782e770f20"
-  integrity sha512-fLudugsLJjEXsiPSu9dAk1RjjokT2WMi6N3pyqwgOdwdAX1eLpfGa0luKRrWqYnMbBkg9tR4zvWCadIDobTaLQ==
+  version "0.8.0-build.618"
+  resolved "https://registry.yarnpkg.com/ts2fable/-/ts2fable-0.8.0-build.618.tgz#387d5aaa1d033caba9e15fa0a91058c72642db66"
+  integrity sha512-OtInEhVvfGiFXhvCqZFdYPa3FKy/fDHTBQ0EiDByWdwqWJVDQYBBbMAUYNLrn/1Lqm9dvb3ZMLgytXKg6xdnmg==
   dependencies:
     typescript "3.7.4"
 

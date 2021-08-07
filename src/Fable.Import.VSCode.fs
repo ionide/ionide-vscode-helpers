@@ -1,7 +1,7 @@
-// ts2fable 0.8.0-build.616
+// ts2fable 0.8.0-build.618
 module rec Fable.Import.VSCode
 
-// #nowarn "3390" // disable warnings for invalid XML comments
+#nowarn "3390" // disable warnings for invalid XML comments
 #nowarn "0044" // disable warnings for `Obsolete` usage
 
 open System
@@ -15,13 +15,13 @@ type ReadonlyArray<'T> = System.Collections.Generic.IReadOnlyList<'T>
 type RegExp = System.Text.RegularExpressions.Regex
 
 /// <summary>
-/// Type Definition for Visual Studio Code 1.58 Extension API
+/// Type Definition for Visual Studio Code 1.59 Extension API
 /// See <see href="https://code.visualstudio.com/api" /> for more information
 /// </summary>
 let [<Import("*","vscode")>] vscode: Vscode.IExports = jsNative
 
 /// <summary>
-/// Type Definition for Visual Studio Code 1.58 Extension API
+/// Type Definition for Visual Studio Code 1.59 Extension API
 /// See <see href="https://code.visualstudio.com/api" /> for more information
 /// </summary>
 module Vscode =
@@ -165,6 +165,13 @@ module Vscode =
     let [<Import("comments","vscode")>] comments: Comments.IExports = jsNative
     /// Namespace for authentication.
     let [<Import("authentication","vscode")>] authentication: Authentication.IExports = jsNative
+    /// <summary>
+    /// Namespace for testing functionality. Tests are published by registering
+    /// <see cref="TestController" /> instances, then adding <see cref="TestItem">TestItems</see>.
+    /// Controllers may also describe how to run tests by creating one or more
+    /// <see cref="TestRunProfile" /> instances.
+    /// </summary>
+    let [<Import("tests","vscode")>] tests: Tests.IExports = jsNative
 
     type [<AllowNullLiteral>] IExports =
         /// The version of the editor.
@@ -474,6 +481,20 @@ module Vscode =
         abstract SourceBreakpoint: SourceBreakpointStatic
         /// A breakpoint specified by a function name.
         abstract FunctionBreakpoint: FunctionBreakpointStatic
+        /// <summary>
+        /// A TestRunRequest is a precursor to a <see cref="TestRun" />, which in turn is
+        /// created by passing a request to <see cref="tests.runTests" />. The TestRunRequest
+        /// contains information about which tests should be run, which should not be
+        /// run, and how they are run (via the <see cref="profile" />).
+        /// 
+        /// In general, TestRunRequests are created by the editor and pass to
+        /// <see cref="TestRunProfile.runHandler" />, however you can also create test
+        /// requests and runs outside of the <c>runHandler</c>.
+        /// </summary>
+        abstract TestRunRequest: TestRunRequestStatic
+        /// Message associated with the test state. Can be linked to a specific
+        /// source range -- useful for assertion failures, for example.
+        abstract TestMessage: TestMessageStatic
 
     /// Represents a reference to a command. Provides a title which
     /// will be used to represent a command in the UI and, optionally,
@@ -1504,7 +1525,7 @@ This method shows unexpected behavior and will be removed in the next major upda
     /// being cancelled or when an operation is being cancelled by the
     /// executor of that operation.
     /// </summary>
-    type [<ImportMember("vscode"); AllowNullLiteral; AbstractClass>] CancellationError =
+    type [<AllowNullLiteral>] CancellationError =
         inherit Error
 
     /// <summary>
@@ -3859,6 +3880,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// <summary>Creates a new color range.</summary>
         /// <param name="range">The range the color appears in. Must not be empty.</param>
         /// <param name="color">The value of the color.</param>
+        /// <param name="format">The format in which this color is currently formatted.</param>
         [<EmitConstructor>] abstract Create: range: Range * color: Color -> ColorInformation
 
     /// <summary>
@@ -4674,15 +4696,17 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// </summary>
         abstract text: string with get, set
         /// The tooltip text when you hover over this entry.
-        abstract tooltip: string option with get, set
+        abstract tooltip: U2<string, MarkdownString> option with get, set
         /// The foreground color for this entry.
         abstract color: U2<string, ThemeColor> option with get, set
         /// <summary>
         /// The background color for this entry.
         /// 
-        /// *Note*: only <c>new ThemeColor('statusBarItem.errorBackground')</c> is
-        /// supported for now. More background colors may be supported in the
-        /// future.
+        /// *Note*: only the following colors are supported:
+        /// * <c>new ThemeColor('statusBarItem.errorBackground')</c>
+        /// * <c>new ThemeColor('statusBarItem.warningBackground')</c>
+        /// 
+        /// More background colors may be supported in the future.
         /// 
         /// *Note*: when a background color is set, the statusbar may override
         /// the <c>color</c> choice to ensure the entry is readable in all themes.
@@ -5384,7 +5408,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// A task to execute
     type [<AllowNullLiteral>] TaskStatic =
         /// <summary>Creates a new task.</summary>
-        /// <param name="taskDefinition">The task definition as defined in the taskDefinitions extension point.</param>
+        /// <param name="definition">The task definition as defined in the taskDefinitions extension point.</param>
         /// <param name="scope">Specifies the task's scope. It is either a global or a workspace task or a task for a specific workspace folder. Global tasks are currently not supported.</param>
         /// <param name="name">The task's name. Is presented in the user interface.</param>
         /// <param name="source">The task's source (e.g. 'gulp', 'npm', ...). Is presented in the user interface.</param>
@@ -5396,7 +5420,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// </param>
         [<EmitConstructor>] abstract Create: taskDefinition: TaskDefinition * scope: U2<WorkspaceFolder, TaskScope> * name: string * source: string * ?execution: U3<ProcessExecution, ShellExecution, CustomExecution> * ?problemMatchers: U2<string, ResizeArray<string>> -> Task
         /// <summary>Creates a new task.</summary>
-        /// <param name="taskDefinition">The task definition as defined in the taskDefinitions extension point.</param>
+        /// <param name="definition">The task definition as defined in the taskDefinitions extension point.</param>
         /// <param name="name">The task's name. Is presented in the user interface.</param>
         /// <param name="source">The task's source (e.g. 'gulp', 'npm', ...). Is presented in the user interface.</param>
         /// <param name="execution">The process or shell execution.</param>
@@ -5580,7 +5604,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// This class has factory methods for common error-cases, like <c>FileNotFound</c> when
     /// a file or folder doesn't exist, use them like so: <c>throw vscode.FileSystemError.FileNotFound(someUri);</c>
     /// </summary>
-    type [<ImportMember("vscode"); AbstractClass; AllowNullLiteral>] FileSystemError =
+    type [<AllowNullLiteral>] FileSystemError =
         inherit Error
         /// <summary>
         /// A code that identifies this error.
@@ -5795,13 +5819,13 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// <param name="options">Defines if trash can should be used and if deletion of folders is recursive</param>
         abstract delete: uri: Uri * ?options: FileSystemDeleteOptions -> Thenable<unit>
         /// <summary>Rename a file or folder.</summary>
-        /// <param name="source">The existing file.</param>
-        /// <param name="target">The new location.</param>
+        /// <param name="oldUri">The existing file.</param>
+        /// <param name="newUri">The new location.</param>
         /// <param name="options">Defines if existing files should be overwritten.</param>
         abstract rename: source: Uri * target: Uri * ?options: FileSystemRenameOptions -> Thenable<unit>
         /// <summary>Copy files or folders.</summary>
         /// <param name="source">The existing file.</param>
-        /// <param name="target">The destination location.</param>
+        /// <param name="destination">The destination location.</param>
         /// <param name="options">Defines if existing files should be overwritten.</param>
         abstract copy: source: Uri * target: Uri * ?options: FileSystemCopyOptions -> Thenable<unit>
         /// <summary>
@@ -5890,7 +5914,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// &lt;/script&gt;
         /// </code>
         /// 
-        /// To load a resources from the workspace inside a webview, use the <c>{@link Webview.asWebviewUri asWebviewUri}</c> method
+        /// To load a resources from the workspace inside a webview, use the <see cref="Webview.asWebviewUri"><c>asWebviewUri</c></see> method
         /// and ensure the resource's directory is listed in <see cref="WebviewOptions.localResourceRoots"><c>WebviewOptions.localResourceRoots</c></see>.
         /// 
         /// Keep in mind that even though webviews are sandboxed, they still allow running scripts and loading arbitrary content,
@@ -6058,7 +6082,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// webview first becomes visible after the restart, this state is passed to <c>deserializeWebviewPanel</c>.
     /// The extension can then restore the old <c>WebviewPanel</c> from this state.
     /// </summary>
-    /// <typeparam name="T">Type of the webview's state.</typeparam>
+    /// <param name="T">Type of the webview's state.</param>
     type WebviewPanelSerializer =
         WebviewPanelSerializer<obj>
 
@@ -6153,7 +6177,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract show: ?preserveFocus: bool -> unit
 
     /// <summary>Additional information the webview view being resolved.</summary>
-    /// <typeparam name="T">Type of the webview's state.</typeparam>
+    /// <param name="T">Type of the webview's state.</param>
     type WebviewViewResolveContext =
         WebviewViewResolveContext<obj>
 
@@ -6348,7 +6372,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// You should use this type of custom editor when dealing with binary files or more complex scenarios. For simple
     /// text based documents, use <see cref="CustomTextEditorProvider"><c>CustomTextEditorProvider</c></see> instead.
     /// </summary>
-    /// <typeparam name="T">Type of the custom document returned by this provider.</typeparam>
+    /// <param name="T">Type of the custom document returned by this provider.</param>
     type CustomReadonlyEditorProvider =
         CustomReadonlyEditorProvider<CustomDocument>
 
@@ -6403,7 +6427,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// You should use this type of custom editor when dealing with binary files or more complex scenarios. For simple
     /// text based documents, use <see cref="CustomTextEditorProvider"><c>CustomTextEditorProvider</c></see> instead.
     /// </summary>
-    /// <typeparam name="T">Type of the custom document returned by this provider.</typeparam>
+    /// <param name="T">Type of the custom document returned by this provider.</param>
     type CustomEditorProvider =
         CustomEditorProvider<CustomDocument>
 
@@ -7315,7 +7339,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract onDidChangeTreeData: Event<U2<'T, unit> option> option with get, set
         /// <summary>Get <see cref="TreeItem" /> representation of the <c>element</c></summary>
         /// <param name="element">The element for which <see cref="TreeItem" /> representation is asked for.</param>
-        /// <returns>TreeItem representation of the element</returns>
+        /// <returns>representation of the element</returns>
         abstract getTreeItem: element: 'T -> U2<TreeItem, Thenable<TreeItem>>
         /// <summary>Get the children of <c>element</c> or root if no element is passed.</summary>
         /// <param name="element">The element from which the provider gets children. Can be <c>undefined</c>.</param>
@@ -8952,19 +8976,9 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// <param name="selector">A selector that defines the documents this provider is applicable to.</param>
             /// <param name="provider">A signature help provider.</param>
             /// <param name="triggerCharacters">Trigger signature help when the user types one of the characters, like <c>,</c> or <c>(</c>.</param>
-            /// <returns>A <see cref="Disposable" /> that unregisters this provider when being disposed.</returns>
-            abstract registerSignatureHelpProvider: selector: DocumentSelector * provider: SignatureHelpProvider * [<ParamArray>] triggerCharacters: string[] -> Disposable
-            /// <summary>
-            /// Register a signature help provider.
-            /// 
-            /// Multiple providers can be registered for a language. In that case providers are sorted
-            /// by their <see cref="languages.match">score</see> and called sequentially until a provider returns a
-            /// valid result.
-            /// </summary>
-            /// <param name="selector">A selector that defines the documents this provider is applicable to.</param>
-            /// <param name="provider">A signature help provider.</param>
             /// <param name="metadata">Information about the provider.</param>
             /// <returns>A <see cref="Disposable" /> that unregisters this provider when being disposed.</returns>
+            abstract registerSignatureHelpProvider: selector: DocumentSelector * provider: SignatureHelpProvider * [<ParamArray>] triggerCharacters: string[] -> Disposable
             abstract registerSignatureHelpProvider: selector: DocumentSelector * provider: SignatureHelpProvider * metadata: SignatureHelpProviderMetadata -> Disposable
             /// <summary>
             /// Register a document link provider.
@@ -9071,6 +9085,30 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract outputs: ResizeArray<NotebookCellOutput>
         /// <summary>The most recent <see cref="NotebookCellExecutionSummary">execution summary</see> for this cell.</summary>
         abstract executionSummary: NotebookCellExecutionSummary option
+
+    /// <summary>
+    /// Represents a notebook editor that is attached to a <see cref="NotebookDocument">notebook</see>.
+    /// Additional properties of the NotebookEditor are available in the proposed
+    /// API, which will be finalized later.
+    /// </summary>
+    type [<AllowNullLiteral>] NotebookEditor =
+        interface end
+
+    /// <summary>Renderer messaging is used to communicate with a single renderer. It's returned from <see cref="notebooks.createRendererMessaging" />.</summary>
+    type [<AllowNullLiteral>] NotebookRendererMessaging =
+        /// An event that fires when a message is received from a renderer.
+        abstract onDidReceiveMessage: Event<NotebookRendererMessagingOnDidReceiveMessageEvent>
+        /// <summary>Send a message to one or all renderer.</summary>
+        /// <param name="message">Message to send</param>
+        /// <param name="editor">
+        /// Editor to target with the message. If not provided, the
+        /// message is sent to all renderers.
+        /// </param>
+        /// <returns>
+        /// a boolean indicating whether the message was successfully
+        /// delivered to any renderer.
+        /// </returns>
+        abstract postMessage: message: obj option * ?editor: NotebookEditor -> Thenable<bool>
 
     /// <summary>
     /// Represents a notebook which itself is a sequence of <see cref="NotebookCell">code or markup cells</see>. Notebook documents are
@@ -9594,6 +9632,16 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// <param name="provider">A cell status bar provider.</param>
             /// <returns>A <see cref="Disposable" /> that unregisters this provider when being disposed.</returns>
             abstract registerNotebookCellStatusBarItemProvider: notebookType: string * provider: NotebookCellStatusBarItemProvider -> Disposable
+            /// <summary>
+            /// Creates a new messaging instance used to communicate with a specific renderer.
+            /// 
+            /// * *Note 1:* Extensions can only create renderer that they have defined in their <c>package.json</c>-file
+            /// * *Note 2:* A renderer only has access to messaging if <c>requiresMessaging</c> is set to <c>always</c> or <c>optional</c> in
+            /// its <c>notebookRenderer</c> contribution.
+            /// </summary>
+            /// <param name="rendererId">The renderer ID to communicate with</param>
+            /// <returns>A new notebook renderer messaging object.</returns>
+            abstract createRendererMessaging: rendererId: string -> NotebookRendererMessaging
 
     /// Represents the input box in the Source Control viewlet.
     type [<AllowNullLiteral>] SourceControlInputBox =
@@ -9620,7 +9668,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// The icon path for a specific
         /// <see cref="SourceControlResourceState">source control resource state</see>.
         /// </summary>
-        abstract iconPath: U2<string, Uri> option
+        abstract iconPath: U3<string, Uri, ThemeIcon> option
 
     /// <summary>
     /// The decorations for a <see cref="SourceControlResourceState">source control resource state</see>.
@@ -10064,6 +10112,10 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// When specified the newly created debug session is registered as a "child" session of this
         /// "parent" debug session.
         abstract parentSession: DebugSession option with get, set
+        /// Controls whether lifecycle requests like 'restart' are sent to the newly created session or its parent session.
+        /// By default (if the property is false or missing), lifecycle requests are sent to the new session.
+        /// This property is ignored if the session has no parent session.
+        abstract lifecycleManagedByParent: bool option with get, set
         /// Controls whether this session should have a separate debug console or share it
         /// with the parent session. Has no effect for sessions which do not have a parent session.
         /// Defaults to Separate.
@@ -10128,7 +10180,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// Registering a single provider with resolve methods for different trigger kinds, results in the same resolve methods called multiple times.
             /// More than one provider can be registered for the same type.
             /// </summary>
-            /// <param name="debugType">The debug type for which the provider is registered.</param>
+            /// <param name="type">The debug type for which the provider is registered.</param>
             /// <param name="provider">The <see cref="DebugConfigurationProvider">debug configuration provider</see> to register.</param>
             /// <param name="triggerKind">The <see cref="DebugConfigurationProviderTrigger">trigger</see> for which the 'provideDebugConfiguration' method of the provider is registered. If <c>triggerKind</c> is missing, the value <c>DebugConfigurationProviderTriggerKind.Initial</c> is assumed.</param>
             /// <returns>A <see cref="Disposable" /> that unregisters this provider when being disposed.</returns>
@@ -10565,6 +10617,388 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// <returns>A <see cref="Disposable" /> that unregisters this provider when being disposed.</returns>
             abstract registerAuthenticationProvider: id: string * label: string * provider: AuthenticationProvider * ?options: AuthenticationProviderOptions -> Disposable
 
+    /// <summary>
+    /// Namespace for testing functionality. Tests are published by registering
+    /// <see cref="TestController" /> instances, then adding <see cref="TestItem">TestItems</see>.
+    /// Controllers may also describe how to run tests by creating one or more
+    /// <see cref="TestRunProfile" /> instances.
+    /// </summary>
+    module Tests =
+
+        type [<AllowNullLiteral>] IExports =
+            /// <summary>Creates a new test controller.</summary>
+            /// <param name="id">Identifier for the controller, must be globally unique.</param>
+            /// <param name="label">A human-readable label for the controller.</param>
+            /// <returns>An instance of the <see cref="TestController" />.</returns>
+            abstract createTestController: id: string * label: string -> TestController
+
+    /// <summary>The kind of executions that <see cref="TestRunProfile">TestRunProfiles</see> control.</summary>
+    type [<RequireQualifiedAccess>] TestRunProfileKind =
+        | Run = 1
+        | Debug = 2
+        | Coverage = 3
+
+    /// <summary>A TestRunProfile describes one way to execute tests in a <see cref="TestController" />.</summary>
+    type [<AllowNullLiteral>] TestRunProfile =
+        /// <summary>
+        /// Label shown to the user in the UI.
+        /// 
+        /// Note that the label has some significance if the user requests that
+        /// tests be re-run in a certain way. For example, if tests were run
+        /// normally and the user requests to re-run them in debug mode, the editor
+        /// will attempt use a configuration with the same label of the <c>Debug</c>
+        /// kind. If there is no such configuration, the default will be used.
+        /// </summary>
+        abstract label: string with get, set
+        /// Configures what kind of execution this profile controls. If there
+        /// are no profiles for a kind, it will not be available in the UI.
+        abstract kind: TestRunProfileKind
+        /// <summary>
+        /// Controls whether this profile is the default action that will
+        /// be taken when its kind is actioned. For example, if the user clicks
+        /// the generic "run all" button, then the default profile for
+        /// <see cref="TestRunProfileKind.Run" /> will be executed, although the
+        /// user can configure this.
+        /// </summary>
+        abstract isDefault: bool with get, set
+        /// If this method is present, a configuration gear will be present in the
+        /// UI, and this method will be invoked when it's clicked. When called,
+        /// you can take other editor actions, such as showing a quick pick or
+        /// opening a configuration file.
+        abstract configureHandler: (unit -> unit) option with get, set
+        /// <summary>
+        /// Handler called to start a test run. When invoked, the function should call
+        /// <see cref="TestController.createTestRun" /> at least once, and all test runs
+        /// associated with the request should be created before the function returns
+        /// or the returned promise is resolved.
+        /// </summary>
+        /// <param name="request">Request information for the test run.</param>
+        /// <param name="cancellationToken">
+        /// Token that signals the used asked to abort the
+        /// test run. If cancellation is requested on this token, all <see cref="TestRun" />
+        /// instances associated with the request will be
+        /// automatically cancelled as well.
+        /// </param>
+        abstract runHandler: (TestRunRequest -> CancellationToken -> U2<Thenable<unit>, unit>) with get, set
+        /// Deletes the run profile.
+        abstract dispose: unit -> unit
+
+    /// <summary>
+    /// Entry point to discover and execute tests. It contains <see cref="TestController.items" /> which
+    /// are used to populate the editor UI, and is associated with
+    /// <see cref="TestController.createRunProfile">run profiles</see> to allow
+    /// for tests to be executed.
+    /// </summary>
+    type [<AllowNullLiteral>] TestController =
+        /// <summary>
+        /// The id of the controller passed in <see cref="vscode.tests.createTestController" />.
+        /// This must be globally unique.
+        /// </summary>
+        abstract id: string
+        /// Human-readable label for the test controller.
+        abstract label: string with get, set
+        /// <summary>
+        /// A collection of "top-level" <see cref="TestItem" /> instances, which can in
+        /// turn have their own <see cref="TestItem.children">| children</see> to form the
+        /// "test tree."
+        /// 
+        /// The extension controls when to add tests. For example, extensions should
+        /// add tests for a file when <see cref="vscode.workspace.onDidOpenTextDocument" />
+        /// fires in order for decorations for tests within a file to be visible.
+        /// 
+        /// However, the editor may sometimes explicitly request children using the
+        /// <see cref="resolveHandler" /> See the documentation on that method for more details.
+        /// </summary>
+        abstract items: TestItemCollection
+        /// <summary>
+        /// Creates a profile used for running tests. Extensions must create
+        /// at least one profile in order for tests to be run.
+        /// </summary>
+        /// <param name="label">A human-readable label for this profile.</param>
+        /// <param name="kind">Configures what kind of execution this profile manages.</param>
+        /// <param name="runHandler">Function called to start a test run.</param>
+        /// <param name="isDefault">Whether this is the default action for its kind.</param>
+        /// <returns>
+        /// An instance of a <see cref="TestRunProfile" />, which is automatically
+        /// associated with this controller.
+        /// </returns>
+        abstract createRunProfile: label: string * kind: TestRunProfileKind * runHandler: (TestRunRequest -> CancellationToken -> U2<Thenable<unit>, unit>) * ?isDefault: bool -> TestRunProfile
+        /// <summary>
+        /// A function provided by the extension that the editor may call to request
+        /// children of a test item, if the <see cref="TestItem.canResolveChildren" /> is
+        /// <c>true</c>. When called, the item should discover children and call
+        /// <see cref="vscode.tests.createTestItem" /> as children are discovered.
+        /// 
+        /// Generally the extension manages the lifecycle of test items, but under
+        /// certain conditions the editor may request the children of a specific
+        /// item to be loaded. For example, if the user requests to re-run tests
+        /// after reloading the editor, the editor may need to call this method
+        /// to resolve the previously-run tests.
+        /// 
+        /// The item in the explorer will automatically be marked as "busy" until
+        /// the function returns or the returned thenable resolves.
+        /// </summary>
+        /// <param name="item">
+        /// An unresolved test item for which children are being
+        /// requested, or <c>undefined</c> to resolve the controller's initial <see cref="items" />.
+        /// </param>
+        abstract resolveHandler: (TestItem option -> U2<Thenable<unit>, unit>) option with get, set
+        /// <summary>
+        /// Creates a <see cref="TestRun" />. This should be called by the
+        /// <see cref="TestRunProfile" /> when a request is made to execute tests, and may
+        /// also be called if a test run is detected externally. Once created, tests
+        /// that are included in the request will be moved into the queued state.
+        /// 
+        /// All runs created using the same <c>request</c> instance will be grouped
+        /// together. This is useful if, for example, a single suite of tests is
+        /// run on multiple platforms.
+        /// </summary>
+        /// <param name="request">
+        /// Test run request. Only tests inside the <c>include</c> may be
+        /// modified, and tests in its <c>exclude</c> are ignored.
+        /// </param>
+        /// <param name="name">
+        /// The human-readable name of the run. This can be used to
+        /// disambiguate multiple sets of results in a test run. It is useful if
+        /// tests are run across multiple platforms, for example.
+        /// </param>
+        /// <param name="persist">
+        /// Whether the results created by the run should be
+        /// persisted in the editor. This may be false if the results are coming from
+        /// a file already saved externally, such as a coverage information file.
+        /// </param>
+        /// <returns>
+        /// An instance of the <see cref="TestRun" />. It will be considered "running"
+        /// from the moment this method is invoked until <see cref="TestRun.end" /> is called.
+        /// </returns>
+        abstract createTestRun: request: TestRunRequest * ?name: string * ?persist: bool -> TestRun
+        /// <summary>
+        /// Creates a new managed <see cref="TestItem" /> instance. It can be added into
+        /// the <see cref="TestItem.children" /> of an existing item, or into the
+        /// <see cref="TestController.items" />.
+        /// </summary>
+        /// <param name="id">
+        /// Identifier for the TestItem. The test item's ID must be unique
+        /// in the <see cref="TestItemCollection" /> it's added to.
+        /// </param>
+        /// <param name="label">Human-readable label of the test item.</param>
+        /// <param name="uri">URI this TestItem is associated with. May be a file or directory.</param>
+        abstract createTestItem: id: string * label: string * ?uri: Uri -> TestItem
+        /// Unregisters the test controller, disposing of its associated tests
+        /// and unpersisted results.
+        abstract dispose: unit -> unit
+
+    /// <summary>
+    /// A TestRunRequest is a precursor to a <see cref="TestRun" />, which in turn is
+    /// created by passing a request to <see cref="tests.runTests" />. The TestRunRequest
+    /// contains information about which tests should be run, which should not be
+    /// run, and how they are run (via the <see cref="profile" />).
+    /// 
+    /// In general, TestRunRequests are created by the editor and pass to
+    /// <see cref="TestRunProfile.runHandler" />, however you can also create test
+    /// requests and runs outside of the <c>runHandler</c>.
+    /// </summary>
+    type [<AllowNullLiteral>] TestRunRequest =
+        /// <summary>
+        /// A filter for specific tests to run. If given, the extension should run
+        /// all of the included tests and all their children, excluding any tests
+        /// that appear in <see cref="TestRunRequest.exclude" />. If this property is
+        /// undefined, then the extension should simply run all tests.
+        /// 
+        /// The process of running tests should resolve the children of any test
+        /// items who have not yet been resolved.
+        /// </summary>
+        abstract ``include``: ResizeArray<TestItem> option
+        /// An array of tests the user has marked as excluded from the test included
+        /// in this run; exclusions should apply after inclusions.
+        /// 
+        /// May be omitted if no exclusions were requested. Test controllers should
+        /// not run excluded tests or any children of excluded tests.
+        abstract exclude: ResizeArray<TestItem> option
+        /// The profile used for this request. This will always be defined
+        /// for requests issued from the editor UI, though extensions may
+        /// programmatically create requests not associated with any profile.
+        abstract profile: TestRunProfile option
+
+    /// <summary>
+    /// A TestRunRequest is a precursor to a <see cref="TestRun" />, which in turn is
+    /// created by passing a request to <see cref="tests.runTests" />. The TestRunRequest
+    /// contains information about which tests should be run, which should not be
+    /// run, and how they are run (via the <see cref="profile" />).
+    /// 
+    /// In general, TestRunRequests are created by the editor and pass to
+    /// <see cref="TestRunProfile.runHandler" />, however you can also create test
+    /// requests and runs outside of the <c>runHandler</c>.
+    /// </summary>
+    type [<AllowNullLiteral>] TestRunRequestStatic =
+        /// <param name="tests">Array of specific tests to run, or undefined to run all tests</param>
+        /// <param name="exclude">An array of tests to exclude from the run.</param>
+        /// <param name="profile">The run profile used for this request.</param>
+        [<EmitConstructor>] abstract Create: ?``include``: ResizeArray<TestItem> * ?exclude: ResizeArray<TestItem> * ?profile: TestRunProfile -> TestRunRequest
+
+    /// <summary>Options given to <see cref="TestController.runTests" /></summary>
+    type [<AllowNullLiteral>] TestRun =
+        /// The human-readable name of the run. This can be used to
+        /// disambiguate multiple sets of results in a test run. It is useful if
+        /// tests are run across multiple platforms, for example.
+        abstract name: string option
+        /// A cancellation token which will be triggered when the test run is
+        /// canceled from the UI.
+        abstract token: CancellationToken
+        /// Whether the test run will be persisted across reloads by the editor.
+        abstract isPersisted: bool
+        /// <summary>Indicates a test is queued for later execution.</summary>
+        /// <param name="test">Test item to update.</param>
+        abstract enqueued: test: TestItem -> unit
+        /// <summary>Indicates a test has started running.</summary>
+        /// <param name="test">Test item to update.</param>
+        abstract started: test: TestItem -> unit
+        /// <summary>Indicates a test has been skipped.</summary>
+        /// <param name="test">Test item to update.</param>
+        abstract skipped: test: TestItem -> unit
+        /// <summary>
+        /// Indicates a test has failed. You should pass one or more
+        /// <see cref="TestMessage">TestMessages</see> to describe the failure.
+        /// </summary>
+        /// <param name="test">Test item to update.</param>
+        /// <param name="messages">Messages associated with the test failure.</param>
+        /// <param name="duration">How long the test took to execute, in milliseconds.</param>
+        abstract failed: test: TestItem * message: U2<TestMessage, ResizeArray<TestMessage>> * ?duration: float -> unit
+        /// <summary>
+        /// Indicates a test has errored. You should pass one or more
+        /// <see cref="TestMessage">TestMessages</see> to describe the failure. This differs
+        /// from the "failed" state in that it indicates a test that couldn't be
+        /// executed at all, from a compilation error for example.
+        /// </summary>
+        /// <param name="test">Test item to update.</param>
+        /// <param name="messages">Messages associated with the test failure.</param>
+        /// <param name="duration">How long the test took to execute, in milliseconds.</param>
+        abstract errored: test: TestItem * message: U2<TestMessage, ResizeArray<TestMessage>> * ?duration: float -> unit
+        /// <summary>Indicates a test has passed.</summary>
+        /// <param name="test">Test item to update.</param>
+        /// <param name="duration">How long the test took to execute, in milliseconds.</param>
+        abstract passed: test: TestItem * ?duration: float -> unit
+        /// <summary>
+        /// Appends raw output from the test runner. On the user's request, the
+        /// output will be displayed in a terminal. ANSI escape sequences,
+        /// such as colors and text styles, are supported.
+        /// </summary>
+        /// <param name="output">Output text to append.</param>
+        abstract appendOutput: output: string -> unit
+        /// Signals that the end of the test run. Any tests included in the run whose
+        /// states have not been updated will have their state reset.
+        abstract ``end``: unit -> unit
+
+    /// <summary>
+    /// Collection of test items, found in <see cref="TestItem.children" /> and
+    /// <see cref="TestController.items" />.
+    /// </summary>
+    type [<AllowNullLiteral>] TestItemCollection =
+        /// Gets the number of items in the collection.
+        abstract size: float
+        /// <summary>Replaces the items stored by the collection.</summary>
+        /// <param name="items">Items to store.</param>
+        abstract replace: items: ResizeArray<TestItem> -> unit
+        /// <summary>Iterate over each entry in this collection.</summary>
+        /// <param name="callback">Function to execute for each entry.</param>
+        /// <param name="thisArg">The <c>this</c> context used when invoking the handler function.</param>
+        abstract forEach: callback: (TestItem -> TestItemCollection -> obj) * ?thisArg: obj -> unit
+        /// <summary>
+        /// Adds the test item to the children. If an item with the same ID already
+        /// exists, it'll be replaced.
+        /// </summary>
+        /// <param name="items">Item to add.</param>
+        abstract add: item: TestItem -> unit
+        /// <summary>Removes a single test item from the collection.</summary>
+        /// <param name="itemId">Item ID to delete.</param>
+        abstract delete: itemId: string -> unit
+        /// <summary>Efficiently gets a test item by ID, if it exists, in the children.</summary>
+        /// <param name="itemId">Item ID to get.</param>
+        /// <returns>The found item or undefined if it does not exist.</returns>
+        abstract get: itemId: string -> TestItem option
+
+    /// <summary>
+    /// An item shown in the "test explorer" view.
+    /// 
+    /// A <c>TestItem</c> can represent either a test suite or a test itself, since
+    /// they both have similar capabilities.
+    /// </summary>
+    type [<AllowNullLiteral>] TestItem =
+        /// <summary>
+        /// Identifier for the <c>TestItem</c>. This is used to correlate
+        /// test results and tests in the document with those in the workspace
+        /// (test explorer). This cannot change for the lifetime of the <c>TestItem</c>,
+        /// and must be unique among its parent's direct children.
+        /// </summary>
+        abstract id: string
+        /// <summary>URI this <c>TestItem</c> is associated with. May be a file or directory.</summary>
+        abstract uri: Uri option
+        /// The children of this test item. For a test suite, this may contain the
+        /// individual test cases or nested suites.
+        abstract children: TestItemCollection
+        /// <summary>
+        /// The parent of this item. It's set automatically, and is undefined
+        /// top-level items in the <see cref="TestController.items" /> and for items that
+        /// aren't yet included in another item's <see cref="children" />.
+        /// </summary>
+        abstract parent: TestItem option
+        /// <summary>
+        /// Indicates whether this test item may have children discovered by resolving.
+        /// 
+        /// If true, this item is shown as expandable in the Test Explorer view and
+        /// expanding the item will cause <see cref="TestController.resolveHandler" />
+        /// to be invoked with the item.
+        /// 
+        /// Default to <c>false</c>.
+        /// </summary>
+        abstract canResolveChildren: bool with get, set
+        /// <summary>
+        /// Controls whether the item is shown as "busy" in the Test Explorer view.
+        /// This is useful for showing status while discovering children.
+        /// 
+        /// Defaults to <c>false</c>.
+        /// </summary>
+        abstract busy: bool with get, set
+        /// Display name describing the test case.
+        abstract label: string with get, set
+        /// Optional description that appears next to the label.
+        abstract description: string option with get, set
+        /// <summary>
+        /// Location of the test item in its <see cref="uri" />.
+        /// 
+        /// This is only meaningful if the <c>uri</c> points to a file.
+        /// </summary>
+        abstract range: Range option with get, set
+        /// Optional error encountered while loading the test.
+        /// 
+        /// Note that this is not a test result and should only be used to represent errors in
+        /// test discovery, such as syntax errors.
+        abstract error: U2<string, MarkdownString> option with get, set
+
+    /// Message associated with the test state. Can be linked to a specific
+    /// source range -- useful for assertion failures, for example.
+    type [<AllowNullLiteral>] TestMessage =
+        /// Human-readable message text to display.
+        abstract message: U2<string, MarkdownString> with get, set
+        /// <summary>Expected test output. If given with <see cref="actualOutput" />, a diff view will be shown.</summary>
+        abstract expectedOutput: string option with get, set
+        /// <summary>Actual test output. If given with <see cref="expectedOutput" />, a diff view will be shown.</summary>
+        abstract actualOutput: string option with get, set
+        /// Associated file location.
+        abstract location: Location option with get, set
+
+    /// Message associated with the test state. Can be linked to a specific
+    /// source range -- useful for assertion failures, for example.
+    type [<AllowNullLiteral>] TestMessageStatic =
+        /// <summary>Creates a new TestMessage that will present as a diff in the editor.</summary>
+        /// <param name="message">Message to display to the user.</param>
+        /// <param name="expected">Expected output.</param>
+        /// <param name="actual">Actual output.</param>
+        abstract diff: message: U2<string, MarkdownString> * expected: string * actual: string -> TestMessage
+        /// <summary>Creates a new TestMessage instance.</summary>
+        /// <param name="message">The message to show to the user.</param>
+        [<EmitConstructor>] abstract Create: message: U2<string, MarkdownString> -> TestMessage
+
     type [<AllowNullLiteral>] DisposableStaticFrom =
         abstract dispose: (unit -> obj option) with get, set
 
@@ -10681,6 +11115,10 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
 
     type [<AllowNullLiteral>] NotebookCellMetadata =
         [<EmitIndexer>] abstract Item: key: string -> obj option with get, set
+
+    type [<AllowNullLiteral>] NotebookRendererMessagingOnDidReceiveMessageEvent =
+        abstract editor: NotebookEditor
+        abstract message: obj option
 
     type [<AllowNullLiteral>] NotebookCellExecutionSummaryTiming =
         abstract startTime: float with get, set
