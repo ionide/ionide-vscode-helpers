@@ -63,62 +63,47 @@ module Process =
         proc?on $ ("error", f |> unbox) |> ignore
         proc
 
-    let private createCommandAndParameters windowsCommand linuxCommand args = 
-        if isWin () || linuxCommand = "" then
-            windowsCommand, args
-        else
-            let prms = seq { yield windowsCommand; yield! args } |> ResizeArray
-            linuxCommand, prms
-
     /// <summary>
     /// spawns a child process in a directory, using a prefix command on linux if required
     /// </summary>
     /// <param name="dir">the directory to run the command in</param>
-    /// <param name="windowsCommand">the 'base' command to execute</param>
-    /// <param name="linuxCommand">if on linux, this runner command will be used as the command and the windowsCommand will be passed as the first parameter</param>
+    /// <param name="command">the 'base' command to execute</param>
     /// <param name="args">an array of additional CLI args</param>
     /// <returns></returns>
-    let spawnInDir dir windowsCommand linuxCommand args =
+    let spawnInDir dir command args =
         let options = createEmpty<ExecOptions>
         options.cwd <- Some dir
-        let command, args = createCommandAndParameters windowsCommand linuxCommand args
         node.childProcess.spawn(command, args, options)
 
     /// <summary>
     /// Spawns a child process with a prefix command on linux if required.
     /// </summary>
-    /// <param name="windowsCommand">the 'base' command to execute</param>
-    /// <param name="linuxCommand">if on linux, this runner command will be used as the command and the windowsCommand will be passed as the first parameter</param>
+    /// <param name="command">the 'base' command to execute</param>
     /// <param name="args">an array of additional CLI args</param>
     /// <returns>a node child process</returns>
-    let spawn windowsCommand linuxCommand (args: ResizeArray<string>) =
+    let spawn command (args: ResizeArray<string>) =
         let options = createEmpty<ExecOptions>
         options.cwd <- workspace.rootPath
-
-        let cmd, args = createCommandAndParameters windowsCommand linuxCommand args
-        crossSpawn.spawn(cmd, args, options)
+        crossSpawn.spawn(command, args, options)
 
     /// <summary>
     /// Run a command in a local vscode terminal
     /// </summary>
-    /// <param name="windowsCommand">the 'base' command to execute</param>
-    /// <param name="linuxCommand">if on linux, this runner command will be used as the command and the windowsCommand will be passed as the first parameter</param>
+    /// <param name="command">the 'base' command to execute</param>
     /// <param name="args">an array of additional CLI args</param>
     /// <returns>a vscode terminal</returns>
-    let spawnWithShell windowsCommand linuxCommand (args: ResizeArray<string>) =
-        let command, args = createCommandAndParameters windowsCommand linuxCommand args
+    let spawnWithShell command (args: ResizeArray<string>) =
         window.createTerminal("F# Application", command, U2.Case1 args)
 
     /// <summary>
     /// fire off a command in the workspace root and write its output to a channel
     /// </summary>
-    /// <param name="windowsCommand">the 'base' command to execute</param>
-    /// <param name="linuxCommand">if on linux, this runner command will be used as the command and the windowsCommand will be passed as the first parameter</param>
+    /// <param name="command">the 'base' command to execute</param>
     /// <param name="args">an array of additional CLI args</param>
     /// <param name="outputChannel">the output channel to write the stdout/stderr of the process to</param>
     /// <returns></returns>
-    let spawnWithNotification windowsCommand linuxCommand args (outputChannel : OutputChannel) =
-        spawn windowsCommand linuxCommand args
+    let spawnWithNotification command args (outputChannel : OutputChannel) =
+        spawn command args
         |> onOutput(fun e -> e.toString () |> outputChannel.append)
         |> onError (fun e -> e.ToString () |> outputChannel.append)
         |> onErrorOutput(fun e -> e.toString () |> outputChannel.append)
@@ -128,13 +113,12 @@ module Process =
     /// fire off a command in a directory and write its output to a channel
     /// </summary>
     /// <param name="location">the directory to run the command in</param>
-    /// <param name="windowsCommand">the 'base' command to execute</param>
-    /// <param name="linuxCommand">if on linux, this runner command will be used as the command and the windowsCommand will be passed as the first parameter</param>
+    /// <param name="command">the 'base' command to execute</param>
     /// <param name="args">an array of additional CLI args</param>
     /// <param name="outputChannel">the output channel to write the stdout/stderr of the process to</param>
     /// <returns></returns>
-    let spawnWithNotificationInDir location windowsCommand linuxCommand args (outputChannel : OutputChannel) =
-        spawnInDir location windowsCommand linuxCommand args
+    let spawnWithNotificationInDir location command args (outputChannel : OutputChannel) =
+        spawnInDir location command args
         |> onOutput(fun e -> e.toString () |> outputChannel.append)
         |> onError (fun e -> e.ToString () |> outputChannel.append)
         |> onErrorOutput(fun e -> e.toString () |> outputChannel.append)
@@ -154,14 +138,12 @@ module Process =
     /// <summary>
     /// fire off a command and gather the error, if any, and the stdout and stderr streams
     /// </summary>
-    /// <param name="windowsCommand">the 'base' command to execute</param>
-    /// <param name="linuxCommand">if on linux, this runner command will be used as the command and the windowsCommand will be passed as the first parameter</param>
+    /// <param name="command">the 'base' command to execute</param>
     /// <param name="args">an array of additional CLI args</param>
     /// <returns></returns>
-    let exec windowsCommand linuxCommand args : JS.Promise<ExecError option * string * string> =
+    let exec command args : JS.Promise<ExecError option * string * string> =
         let options = createEmpty<ExecOptions>
         options.cwd <- workspace.rootPath
-        let command, args = createCommandAndParameters windowsCommand linuxCommand args
         Promise.create (fun resolve reject ->
             let stdout = ResizeArray()
             let stderr = ResizeArray()
