@@ -149,7 +149,7 @@ module Process =
             let stderr = ResizeArray()
             let mutable error = None
             
-            crossSpawn.spawn(command, args)
+            crossSpawn.spawn(command, args, ?options = None)
             |> onOutput (fun e -> stdout.Add(string e))
             |> onError (fun e -> error <- Some e)
             |> onErrorOutput (fun e -> stderr.Add(string e))
