@@ -136,7 +136,8 @@ module Process =
         )
 
     /// <summary>
-    /// fire off a command and gather the error, if any, and the stdout and stderr streams
+    /// Fire off a command and gather the error, if any, and the stdout and stderr streams.
+    /// The command is fired from the workspace's root path.
     /// </summary>
     /// <param name="command">the 'base' command to execute</param>
     /// <param name="args">an array of additional CLI args</param>
@@ -149,7 +150,7 @@ module Process =
             let stderr = ResizeArray()
             let mutable error = None
             
-            crossSpawn.spawn(command, args, ?options = None)
+            crossSpawn.spawn(command, args, options = options)
             |> onOutput (fun e -> stdout.Add(string e))
             |> onError (fun e -> error <- Some e)
             |> onErrorOutput (fun e -> stderr.Add(string e))
