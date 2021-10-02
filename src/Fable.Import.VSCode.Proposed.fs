@@ -2,11 +2,11 @@
 module rec Fable.Import.VSCode.Proposed
 
 #nowarn "3390" // disable warnings for invalid XML comments
+#nowarn "0044" // disable warnings for `Obsolete` usage
 
 open System
 open Fable.Core
 open Fable.Core.JS
-
 open Fable.Import.VSCode.Vscode
 
 type Error = System.Exception
@@ -38,19 +38,17 @@ let [<Import("*","vscode")>] vscode: Vscode.IExports = jsNative
 module Vscode =
     let [<Import("authentication","vscode")>] authentication: Authentication.IExports = jsNative
     let [<Import("workspace","vscode")>] workspace: Workspace.IExports = jsNative
+    let [<Import("env","vscode")>] env: Env.IExports = jsNative
     /// Be aware that this API will not ever be finalized.
     let [<Import("window","vscode")>] window: Window.IExports = jsNative
     let [<Import("commands","vscode")>] commands: Commands.IExports = jsNative
     let [<Import("notebooks","vscode")>] notebooks: Notebooks.IExports = jsNative
     let [<Import("languages","vscode")>] languages: Languages.IExports = jsNative
     let [<Import("tests","vscode")>] tests: Tests.IExports = jsNative
-    let [<Import("env","vscode")>] env: Env.IExports = jsNative
 
     type [<AllowNullLiteral>] IExports =
         abstract ResolvedAuthority: ResolvedAuthorityStatic
         abstract RemoteAuthorityResolverError: RemoteAuthorityResolverErrorStatic
-        abstract TaskGroup2: TaskGroup2Static
-        abstract Task2: Task2Static
         /// Represents a script that is loaded into the notebook renderer before rendering output. This allows
         /// to provide and share functionality for notebook markup and notebook output renderers.
         abstract NotebookRendererScript: NotebookRendererScriptStatic
@@ -71,8 +69,6 @@ module Vscode =
         abstract BranchCoverage: BranchCoverageStatic
         /// Contains coverage information for a function or method.
         abstract FunctionCoverage: FunctionCoverageStatic
-        /// Represents an item of a type hierarchy, like a class or an interface.
-        abstract TypeHierarchyItem: TypeHierarchyItemStatic
 
     type [<AllowNullLiteral>] MessageOptions =
         /// Do not render a native message box.
@@ -93,17 +89,26 @@ module Vscode =
         abstract extensionHostEnv: ResolvedOptionsExtensionHostEnv option with get, set
         abstract isTrusted: bool option with get, set
 
+    type [<AllowNullLiteral>] TunnelPrivacy =
+        abstract themeIcon: string with get, set
+        abstract id: string with get, set
+        abstract label: string with get, set
+
     type [<AllowNullLiteral>] TunnelOptions =
         abstract remoteAddress: TunnelOptionsRemoteAddress with get, set
         abstract localAddressPort: float option with get, set
         abstract label: string option with get, set
+        [<Obsolete("Use privacy instead")>]
         abstract ``public``: bool option with get, set
+        abstract privacy: string option with get, set
         abstract protocol: string option with get, set
 
     type [<AllowNullLiteral>] TunnelDescription =
         abstract remoteAddress: TunnelOptionsRemoteAddress with get, set
         abstract localAddress: U2<TunnelOptionsRemoteAddress, string> with get, set
+        [<Obsolete("Use privacy instead")>]
         abstract ``public``: bool option with get, set
+        abstract privacy: string option with get, set
         abstract protocol: string option with get, set
 
     type [<AllowNullLiteral>] Tunnel =
@@ -302,6 +307,22 @@ module Vscode =
         abstract authorityPrefix: string option with get, set
         abstract stripPathStartingSeparator: bool option with get, set
 
+    module Env =
+
+        type [<AllowNullLiteral>] IExports =
+            inherit Fable.Import.VSCode.Vscode.Env.IExports
+            /// <summary>
+            /// The authority part of the current opened <c>vscode-remote://</c> URI.
+            /// Defined by extensions, e.g. <c>ssh-remote+${host}</c> for remotes using a secure shell.
+            /// 
+            /// *Note* that the value is <c>undefined</c> when there is no remote extension host but that the
+            /// value is defined in all extension hosts (local and remote) in case a remote extension host
+            /// exists. Use <see cref="Extension.extensionKind" /> to know if
+            /// a specific extension runs remote or not.
+            /// </summary>
+            abstract remoteAuthority: string option
+            abstract openExternal: target: Uri * ?options: OpenExternalOptions -> Thenable<bool>
+
     type [<AllowNullLiteral>] WebviewEditorInset =
         abstract editor: TextEditor
         abstract line: float
@@ -343,8 +364,22 @@ module Vscode =
             /// <param name="metadata">Additional information about the opener.</param>
             /// <returns>Disposable that unregisters the opener.</returns>
             abstract registerExternalUriOpener: id: string * opener: ExternalUriOpener * metadata: ExternalUriOpenerMetadata -> Disposable
-            abstract openEditors: ReadonlyArray<OpenEditorInfo>
-            abstract onDidChangeOpenEditors: Event<unit>
+            /// A list of all opened tabs
+            /// Ordered from left to right
+            abstract tabs: ResizeArray<Tab>
+            /// The currently active tab
+            /// Undefined if no tabs are currently opened
+            abstract activeTab: Tab option
+            /// <summary>
+            /// An <see cref="Event" /> which fires when the array of <see cref="window.tabs">tabs</see>
+            /// has changed.
+            /// </summary>
+            abstract onDidChangeTabs: Event<ResizeArray<Tab>>
+            /// <summary>
+            /// An <see cref="Event" /> which fires when the <see cref="window.activeTab">activeTab</see>
+            /// has changed.
+            /// </summary>
+            abstract onDidChangeActiveTab: Event<Tab option>
             abstract getInlineCompletionItemController: provider: InlineCompletionItemProvider<'T> -> InlineCompletionController<'T> when 'T :> InlineCompletionItem
 
     type [<AllowNullLiteral>] FileSystemProvider =
@@ -610,6 +645,8 @@ module Vscode =
     /// <summary>Options for <see cref="debug.startDebugging">starting a debug session</see>.</summary>
     type [<AllowNullLiteral>] DebugSessionOptions =
         abstract debugUI: DebugSessionOptionsDebugUI option with get, set
+        /// <summary>When true, a save will not be triggered for open editors when starting a debug session, regardless of the value of the <c>debug.saveBeforeStart</c> setting.</summary>
+        abstract suppressSaveBeforeStart: bool option with get, set
 
     /// <summary>
     /// A DebugProtocolVariableContainer is an opaque stand-in type for the intersection of the Scope and Variable types defined in the Debug Adapter Protocol.
@@ -636,14 +673,14 @@ module Vscode =
 
     type [<AllowNullLiteral>] SourceControlInputBoxValidation =
         /// The validation message to display.
-        abstract message: string
+        abstract message: U2<string, MarkdownString>
         /// The validation type.
         abstract ``type``: SourceControlInputBoxValidationType
 
     /// Represents the input box in the Source Control viewlet.
     type [<AllowNullLiteral>] SourceControlInputBox =
         /// Shows a transient contextual message on the input.
-        abstract showValidationMessage: message: string * ``type``: SourceControlInputBoxValidationType -> unit
+        abstract showValidationMessage: message: U2<string, MarkdownString> * ``type``: SourceControlInputBoxValidationType -> unit
         /// A validation function for the input box. It's possible to change
         /// the validation provider simply by setting this property to a different function.
         abstract validateInput: value: string * cursorPosition: float -> ProviderResult<SourceControlInputBoxValidation>
@@ -655,6 +692,7 @@ module Vscode =
         abstract selected: bool
         /// An event signaling when the selection state changes.
         abstract onDidChangeSelection: Event<bool>
+        abstract actionButton: Command option with get, set
 
     type [<AllowNullLiteral>] TerminalDataWriteEvent =
         /// <summary>The <see cref="Terminal" /> for which the data was written.</summary>
@@ -677,6 +715,33 @@ module Vscode =
         /// </summary>
         abstract dimensions: TerminalDimensions option
 
+    type [<AllowNullLiteral>] TerminalOptions =
+        abstract location: U3<TerminalLocation, TerminalEditorLocationOptions, TerminalSplitLocationOptions> option with get, set
+
+    type [<AllowNullLiteral>] ExtensionTerminalOptions =
+        abstract location: U3<TerminalLocation, TerminalEditorLocationOptions, TerminalSplitLocationOptions> option with get, set
+
+    type [<RequireQualifiedAccess>] TerminalLocation =
+        | Panel = 1
+        | Editor = 2
+
+    type [<AllowNullLiteral>] TerminalEditorLocationOptions =
+        /// <summary>
+        /// A view column in which the <see cref="Terminal">terminal</see> should be shown in the editor area.
+        /// Use <see cref="ViewColumn.Active">active</see> to open in the active editor group, other values are
+        /// adjusted to be <c>Min(column, columnCount + 1)</c>, the
+        /// <see cref="ViewColumn.Active">active</see>-column is not adjusted. Use
+        /// {@linkcode ViewColumn.Beside} to open the editor to the side of the currently active one.
+        /// </summary>
+        abstract viewColumn: ViewColumn with get, set
+        /// <summary>An optional flag that when <c>true</c> will stop the <see cref="Terminal" /> from taking focus.</summary>
+        abstract preserveFocus: bool option with get, set
+
+    type [<AllowNullLiteral>] TerminalSplitLocationOptions =
+        /// The parent terminal to split this terminal beside. This works whether the parent terminal
+        /// is in the panel or the editor area.
+        abstract parentTerminal: Terminal with get, set
+
     type [<AllowNullLiteral>] Pseudoterminal =
         /// An event that when fired allows changing the name of the terminal.
         /// 
@@ -693,14 +758,6 @@ module Vscode =
         /// vscode.window.createTerminal({ name: 'My terminal', pty });
         /// </code>
         abstract onDidChangeName: Event<string> option with get, set
-
-    type [<AllowNullLiteral>] TerminalOptions =
-        /// Supports all ThemeColor keys, terminal.ansi* is recommended for contrast/consistency
-        abstract color: ThemeColor option with get, set
-
-    type [<AllowNullLiteral>] ExtensionTerminalOptions =
-        /// Supports all ThemeColor keys, terminal.ansi* is recommended for contrast/consistency
-        abstract color: ThemeColor option with get, set
 
     type [<AllowNullLiteral>] DocumentFilter =
         abstract exclusive: bool option
@@ -735,9 +792,9 @@ module Vscode =
         /// The type for tree elements is text/treeitem.
         /// For example, you can reconstruct the your tree elements:
         /// <code language="ts">
-        /// JSON.parse(await (items.get('text/treeitems')!.asString()))
+        /// JSON.parse(await (items.get('text/treeitem')!.asString()))
         /// </code>
-        abstract items: Map<string, TreeDataTransferItem> with get, set
+        abstract items: TreeDataTransferItems with get, set
 
     type [<AllowNullLiteral>] DragAndDropController<'T> =
         inherit Disposable
@@ -750,23 +807,8 @@ module Vscode =
     type [<AllowNullLiteral>] TaskPresentationOptions =
         /// Controls whether the task is executed in a specific terminal group using split panes.
         abstract group: string option with get, set
-
-    type [<AllowNullLiteral>] TaskGroup2 =
-        abstract isDefault: bool option
-        abstract id: string
-
-    type [<AllowNullLiteral>] TaskGroup2Static =
-        abstract Clean: TaskGroup2 with get, set
-        abstract Build: TaskGroup2 with get, set
-        abstract Rebuild: TaskGroup2 with get, set
-        abstract Test: TaskGroup2 with get, set
-
-    type [<AllowNullLiteral>] Task2 =
-        inherit Task
-        abstract group: TaskGroup2 option with get, set
-
-    type [<AllowNullLiteral>] Task2Static =
-        [<EmitConstructor>] abstract Create: unit -> Task2
+        /// Controls whether the terminal is closed after executing the task.
+        abstract close: bool option with get, set
 
     type [<AllowNullLiteral>] CustomTextEditorProvider =
         /// <summary>
@@ -785,6 +827,8 @@ module Vscode =
         inherit QuickInput
         /// An optional flag to sort the final results by index of first query match in label. Defaults to true.
         abstract sortByLabel: bool with get, set
+        abstract keepScrollPosition: bool option with get, set
+        abstract onDidTriggerItemButton: Event<QuickPickItemButtonEvent<'T>>
 
     /// The execution state of a notebook cell.
     type [<RequireQualifiedAccess>] NotebookCellExecutionState =
@@ -934,7 +978,7 @@ module Vscode =
     type [<AllowNullLiteral>] NotebookDecorationRenderOptions =
         abstract backgroundColor: U2<string, ThemeColor> option with get, set
         abstract borderColor: U2<string, ThemeColor> option with get, set
-        abstract top: ThemableDecorationAttachmentRenderOptions with get, set
+        abstract top: ThemableDecorationAttachmentRenderOptions option with get, set
 
     type [<AllowNullLiteral>] NotebookEditorDecorationType =
         abstract key: string
@@ -1002,13 +1046,17 @@ module Vscode =
         /// notebook renderer contribution point.
         /// </summary>
         abstract provides: ResizeArray<string> with get, set
-        /// URI for the file to preload
+        /// <summary>
+        /// URI of the JavaScript module to preload.
+        /// 
+        /// This module must export an <c>activate</c> function that takes a context object that contains the notebook API.
+        /// </summary>
         abstract uri: Uri with get, set
 
     /// Represents a script that is loaded into the notebook renderer before rendering output. This allows
     /// to provide and share functionality for notebook markup and notebook output renderers.
     type [<AllowNullLiteral>] NotebookRendererScriptStatic =
-        /// <param name="uri">URI for the file to preload</param>
+        /// <param name="uri">URI of the JavaScript module to preload</param>
         /// <param name="provides">Value for the <c>provides</c> property</param>
         [<EmitConstructor>] abstract Create: uri: Uri * ?provides: U2<string, ResizeArray<string>> -> NotebookRendererScript
 
@@ -1143,12 +1191,7 @@ module Vscode =
             abstract registerInlayHintsProvider: selector: DocumentSelector * provider: InlayHintsProvider -> Disposable
             /// Registers an inline completion provider.
             abstract registerInlineCompletionItemProvider: selector: DocumentSelector * provider: InlineCompletionItemProvider -> Disposable
-            /// <summary>Register a type hierarchy provider.</summary>
-            /// <param name="selector">A selector that defines the documents this provider is applicable to.</param>
-            /// <param name="provider">A type hierarchy provider.</param>
-            /// <returns>A <see cref="Disposable">disposable</see> that unregisters this provider when being disposed.</returns>
-            abstract registerTypeHierarchyProvider: selector: DocumentSelector * provider: TypeHierarchyProvider -> Disposable
-            abstract createLanguageStatusItem: selector: DocumentSelector -> LanguageStatusItem
+            abstract createLanguageStatusItem: id: string * selector: DocumentSelector -> LanguageStatusItem
 
     type [<RequireQualifiedAccess>] InlayHintKind =
         | Other = 0
@@ -1426,16 +1469,43 @@ module Vscode =
         /// </summary>
         abstract allowContributedOpeners: U2<bool, string> option
 
-    module Env =
-
-        type [<AllowNullLiteral>] IExports =
-            inherit Fable.Import.VSCode.Vscode.Env.IExports
-            abstract openExternal: target: Uri * ?options: OpenExternalOptions -> Thenable<bool>
-
-    type [<AllowNullLiteral>] OpenEditorInfo =
-        abstract name: string with get, set
-        abstract resource: Uri with get, set
-        abstract isActive: bool with get, set
+    /// Represents a tab within the window
+    type [<AllowNullLiteral>] Tab =
+        /// The text displayed on the tab
+        abstract label: string
+        /// The index of the tab within the column
+        abstract index: float
+        /// The column which the tab belongs to
+        abstract viewColumn: ViewColumn
+        /// The resource represented by the tab if availble.
+        /// Note: Not all tabs have a resource associated with them.
+        abstract resource: Uri option
+        /// <summary>
+        /// The identifier of the view contained in the tab
+        /// This is equivalent to <c>viewType</c> for custom editors and <c>notebookType</c> for notebooks.
+        /// The built-in text editor has an id of 'default' for all configurations.
+        /// </summary>
+        abstract viewId: string option
+        /// <summary>
+        /// All the resources and viewIds represented by a tab
+        /// <see cref="Tab.resource">resource</see> and <see cref="Tab.viewId">viewId</see> will
+        /// always be at index 0.
+        /// </summary>
+        abstract additionalResourcesAndViewIds: ResizeArray<TabAdditionalResourcesAndViewIds> with get, set
+        /// Whether or not the tab is currently active
+        /// Dictated by being the selected tab in the active group
+        abstract isActive: bool
+        /// <summary>
+        /// Moves a tab to the given index within the column.
+        /// If the index is out of range, the tab will be moved to the end of the column.
+        /// If the column is out of range, a new one will be created after the last existing column.
+        /// </summary>
+        /// <param name="index">The index to move the tab to</param>
+        /// <param name="viewColumn">The column to move the tab into</param>
+        abstract move: index: float * viewColumn: ViewColumn -> Thenable<unit>
+        /// Closes the tab. This makes the tab object invalid and the tab
+        /// should no longer be used for further actions.
+        abstract close: unit -> Thenable<unit>
 
     /// The object describing the properties of the workspace trust request
     type [<AllowNullLiteral>] WorkspaceTrustRequestOptions =
@@ -1487,6 +1557,23 @@ module Vscode =
     type [<AllowNullLiteral>] InlineCompletionContext =
         /// How the completion was triggered.
         abstract triggerKind: InlineCompletionTriggerKind
+        /// <summary>
+        /// Provides information about the currently selected item in the autocomplete widget if it is visible.
+        /// 
+        /// If set, provided inline completions must extend the text of the selected item
+        /// and use the same range, otherwise they are not shown as preview.
+        /// As an example, if the document text is <c>console.</c> and the selected item is <c>.log</c> replacing the <c>.</c> in the document,
+        /// the inline completion must also replace <c>.</c> and start with <c>.log</c>, for example <c>.log()</c>.
+        /// 
+        /// Inline completion providers are requested again whenever the selected item changes.
+        /// 
+        /// The user must configure <c>"editor.suggest.preview": true</c> for this feature.
+        /// </summary>
+        abstract selectedCompletionInfo: SelectedCompletionInfo option
+
+    type [<AllowNullLiteral>] SelectedCompletionInfo =
+        abstract range: Range with get, set
+        abstract text: string with get, set
 
     /// <summary>How an <see cref="InlineCompletionItemProvider">inline completion provider</see> was triggered.</summary>
     type [<RequireQualifiedAccess>] InlineCompletionTriggerKind =
@@ -1507,15 +1594,17 @@ module Vscode =
         [<EmitConstructor>] abstract Create: items: ResizeArray<'T> -> InlineCompletionList<'T>
 
     type [<AllowNullLiteral>] InlineCompletionItem =
-        /// The text to insert.
-        /// If the text contains a line break, the range must end at the end of a line.
-        /// If existing text should be replaced, the existing text must be a prefix of the text to insert.
+        /// <summary>
+        /// The text to replace the range with.
+        /// 
+        /// The text the range refers to should be a prefix of this value and must be a subword (<c>AB</c> and <c>BEF</c> are subwords of <c>ABCDEF</c>, but <c>Ab</c> is not).
+        /// </summary>
         abstract text: string with get, set
         /// The range to replace.
         /// Must begin and end on the same line.
         /// 
-        /// Prefer replacements over insertions to avoid cache invalidation.
-        /// Instead of reporting a completion that extends a word,
+        /// Prefer replacements over insertions to avoid cache invalidation:
+        /// Instead of reporting a completion that inserts an extension at the end of a word,
         /// the whole word should be replaced with the extended word.
         abstract range: Range option with get, set
         /// <summary>An optional <see cref="Command" /> that is executed *after* inserting this completion.</summary>
@@ -1532,26 +1621,6 @@ module Vscode =
     /// Be aware that this API will not ever be finalized.
     type [<AllowNullLiteral>] InlineCompletionItemDidShowEvent<'T when 'T :> InlineCompletionItem> =
         abstract completionItem: 'T with get, set
-
-    type [<RequireQualifiedAccess>] FilePermission =
-        /// <summary>
-        /// The file is readonly.
-        /// 
-        /// *Note:* All <c>FileStat</c> from a <c>FileSystemProvider</c> that is registered  with
-        /// the option <c>isReadonly: true</c> will be implicitly handled as if <c>FilePermission.Readonly</c>
-        /// is set. As a consequence, it is not possible to have a readonly file system provider
-        /// registered where some <c>FileStat</c> are not readonly.
-        /// </summary>
-        | Readonly = 1
-
-    /// <summary>The <c>FileStat</c>-type represents metadata about a file</summary>
-    type [<AllowNullLiteral>] FileStat =
-        /// <summary>
-        /// The permissions of the file, e.g. whether the file is readonly.
-        /// 
-        /// *Note:* This value might be a bitmask, e.g. <c>FilePermission.Readonly | FilePermission.Other</c>.
-        /// </summary>
-        abstract permissions: FilePermission option with get, set
 
     type [<AllowNullLiteral>] NotebookCellData =
         /// <summary>
@@ -1712,90 +1781,43 @@ module Vscode =
     type DetailedCoverage =
         U2<StatementCoverage, FunctionCoverage>
 
-    /// Represents an item of a type hierarchy, like a class or an interface.
-    type [<AllowNullLiteral>] TypeHierarchyItem =
-        /// The name of this item.
-        abstract name: string with get, set
-        /// The kind of this item.
-        abstract kind: SymbolKind with get, set
-        /// Tags for this item.
-        abstract tags: ReadonlyArray<SymbolTag> option with get, set
-        /// More detail for this item, e.g. the signature of a function.
-        abstract detail: string option with get, set
-        /// The resource identifier of this item.
-        abstract uri: Uri with get, set
-        /// The range enclosing this symbol not including leading/trailing whitespace
-        /// but everything else, e.g. comments and code.
-        abstract range: Range with get, set
-        /// <summary>
-        /// The range that should be selected and revealed when this symbol is being
-        /// picked, e.g. the name of a class. Must be contained by the <see cref="TypeHierarchyItem.range">range</see>-property.
-        /// </summary>
-        abstract selectionRange: Range with get, set
-
-    /// Represents an item of a type hierarchy, like a class or an interface.
-    type [<AllowNullLiteral>] TypeHierarchyItemStatic =
-        /// <summary>Creates a new type hierarchy item.</summary>
-        /// <param name="kind">The kind of the item.</param>
-        /// <param name="name">The name of the item.</param>
-        /// <param name="detail">The details of the item.</param>
-        /// <param name="uri">The Uri of the item.</param>
-        /// <param name="range">The whole range of the item.</param>
-        /// <param name="selectionRange">The selection range of the item.</param>
-        [<EmitConstructor>] abstract Create: kind: SymbolKind * name: string * detail: string * uri: Uri * range: Range * selectionRange: Range -> TypeHierarchyItem
-
-    /// The type hierarchy provider interface describes the contract between extensions
-    /// and the type hierarchy feature.
-    type [<AllowNullLiteral>] TypeHierarchyProvider =
-        /// <summary>
-        /// Bootstraps type hierarchy by returning the item that is denoted by the given document
-        /// and position. This item will be used as entry into the type graph. Providers should
-        /// return <c>undefined</c> or <c>null</c> when there is no item at the given location.
-        /// </summary>
-        /// <param name="document">The document in which the command was invoked.</param>
-        /// <param name="position">The position at which the command was invoked.</param>
-        /// <param name="token">A cancellation token.</param>
-        /// <returns>
-        /// A type hierarchy item or a thenable that resolves to such. The lack of a result can be
-        /// signaled by returning <c>undefined</c> or <c>null</c>.
-        /// </returns>
-        abstract prepareTypeHierarchy: document: TextDocument * position: Position * token: CancellationToken -> ProviderResult<ResizeArray<TypeHierarchyItem>>
-        /// <summary>
-        /// Provide all supertypes for an item, e.g all types from which a type is derived/inherited. In graph terms this describes directed
-        /// and annotated edges inside the type graph, e.g the given item is the starting node and the result is the nodes
-        /// that can be reached.
-        /// </summary>
-        /// <param name="item">The hierarchy item for which super types should be computed.</param>
-        /// <param name="token">A cancellation token.</param>
-        /// <returns>
-        /// A set of supertypes or a thenable that resolves to such. The lack of a result can be
-        /// signaled by returning <c>undefined</c> or <c>null</c>.
-        /// </returns>
-        abstract provideTypeHierarchySupertypes: item: TypeHierarchyItem * token: CancellationToken -> ProviderResult<ResizeArray<TypeHierarchyItem>>
-        /// <summary>
-        /// Provide all subtypes for an item, e.g all types which are derived/inherited from the given item. In
-        /// graph terms this describes directed and annotated edges inside the type graph, e.g the given item is the starting
-        /// node and the result is the nodes that can be reached.
-        /// </summary>
-        /// <param name="item">The hierarchy item for which subtypes should be computed.</param>
-        /// <param name="token">A cancellation token.</param>
-        /// <returns>
-        /// A set of subtypes or a thenable that resolves to such. The lack of a result can be
-        /// signaled by returning <c>undefined</c> or <c>null</c>.
-        /// </returns>
-        abstract provideTypeHierarchySubtypes: item: TypeHierarchyItem * token: CancellationToken -> ProviderResult<ResizeArray<TypeHierarchyItem>>
-
     type [<RequireQualifiedAccess>] LanguageStatusSeverity =
         | Information = 0
         | Warning = 1
         | Error = 2
 
     type [<AllowNullLiteral>] LanguageStatusItem =
+        abstract id: string
         abstract selector: DocumentSelector with get, set
-        abstract text: string with get, set
-        abstract detail: U2<string, MarkdownString> with get, set
         abstract severity: LanguageStatusSeverity with get, set
+        abstract name: string option with get, set
+        abstract text: string with get, set
+        abstract detail: string option with get, set
+        abstract command: Command option with get, set
+        abstract accessibilityInformation: AccessibilityInformation option with get, set
         abstract dispose: unit -> unit
+
+    type [<AllowNullLiteral>] QuickPickItem =
+        inherit Fable.Import.VSCode.Vscode.QuickPickItem
+        abstract buttons: ResizeArray<QuickInputButton> option with get, set
+
+    type [<AllowNullLiteral>] QuickPickItemButtonEvent<'T when 'T :> QuickPickItem> =
+        abstract button: QuickInputButton with get, set
+        abstract item: 'T with get, set
+
+    type [<AllowNullLiteral>] MarkdownString =
+        inherit Fable.Import.VSCode.Vscode.MarkdownString
+        /// <summary>
+        /// Indicates that this markdown string can contain raw html tags. Default to false.
+        /// 
+        /// When <c>supportHtml</c> is false, the markdown renderer will strip out any raw html tags
+        /// that appear in the markdown text. This means you can only use markdown syntax for rendering.
+        /// 
+        /// When <c>supportHtml</c> is true, the markdown render will also allow a safe subset of html tags
+        /// and attributes to be rendered. See <see href="https://github.com/microsoft/vscode/blob/6d2920473c6f13759c978dd89104c4270a83422d/src/vs/base/browser/markdownRenderer.ts#L296" />
+        /// for a list of all supported tags and attributes.
+        /// </summary>
+        abstract supportHtml: bool option with get, set
 
     type [<AllowNullLiteral>] ResolvedOptionsExtensionHostEnv =
         [<EmitIndexer>] abstract Item: key: string -> string option with get, set
@@ -1806,7 +1828,10 @@ module Vscode =
 
     type [<AllowNullLiteral>] RemoteAuthorityResolverTunnelFeatures =
         abstract elevation: bool with get, set
+        [<Obsolete("Use privacy instead")>]
         abstract ``public``: bool with get, set
+        /// One of the the options must have the ID "private".
+        abstract privacyOptions: ResizeArray<TunnelPrivacy> with get, set
 
     type [<AllowNullLiteral>] AuthenticationGetSessionOptionsForceNewSession =
         abstract detail: string with get, set
@@ -1819,6 +1844,9 @@ module Vscode =
     type [<AllowNullLiteral>] DebugSessionOptionsDebugUI =
         /// When true, the debug toolbar will not be shown for this session, the window statusbar color will not be changed, and the debug viewlet will not be automatically revealed.
         abstract simple: bool option with get, set
+
+    type [<AllowNullLiteral>] TreeDataTransferItems =
+        abstract get: (string -> TreeDataTransferItem option) with get, set
 
     type [<AllowNullLiteral>] NotebookRegistrationDataFilenamePattern =
         abstract ``include``: GlobPattern with get, set
@@ -1842,3 +1870,7 @@ module Vscode =
     type [<AllowNullLiteral>] TimelineOptionsLimit =
         abstract timestamp: float with get, set
         abstract id: string option with get, set
+
+    type [<AllowNullLiteral>] TabAdditionalResourcesAndViewIds =
+        abstract resource: Uri option with get, set
+        abstract viewId: string option with get, set
