@@ -48,5 +48,6 @@
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
     "webpack-node-externals": "^2.5.2"
-  }
+  },
+  "packageManager": "yarn@3.0.2"
 }

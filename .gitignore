@@ -56,3 +56,4 @@ release
 .ionide/
 vscode.proposed.d.ts
 .fake
+.yarn
