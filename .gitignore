@@ -55,3 +55,4 @@ release.cmd
 release
 .ionide/
 vscode.proposed.d.ts
+.fake
