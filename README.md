@@ -19,8 +19,8 @@ Please note that this project is released with a [Contributor Code of Conduct](C
 Building this project require a few things :
 
 * A .Net 4 environment (Microsoft version on windows, Mono on mac/linux)
-* [.Net Core 2.0](https://www.microsoft.com/net/core)
+* [.Net 5](https://www.microsoft.com/net/core)
 * [Node.js](https://nodejs.org/en/download/)
-* [Yarn](https://yarnpkg.com/en/docs/install)
+* [Yarn berry](https://yarnpkg.com/en/docs/install)
 
 With that installed the project should build using `build.sh` / `build.cmd` or when Ctrl+Shift+B is used in VSCode.
