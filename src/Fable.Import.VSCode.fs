@@ -5932,7 +5932,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// This class has factory methods for common error-cases, like <c>FileNotFound</c> when
     /// a file or folder doesn't exist, use them like so: <c>throw vscode.FileSystemError.FileNotFound(someUri);</c>
     /// </summary>
-    type [<AllowNullLiteral>] FileSystemError =
+    type [<ImportMember("vscode"); AllowNullLiteral; AbstractClass>] FileSystemError =
         inherit Error
         /// <summary>
         /// A code that identifies this error.
@@ -7184,23 +7184,6 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// <param name="options">Rendering options for the decoration type.</param>
             /// <returns>A new decoration type instance.</returns>
             abstract createTextEditorDecorationType: options: DecorationRenderOptions -> TextEditorDecorationType
-            /// <summary>
-            /// Show an information message to users. Optionally provide an array of items which will be presented as
-            /// clickable buttons.
-            /// </summary>
-            /// <param name="message">The message to show.</param>
-            /// <param name="items">A set of items that will be rendered as actions in the message.</param>
-            /// <returns>A thenable that resolves to the selected item or <c>undefined</c> when being dismissed.</returns>
-            abstract showInformationMessage: message: string * [<ParamArray>] items: 'T[] -> Thenable<'T option>
-            /// <summary>
-            /// Show an information message to users. Optionally provide an array of items which will be presented as
-            /// clickable buttons.
-            /// </summary>
-            /// <param name="message">The message to show.</param>
-            /// <param name="options">Configures the behaviour of the message.</param>
-            /// <param name="items">A set of items that will be rendered as actions in the message.</param>
-            /// <returns>A thenable that resolves to the selected item or <c>undefined</c> when being dismissed.</returns>
-            abstract showInformationMessage: message: string * options: MessageOptions * [<ParamArray>] items: 'T[] -> Thenable<'T option>
             /// <summary>Show an information message.</summary>
             /// <seealso cref="window.showInformationMessage">showInformationMessage</seealso>
             /// <param name="message">The message to show.</param>
@@ -7219,19 +7202,6 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// <param name="message">The message to show.</param>
             /// <param name="items">A set of items that will be rendered as actions in the message.</param>
             /// <returns>A thenable that resolves to the selected item or <c>undefined</c> when being dismissed.</returns>
-            abstract showWarningMessage: message: string * [<ParamArray>] items: 'T[] -> Thenable<'T option>
-            /// <summary>Show a warning message.</summary>
-            /// <seealso cref="window.showInformationMessage">showInformationMessage</seealso>
-            /// <param name="message">The message to show.</param>
-            /// <param name="options">Configures the behaviour of the message.</param>
-            /// <param name="items">A set of items that will be rendered as actions in the message.</param>
-            /// <returns>A thenable that resolves to the selected item or <c>undefined</c> when being dismissed.</returns>
-            abstract showWarningMessage: message: string * options: MessageOptions * [<ParamArray>] items: 'T[] -> Thenable<'T option>
-            /// <summary>Show a warning message.</summary>
-            /// <seealso cref="window.showInformationMessage">showInformationMessage</seealso>
-            /// <param name="message">The message to show.</param>
-            /// <param name="items">A set of items that will be rendered as actions in the message.</param>
-            /// <returns>A thenable that resolves to the selected item or <c>undefined</c> when being dismissed.</returns>
             abstract showWarningMessage: message: string * [<ParamArray>] items: 'T[] -> Thenable<'T option> when 'T :> MessageItem
             /// <summary>Show a warning message.</summary>
             /// <seealso cref="window.showInformationMessage">showInformationMessage</seealso>
@@ -7240,19 +7210,6 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// <param name="items">A set of items that will be rendered as actions in the message.</param>
             /// <returns>A thenable that resolves to the selected item or <c>undefined</c> when being dismissed.</returns>
             abstract showWarningMessage: message: string * options: MessageOptions * [<ParamArray>] items: 'T[] -> Thenable<'T option> when 'T :> MessageItem
-            /// <summary>Show an error message.</summary>
-            /// <seealso cref="window.showInformationMessage">showInformationMessage</seealso>
-            /// <param name="message">The message to show.</param>
-            /// <param name="items">A set of items that will be rendered as actions in the message.</param>
-            /// <returns>A thenable that resolves to the selected item or <c>undefined</c> when being dismissed.</returns>
-            abstract showErrorMessage: message: string * [<ParamArray>] items: 'T[] -> Thenable<'T option>
-            /// <summary>Show an error message.</summary>
-            /// <seealso cref="window.showInformationMessage">showInformationMessage</seealso>
-            /// <param name="message">The message to show.</param>
-            /// <param name="options">Configures the behaviour of the message.</param>
-            /// <param name="items">A set of items that will be rendered as actions in the message.</param>
-            /// <returns>A thenable that resolves to the selected item or <c>undefined</c> when being dismissed.</returns>
-            abstract showErrorMessage: message: string * options: MessageOptions * [<ParamArray>] items: 'T[] -> Thenable<'T option>
             /// <summary>Show an error message.</summary>
             /// <seealso cref="window.showInformationMessage">showInformationMessage</seealso>
             /// <param name="message">The message to show.</param>
