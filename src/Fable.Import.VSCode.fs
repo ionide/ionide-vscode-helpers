@@ -1,4 +1,4 @@
-// ts2fable 0.8.0-build.638
+// ts2fable 0.8.0-build.644
 module rec Fable.Import.VSCode
 
 //#nowarn "3390" // disable warnings for invalid XML comments
@@ -14,13 +14,13 @@ type ReadonlyArray<'T> = System.Collections.Generic.IReadOnlyList<'T>
 type RegExp = System.Text.RegularExpressions.Regex
 
 /// <summary>
-/// Type Definition for Visual Studio Code 1.65 Extension API
+/// Type Definition for Visual Studio Code 1.66 Extension API
 /// See <see href="https://code.visualstudio.com/api" /> for more information
 /// </summary>
 let [<ImportAll("vscode")>] vscode: Vscode.IExports = jsNative
 
 /// <summary>
-/// Type Definition for Visual Studio Code 1.65 Extension API
+/// Type Definition for Visual Studio Code 1.66 Extension API
 /// See <see href="https://code.visualstudio.com/api" /> for more information
 /// </summary>
 module Vscode =
@@ -31,20 +31,20 @@ module Vscode =
     /// <summary>
     /// Namespace for dealing with commands. In short, a command is a function with a
     /// unique identifier. The function is sometimes also called _command handler_.
-    /// 
+    ///
     /// Commands can be added to the editor using the <see cref="commands.registerCommand">registerCommand</see>
     /// and <see cref="commands.registerTextEditorCommand">registerTextEditorCommand</see> functions. Commands
     /// can be executed <see cref="commands.executeCommand">manually</see> or from a UI gesture. Those are:
-    /// 
+    ///
     /// * palette - Use the <c>commands</c>-section in <c>package.json</c> to make a command show in
     /// the <see href="https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette">command palette</see>.
     /// * keybinding - Use the <c>keybindings</c>-section in <c>package.json</c> to enable
     /// <see href="https://code.visualstudio.com/docs/getstarted/keybindings#_customizing-shortcuts">keybindings</see>
     /// for your extension.
-    /// 
+    ///
     /// Commands from other extensions and from the editor itself are accessible to an extension. However,
     /// when invoking an editor command not all argument types are supported.
-    /// 
+    ///
     /// This is a sample that registers a command handler and adds an entry for that command to the palette. First
     /// register a command handler with the identifier <c>extension.sayHello</c>.
     /// <code lang="javascript">
@@ -72,15 +72,15 @@ module Vscode =
     /// <summary>
     /// Namespace for dealing with the current workspace. A workspace is the collection of one
     /// or more folders that are opened in an editor window (instance).
-    /// 
+    ///
     /// It is also possible to open an editor without a workspace. For example, when you open a
     /// new editor window by selecting a file from your platform's File menu, you will not be
     /// inside a workspace. In this mode, some of the editor's capabilities are reduced but you can
     /// still open text files and edit them.
-    /// 
+    ///
     /// Refer to <see href="https://code.visualstudio.com/docs/editor/workspaces" /> for more information on
     /// the concept of workspaces.
-    /// 
+    ///
     /// The workspace offers support for <see cref="workspace.createFileSystemWatcher">listening</see> to fs
     /// events and for <see cref="workspace.findFiles">finding</see> files. Both perform well and run _outside_
     /// the editor-process so that they should be always used instead of nodejs-equivalents.
@@ -89,16 +89,16 @@ module Vscode =
     /// <summary>
     /// Namespace for participating in language-specific editor <see href="https://code.visualstudio.com/docs/editor/editingevolved">features</see>,
     /// like IntelliSense, code actions, diagnostics etc.
-    /// 
+    ///
     /// Many programming languages exist and there is huge variety in syntaxes, semantics, and paradigms. Despite that, features
     /// like automatic word-completion, code navigation, or code checking have become popular across different tools for different
     /// programming languages.
-    /// 
+    ///
     /// The editor provides an API that makes it simple to provide such common features by having all UI and actions already in place and
     /// by allowing you to participate by providing data only. For instance, to contribute a hover all you have to do is provide a function
     /// that can be called with a <see cref="TextDocument" /> and a <see cref="Position" /> returning hover info. The rest, like tracking the
     /// mouse, positioning the hover, keeping the hover stable etc. is taken care of by the editor.
-    /// 
+    ///
     /// <code lang="javascript">
     /// languages.registerHoverProvider('javascript', {
     ///      provideHover(document, position, token) {
@@ -106,7 +106,7 @@ module Vscode =
     ///      }
     /// });
     /// </code>
-    /// 
+    ///
     /// Registration is done using a <see cref="DocumentSelector">document selector</see> which is either a language id, like <c>javascript</c> or
     /// a more complex <see cref="DocumentFilter">filter</see> like <c>{ language: 'typescript', scheme: 'file' }</c>. Matching a document against such
     /// a selector will result in a <see cref="languages.match">score</see> that is used to determine if and how a provider shall be used. When
@@ -117,9 +117,9 @@ module Vscode =
     let [<Import("languages","vscode")>] languages: Languages.IExports = jsNative
     /// <summary>
     /// Namespace for notebooks.
-    /// 
+    ///
     /// The notebooks functionality is composed of three loosely coupled components:
-    /// 
+    ///
     /// 1. <see cref="NotebookSerializer" /> enable the editor to open, show, and save notebooks
     /// 2. <see cref="NotebookController" /> own the execution of notebooks, e.g they create output from code cells.
     /// 3. NotebookRenderer present notebook output in the editor. They run in a separate context.
@@ -131,10 +131,10 @@ module Vscode =
     /// <summary>
     /// Namespace for dealing with installed extensions. Extensions are represented
     /// by an <see cref="Extension" />-interface which enables reflection on them.
-    /// 
+    ///
     /// Extension writers can provide APIs to other extensions by returning their API public
     /// surface from the <c>activate</c>-call.
-    /// 
+    ///
     /// <code lang="javascript">
     /// export function activate(context: vscode.ExtensionContext) {
     ///      let api = {
@@ -152,11 +152,11 @@ module Vscode =
     /// When depending on the API of another extension add an <c>extensionDependencies</c>-entry
     /// to <c>package.json</c>, and use the <see cref="extensions.getExtension">getExtension</see>-function
     /// and the <see cref="Extension.exports">exports</see>-property, like below:
-    /// 
+    ///
     /// <code lang="javascript">
     /// let mathExt = extensions.getExtension('genius.math');
     /// let importedApi = mathExt.exports;
-    /// 
+    ///
     /// console.log(importedApi.mul(42, 1));
     /// </code>
     /// </summary>
@@ -178,7 +178,7 @@ module Vscode =
         /// <summary>
         /// Represents a line and character position, such as
         /// the position of the cursor.
-        /// 
+        ///
         /// Position objects are __immutable__. Use the <see cref="Position.with">with</see> or
         /// <see cref="Position.translate">translate</see> methods to derive new positions
         /// from an existing position.
@@ -187,7 +187,7 @@ module Vscode =
         /// <summary>
         /// A range represents an ordered pair of two positions.
         /// It is guaranteed that <see cref="Range.start">start</see>.isBeforeOrEqual(<see cref="Range.end">end</see>)
-        /// 
+        ///
         /// Range objects are __immutable__. Use the <see cref="Range.with">with</see>,
         /// <see cref="Range.intersection">intersection</see>, or <see cref="Range.union">union</see> methods
         /// to derive new ranges from an existing range.
@@ -204,7 +204,7 @@ module Vscode =
         /// A reference to a named icon. Currently, <see cref="ThemeIcon.File">File</see>, <see cref="ThemeIcon.Folder">Folder</see>,
         /// and <see href="https://code.visualstudio.com/api/references/icons-in-labels#icon-listing">ThemeIcon ids</see> are supported.
         /// Using a theme icon is preferred over a custom icon as it gives product theme authors the possibility to change the icons.
-        /// 
+        ///
         /// *Note* that theme icons can also be rendered inside labels and descriptions. Places that support theme icons spell this out
         /// and they use the <c>$(&lt;name&gt;)</c>-syntax, for instance <c>quickPick.label = "Hello World $(globe)"</c>.
         /// </summary>
@@ -216,7 +216,7 @@ module Vscode =
         abstract CancellationTokenSource: CancellationTokenSourceStatic
         /// <summary>
         /// An error type that should be used to signal cancellation of an operation.
-        /// 
+        ///
         /// This type can be used in response to a <see cref="CancellationToken">cancellation token</see>
         /// being cancelled or when an operation is being cancelled by the
         /// executor of that operation.
@@ -228,7 +228,7 @@ module Vscode =
         /// <summary>
         /// An event emitter can be used to create and manage an <see cref="Event" /> for others
         /// to subscribe to. One emitter always owns one event.
-        /// 
+        ///
         /// Use this class if you want to provide event from within your extension, for instance
         /// inside a <see cref="TextDocumentContentProvider" /> or when providing
         /// API to other extensions.
@@ -243,9 +243,9 @@ module Vscode =
         abstract RelativePattern: RelativePatternStatic
         /// <summary>
         /// Kind of a code action.
-        /// 
+        ///
         /// Kinds are a hierarchical list of identifiers separated by <c>.</c>, e.g. <c>"refactor.extract.function"</c>.
-        /// 
+        ///
         /// Code action kinds are used by the editor for UI elements such as the refactoring context menu. Users
         /// can also trigger code actions with a specific kind with the <c>editor.action.codeAction</c> command.
         /// </summary>
@@ -253,14 +253,14 @@ module Vscode =
         /// <summary>
         /// A code action represents a change that can be performed in code, e.g. to fix a problem or
         /// to refactor code.
-        /// 
+        ///
         /// A CodeAction must set either {@linkcode CodeAction.edit edit} and/or a {@linkcode CodeAction.command command}. If both are supplied, the <c>edit</c> is applied first, then the command is executed.
         /// </summary>
         abstract CodeAction: CodeActionStatic
         /// <summary>
         /// A code lens represents a <see cref="Command" /> that should be shown along with
         /// source text, like the number of references, a way to run tests, etc.
-        /// 
+        ///
         /// A code lens is _unresolved_ when no command is associated to it. For performance
         /// reasons the creation of a code lens and resolving should be done to two stages.
         /// </summary>
@@ -269,10 +269,10 @@ module Vscode =
         abstract CodeLens: CodeLensStatic
         /// <summary>
         /// Human-readable text that supports formatting via the <see href="https://commonmark.org">markdown syntax</see>.
-        /// 
+        ///
         /// Rendering of <see cref="ThemeIcon">theme icons</see> via the <c>$(&lt;name&gt;)</c>-syntax is supported
         /// when the {@linkcode supportThemeIcons} is set to <c>true</c>.
-        /// 
+        ///
         /// Rendering of embedded html is supported when {@linkcode supportHtml} is set to <c>true</c>.
         /// </summary>
         abstract MarkdownString: MarkdownStringStatic
@@ -312,14 +312,14 @@ module Vscode =
         /// <summary>
         /// A workspace edit is a collection of textual and files changes for
         /// multiple resources and documents.
-        /// 
+        ///
         /// Use the <see cref="workspace.applyEdit">applyEdit</see>-function to apply a workspace edit.
         /// </summary>
         abstract WorkspaceEdit: WorkspaceEditStatic
         /// <summary>
         /// A snippet string is a template which allows to insert text
         /// and to control the editor cursor when insertion happens.
-        /// 
+        ///
         /// A snippet can define tab stops and placeholders with <c>$1</c>, <c>$2</c>
         /// and <c>${3:foo}</c>. <c>$0</c> defines the final tab stop, it defaults to
         /// the end of the snippet. Variables are defined with <c>$name</c> and
@@ -358,12 +358,12 @@ module Vscode =
         abstract SignatureHelp: SignatureHelpStatic
         /// <summary>
         /// A completion item represents a text snippet that is proposed to complete text that is being typed.
-        /// 
+        ///
         /// It is sufficient to create a completion item from just a <see cref="CompletionItem.label">label</see>. In that
         /// case the completion item will replace the <see cref="TextDocument.getWordRangeAtPosition">word</see>
         /// until the cursor with the given label or <see cref="CompletionItem.insertText">insertText</see>. Otherwise the
         /// given <see cref="CompletionItem.textEdit">edit</see> is used.
-        /// 
+        ///
         /// When selecting a completion item in the editor its defined or synthesized text edit will be applied
         /// to *all* cursors/selections whereas <see cref="CompletionItem.additionalTextEdits">additionalTextEdits</see> will be
         /// applied as provided.
@@ -386,7 +386,7 @@ module Vscode =
         /// <summary>
         /// A color presentation object describes how a {@linkcode Color} should be represented as text and what
         /// edits are required to refer to it from source code.
-        /// 
+        ///
         /// For some languages one color can have multiple presentations, e.g. css can represent the color red with
         /// the constant <c>Red</c>, the hex-value <c>#ff0000</c>, or in rgba and hsla forms. In csharp other representations
         /// apply, e.g. <c>System.Drawing.Color.Red</c>.
@@ -442,11 +442,26 @@ module Vscode =
         abstract Task: TaskStatic
         /// <summary>
         /// A type that filesystem providers should use to signal errors.
-        /// 
+        ///
         /// This class has factory methods for common error-cases, like <c>FileNotFound</c> when
         /// a file or folder doesn't exist, use them like so: <c>throw vscode.FileSystemError.FileNotFound(someUri);</c>
         /// </summary>
         abstract FileSystemError: FileSystemErrorStatic
+        /// <summary>
+        /// A class for encapsulating data transferred during a drag and drop event.
+        ///
+        /// You can use the <c>value</c> of the <c>DataTransferItem</c> to get back the object you put into it
+        /// so long as the extension that created the <c>DataTransferItem</c> runs in the same extension host.
+        /// </summary>
+        abstract DataTransferItem: DataTransferItemStatic
+        /// <summary>
+        /// A map containing a mapping of the mime type of the corresponding transferred data.
+        ///
+        /// Drag and drop controllers that implement <see cref="TreeDragAndDropController.handleDrag"><c>handleDrag</c></see> can add additional mime types to the
+        /// data transfer. These additional mime types will only be included in the <c>handleDrop</c> when the the drag was initiated from
+        /// an element in the same drag and drop controller.
+        /// </summary>
+        abstract DataTransfer: DataTransferStatic
         abstract TreeItem: TreeItemStatic
         /// <summary>Predefined buttons for <see cref="QuickPick" /> and <see cref="InputBox" />.</summary>
         abstract QuickInputButtons: QuickInputButtonsStatic
@@ -465,7 +480,7 @@ module Vscode =
         abstract NotebookCellData: NotebookCellDataStatic
         /// <summary>
         /// Raw representation of a notebook.
-        /// 
+        ///
         /// Extensions are responsible for creating {@linkcode NotebookData} so that the editor
         /// can create a {@linkcode NotebookDocument}.
         /// </summary>
@@ -498,7 +513,7 @@ module Vscode =
         /// created by passing a request to <see cref="tests.runTests" />. The TestRunRequest
         /// contains information about which tests should be run, which should not be
         /// run, and how they are run (via the <see cref="TestRunRequest.profile">profile</see>).
-        /// 
+        ///
         /// In general, TestRunRequests are created by the editor and pass to
         /// <see cref="TestRunProfile.runHandler" />, however you can also create test
         /// requests and runs outside of the <c>runHandler</c>.
@@ -526,7 +541,7 @@ module Vscode =
 
     /// <summary>
     /// Represents a line of text, such as a line of source code.
-    /// 
+    ///
     /// TextLine objects are __immutable__. When a <see cref="TextDocument">document</see> changes,
     /// previously retrieved lines will not represent the latest state.
     /// </summary>
@@ -557,7 +572,7 @@ module Vscode =
     type [<AllowNullLiteral>] TextDocument =
         /// <summary>
         /// The associated uri for this document.
-        /// 
+        ///
         /// *Note* that most documents use the <c>file</c>-scheme, which means they are files on disk. However, **not** all documents are
         /// saved on disk and therefore the <c>scheme</c> must be checked before trying to access the underlying file or siblings on disk.
         /// </summary>
@@ -612,7 +627,7 @@ module Vscode =
         /// Returns a text line denoted by the position. Note
         /// that the returned object is *not* live and changes to the
         /// document are not reflected.
-        /// 
+        ///
         /// The position will be <see cref="TextDocument.validatePosition">adjusted</see>.
         /// </summary>
         /// <seealso cref="TextDocument.lineAt" />
@@ -621,7 +636,7 @@ module Vscode =
         abstract lineAt: position: Position -> TextLine
         /// <summary>
         /// Converts the position to a zero-based offset.
-        /// 
+        ///
         /// The position will be <see cref="TextDocument.validatePosition">adjusted</see>.
         /// </summary>
         /// <param name="position">A position.</param>
@@ -643,13 +658,13 @@ module Vscode =
         /// common separators, like space, -, _, etc. In addition, per language custom
         /// [word definitions} can be defined. It
         /// is also possible to provide a custom regular expression.
-        /// 
+        ///
         /// * *Note 1:* A custom regular expression must not match the empty string and
         /// if it does, it will be ignored.
         /// * *Note 2:* A custom regular expression will fail to match multiline strings
         /// and in the name of speed regular expressions should not match words with
         /// spaces. Use {@linkcode TextLine.text} for more complex, non-wordy, scenarios.
-        /// 
+        ///
         /// The position will be <see cref="TextDocument.validatePosition">adjusted</see>.
         /// </summary>
         /// <param name="position">A position.</param>
@@ -668,7 +683,7 @@ module Vscode =
     /// <summary>
     /// Represents a line and character position, such as
     /// the position of the cursor.
-    /// 
+    ///
     /// Position objects are __immutable__. Use the <see cref="Position.with">with</see> or
     /// <see cref="Position.translate">translate</see> methods to derive new positions
     /// from an existing position.
@@ -752,7 +767,7 @@ module Vscode =
     /// <summary>
     /// Represents a line and character position, such as
     /// the position of the cursor.
-    /// 
+    ///
     /// Position objects are __immutable__. Use the <see cref="Position.with">with</see> or
     /// <see cref="Position.translate">translate</see> methods to derive new positions
     /// from an existing position.
@@ -765,7 +780,7 @@ module Vscode =
     /// <summary>
     /// A range represents an ordered pair of two positions.
     /// It is guaranteed that <see cref="Range.start">start</see>.isBeforeOrEqual(<see cref="Range.end">end</see>)
-    /// 
+    ///
     /// Range objects are __immutable__. Use the <see cref="Range.with">with</see>,
     /// <see cref="Range.intersection">intersection</see>, or <see cref="Range.union">union</see> methods
     /// to derive new ranges from an existing range.
@@ -826,7 +841,7 @@ module Vscode =
     /// <summary>
     /// A range represents an ordered pair of two positions.
     /// It is guaranteed that <see cref="Range.start">start</see>.isBeforeOrEqual(<see cref="Range.end">end</see>)
-    /// 
+    ///
     /// Range objects are __immutable__. Use the <see cref="Range.with">with</see>,
     /// <see cref="Range.intersection">intersection</see>, or <see cref="Range.union">union</see> methods
     /// to derive new ranges from an existing range.
@@ -950,7 +965,7 @@ module Vscode =
         /// The size in spaces a tab takes. This is used for two purposes:
         ///   - the rendering width of a tab character;
         ///   - the number of spaces to insert when <see cref="TextEditorOptions.insertSpaces">insertSpaces</see> is true.
-        /// 
+        ///
         /// When getting a text editor's options, this property will always be a number (resolved).
         /// When setting a text editor's options, this property is optional and it can be a number or <c>"auto"</c>.
         /// </summary>
@@ -973,7 +988,7 @@ module Vscode =
     /// <summary>
     /// Represents a handle to a set of decorations
     /// sharing the same <see cref="DecorationRenderOptions">styling options</see> in a <see cref="TextEditor">text editor</see>.
-    /// 
+    ///
     /// To get an instance of a <c>TextEditorDecorationType</c> use
     /// <see cref="window.createTextEditorDecorationType">createTextEditorDecorationType</see>.
     /// </summary>
@@ -1057,7 +1072,7 @@ module Vscode =
     /// A reference to a named icon. Currently, <see cref="ThemeIcon.File">File</see>, <see cref="ThemeIcon.Folder">Folder</see>,
     /// and <see href="https://code.visualstudio.com/api/references/icons-in-labels#icon-listing">ThemeIcon ids</see> are supported.
     /// Using a theme icon is preferred over a custom icon as it gives product theme authors the possibility to change the icons.
-    /// 
+    ///
     /// *Note* that theme icons can also be rendered inside labels and descriptions. Places that support theme icons spell this out
     /// and they use the <c>$(&lt;name&gt;)</c>-syntax, for instance <c>quickPick.label = "Hello World $(globe)"</c>.
     /// </summary>
@@ -1071,7 +1086,7 @@ module Vscode =
     /// A reference to a named icon. Currently, <see cref="ThemeIcon.File">File</see>, <see cref="ThemeIcon.Folder">Folder</see>,
     /// and <see href="https://code.visualstudio.com/api/references/icons-in-labels#icon-listing">ThemeIcon ids</see> are supported.
     /// Using a theme icon is preferred over a custom icon as it gives product theme authors the possibility to change the icons.
-    /// 
+    ///
     /// *Note* that theme icons can also be rendered inside labels and descriptions. Places that support theme icons spell this out
     /// and they use the <c>$(&lt;name&gt;)</c>-syntax, for instance <c>quickPick.label = "Hello World $(globe)"</c>.
     /// </summary>
@@ -1240,7 +1255,7 @@ module Vscode =
         abstract viewColumn: ViewColumn option
         /// <summary>
         /// Perform an edit on the document associated with this text editor.
-        /// 
+        ///
         /// The given callback-function is invoked with an <see cref="TextEditorEdit">edit-builder</see> which must
         /// be used to make edits. Note that the edit-builder is only valid while the
         /// callback executes.
@@ -1344,15 +1359,15 @@ This method shows unexpected behavior and will be removed in the next major upda
         abstract fragment: string
         /// <summary>
         /// The string representing the corresponding file system path of this Uri.
-        /// 
+        ///
         /// Will handle UNC paths and normalize windows drive letters to lower-case. Also
         /// uses the platform specific path separator.
-        /// 
+        ///
         /// * Will *not* validate the path for invalid characters and semantics.
         /// * Will *not* look at the scheme of this Uri.
         /// * The resulting string shall *not* be used for display purposes but
         /// for disk operations, like <c>readFile</c> et al.
-        /// 
+        ///
         /// The *difference* to the {@linkcode Uri.path path}-property is the use of the platform specific
         /// path separator and the handling of UNC paths. The sample below outlines the difference:
         /// <code lang="ts">
@@ -1365,7 +1380,7 @@ This method shows unexpected behavior and will be removed in the next major upda
         abstract fsPath: string
         /// <summary>
         /// Derive a new Uri from this Uri.
-        /// 
+        ///
         /// <code lang="ts">
         /// let file = Uri.parse('before:some/file/path');
         /// let other = file.with({ scheme: 'after' });
@@ -1384,10 +1399,10 @@ This method shows unexpected behavior and will be removed in the next major upda
         /// <summary>
         /// Returns a string representation of this Uri. The representation and normalization
         /// of a URI depends on the scheme.
-        /// 
+        ///
         /// * The resulting string can be safely used with <see cref="Uri.parse" />.
         /// * The resulting string shall *not* be used for display purposes.
-        /// 
+        ///
         /// *Note* that the implementation will encode _aggressive_ which often leads to unexpected,
         /// but not incorrect, results. For instance, colons are encoded to <c>%3A</c> which might be unexpected
         /// in file-uri. Also <c>&amp;</c> and <c>=</c> will be encoded which might be unexpected for http-uris. For stability
@@ -1417,7 +1432,7 @@ This method shows unexpected behavior and will be removed in the next major upda
         /// <summary>
         /// Create an URI from a string, e.g. <c>http://www.example.com/some/path</c>,
         /// <c>file:///usr/home</c>, or <c>scheme:with/path</c>.
-        /// 
+        ///
         /// *Note* that for a while uris without a <c>scheme</c> were accepted. That is not correct
         /// as all uris should have a scheme. To avoid breakage of existing code the optional
         /// <c>strict</c>-argument has been added. We *strongly* advise to use it, e.g. <c>Uri.parse('my:uri', true)</c>
@@ -1430,7 +1445,7 @@ This method shows unexpected behavior and will be removed in the next major upda
         /// <summary>
         /// Create an URI from a file system path. The <see cref="Uri.scheme">scheme</see>
         /// will be <c>file</c>.
-        /// 
+        ///
         /// The *difference* between <see cref="Uri.parse" /> and <see cref="Uri.file" /> is that the latter treats the argument
         /// as path, not as stringified-uri. E.g. <c>Uri.file(path)</c> is *not* the same as
         /// <c>Uri.parse('file://' + path)</c> because the path might contain characters that are
@@ -1440,7 +1455,7 @@ This method shows unexpected behavior and will be removed in the next major upda
         /// good.scheme === 'file';
         /// good.path === '/coding/c#/project1';
         /// good.fragment === '';
-        /// 
+        ///
         /// const bad = URI.parse('file://' + '/coding/c#/project1');
         /// bad.scheme === 'file';
         /// bad.path === '/coding/c'; // path is now broken
@@ -1453,12 +1468,12 @@ This method shows unexpected behavior and will be removed in the next major upda
         /// <summary>
         /// Create a new uri which path is the result of joining
         /// the path of the base uri with the provided path segments.
-        /// 
+        ///
         /// - Note 1: <c>joinPath</c> only affects the path component
         /// and all other components (scheme, authority, query, and fragment) are
         /// left as they are.
         /// - Note 2: The base uri must have a path; an error is thrown otherwise.
-        /// 
+        ///
         /// The path segments are normalized in the following ways:
         /// - sequences of path separators (<c>/</c> or <c>\</c>) are replaced with a single separator
         /// - for <c>file</c>-uris on windows, the backslash-character (<c>\</c>) is considered a path-separator
@@ -1487,7 +1502,7 @@ This method shows unexpected behavior and will be removed in the next major upda
     /// A cancellation token is passed to an asynchronous or long running
     /// operation to request cancellation, like cancelling a request
     /// for completion items because the user continued to type.
-    /// 
+    ///
     /// To get an instance of a <c>CancellationToken</c> use a
     /// <see cref="CancellationTokenSource" />.
     /// </summary>
@@ -1512,7 +1527,7 @@ This method shows unexpected behavior and will be removed in the next major upda
 
     /// <summary>
     /// An error type that should be used to signal cancellation of an operation.
-    /// 
+    ///
     /// This type can be used in response to a <see cref="CancellationToken">cancellation token</see>
     /// being cancelled or when an operation is being cancelled by the
     /// executor of that operation.
@@ -1522,7 +1537,7 @@ This method shows unexpected behavior and will be removed in the next major upda
 
     /// <summary>
     /// An error type that should be used to signal cancellation of an operation.
-    /// 
+    ///
     /// This type can be used in response to a <see cref="CancellationToken">cancellation token</see>
     /// being cancelled or when an operation is being cancelled by the
     /// executor of that operation.
@@ -1556,7 +1571,7 @@ This method shows unexpected behavior and will be removed in the next major upda
         /// <summary>
         /// Creates a new disposable that calls the provided function
         /// on dispose.
-        /// 
+        ///
         /// *Note* that an asynchronous function is not awaited.
         /// </summary>
         /// <param name="callOnDispose">Function that disposes something.</param>
@@ -1564,7 +1579,7 @@ This method shows unexpected behavior and will be removed in the next major upda
 
     /// <summary>
     /// Represents a typed event.
-    /// 
+    ///
     /// A function that represents an event to which you subscribe by calling it with
     /// a listener function as argument.
     /// </summary>
@@ -1583,7 +1598,7 @@ This method shows unexpected behavior and will be removed in the next major upda
     /// <summary>
     /// An event emitter can be used to create and manage an <see cref="Event" /> for others
     /// to subscribe to. One emitter always owns one event.
-    /// 
+    ///
     /// Use this class if you want to provide event from within your extension, for instance
     /// inside a <see cref="TextDocumentContentProvider" /> or when providing
     /// API to other extensions.
@@ -1603,7 +1618,7 @@ This method shows unexpected behavior and will be removed in the next major upda
     /// <summary>
     /// An event emitter can be used to create and manage an <see cref="Event" /> for others
     /// to subscribe to. One emitter always owns one event.
-    /// 
+    ///
     /// Use this class if you want to provide event from within your extension, for instance
     /// inside a <see cref="TextDocumentContentProvider" /> or when providing
     /// API to other extensions.
@@ -1614,7 +1629,7 @@ This method shows unexpected behavior and will be removed in the next major upda
     /// <summary>
     /// A file system watcher notifies about changes to files and folders
     /// on disk or from other <see cref="FileSystemProvider">FileSystemProviders</see>.
-    /// 
+    ///
     /// To get an instance of a <c>FileSystemWatcher</c> use
     /// <see cref="workspace.createFileSystemWatcher">createFileSystemWatcher</see>.
     /// </summary>
@@ -1639,7 +1654,7 @@ This method shows unexpected behavior and will be removed in the next major upda
     /// <summary>
     /// A text document content provider allows to add readonly documents
     /// to the editor, such as source from a dll or generated html from md.
-    /// 
+    ///
     /// Content providers are <see cref="workspace.registerTextDocumentContentProvider">registered</see>
     /// for a <see cref="Uri.scheme">uri-scheme</see>. When a uri with that scheme is to
     /// be <see cref="workspace.openTextDocument">loaded</see> the content provider is
@@ -1650,11 +1665,11 @@ This method shows unexpected behavior and will be removed in the next major upda
         abstract onDidChange: Event<Uri> option with get, set
         /// <summary>
         /// Provide textual content for a given uri.
-        /// 
+        ///
         /// The editor will use the returned string-content to create a readonly
         /// <see cref="TextDocument">document</see>. Resources allocated should be released when
         /// the corresponding document has been <see cref="workspace.onDidCloseTextDocument">closed</see>.
-        /// 
+        ///
         /// **Note**: The contents of the created <see cref="TextDocument">document</see> might not be
         /// identical to the provided text due to end-of-line-sequence normalization.
         /// </summary>
@@ -1689,14 +1704,14 @@ This method shows unexpected behavior and will be removed in the next major upda
         /// <summary>
         /// A human-readable string which is rendered less prominent in the same line. Supports rendering of
         /// <see cref="ThemeIcon">theme icons</see> via the <c>$(&lt;name&gt;)</c>-syntax.
-        /// 
+        ///
         /// Note: this property is ignored when <see cref="QuickPickItem.kind">kind</see> is set to <see cref="QuickPickItemKind.Separator" />
         /// </summary>
         abstract description: string option with get, set
         /// <summary>
         /// A human-readable string which is rendered less prominent in a separate line. Supports rendering of
         /// <see cref="ThemeIcon">theme icons</see> via the <c>$(&lt;name&gt;)</c>-syntax.
-        /// 
+        ///
         /// Note: this property is ignored when <see cref="QuickPickItem.kind">kind</see> is set to <see cref="QuickPickItemKind.Separator" />
         /// </summary>
         abstract detail: string option with get, set
@@ -1707,13 +1722,13 @@ This method shows unexpected behavior and will be removed in the next major upda
         /// (*Note:* This is only honored when the picker allows multiple selections.)
         /// </summary>
         /// <seealso cref="QuickPickOptions.canPickMany">
-        /// 
+        ///
         /// Note: this property is ignored when <see cref="QuickPickItem.kind">kind</see> is set to <see cref="QuickPickItemKind.Separator" />
         /// </seealso>
         abstract picked: bool option with get, set
         /// <summary>
         /// Always show this item.
-        /// 
+        ///
         /// Note: this property is ignored when <see cref="QuickPickItem.kind">kind</see> is set to <see cref="QuickPickItemKind.Separator" />
         /// </summary>
         abstract alwaysShow: bool option with get, set
@@ -1722,7 +1737,7 @@ This method shows unexpected behavior and will be removed in the next major upda
         /// an <see cref="QuickPickItemButtonEvent" /> when clicked. Buttons are only rendered when using a quickpick
         /// created by the <see cref="window.createQuickPick()" /> API. Buttons are not rendered when using
         /// the <see cref="window.showQuickPick()" /> API.
-        /// 
+        ///
         /// Note: this property is ignored when <see cref="QuickPickItem.kind">kind</see> is set to <see cref="QuickPickItemKind.Separator" />
         /// </summary>
         abstract buttons: ResizeArray<QuickInputButton> option with get, set
@@ -1759,7 +1774,7 @@ This method shows unexpected behavior and will be removed in the next major upda
 
     /// <summary>
     /// Options to configure the behaviour of a file open dialog.
-    /// 
+    ///
     /// * Note 1: On Windows and Linux, a file dialog cannot be both a file selector and a folder selector, so if you
     /// set both <c>canSelectFiles</c> and <c>canSelectFolders</c> to <c>true</c> on these platforms, a folder selector will be shown.
     /// * Note 2: Explicitly setting <c>canSelectFiles</c> and <c>canSelectFolders</c> to <c>false</c> is futile
@@ -1786,7 +1801,7 @@ This method shows unexpected behavior and will be removed in the next major upda
         /// </code>
         abstract filters: OpenDialogOptionsFilters option with get, set
         /// Dialog title.
-        /// 
+        ///
         /// This parameter might be ignored, as not all operating systems display a title on open dialogs
         /// (for example, macOS).
         abstract title: string option with get, set
@@ -1807,7 +1822,7 @@ This method shows unexpected behavior and will be removed in the next major upda
         /// </code>
         abstract filters: OpenDialogOptionsFilters option with get, set
         /// Dialog title.
-        /// 
+        ///
         /// This parameter might be ignored, as not all operating systems display a title on save dialogs
         /// (for example, macOS).
         abstract title: string option with get, set
@@ -1825,7 +1840,7 @@ This method shows unexpected behavior and will be removed in the next major upda
         /// A hint for modal dialogs that the item should be triggered
         /// when the user cancels the dialog (e.g. by pressing the ESC
         /// key).
-        /// 
+        ///
         /// Note: this option is ignored for non-modal messages.
         abstract isCloseAffordance: bool option with get, set
 
@@ -1888,9 +1903,9 @@ This method shows unexpected behavior and will be removed in the next major upda
         abstract baseUri: Uri with get, set
         /// <summary>
         /// A base file path to which this pattern will be matched against relatively.
-        /// 
+        ///
         /// This matches the <c>fsPath</c> value of <see cref="RelativePattern.baseUri" />.
-        /// 
+        ///
         /// *Note:* updating this value will update <see cref="RelativePattern.baseUri" /> to
         /// be a uri with <c>file</c> scheme.
         /// </summary>
@@ -1899,7 +1914,7 @@ This method shows unexpected behavior and will be removed in the next major upda
         /// <summary>
         /// A file glob pattern like <c>*.{ts,js}</c> that will be matched on file paths
         /// relative to the base path.
-        /// 
+        ///
         /// Example: Given a base of <c>/home/work/folder</c> and a file path of <c>/home/work/folder/index.js</c>,
         /// the file glob pattern will match on <c>index.js</c>.
         /// </summary>
@@ -1915,15 +1930,15 @@ This method shows unexpected behavior and will be removed in the next major upda
         /// <summary>
         /// Creates a new relative pattern object with a base file path and pattern to match. This pattern
         /// will be matched on file paths relative to the base.
-        /// 
+        ///
         /// Example:
         /// <code lang="ts">
         /// const folder = vscode.workspace.workspaceFolders?.[0];
         /// if (folder) {
-        /// 
+        ///
         ///    // Match any TypeScript file in the root of this workspace folder
         ///    const pattern1 = new vscode.RelativePattern(folder, '*.ts');
-        /// 
+        ///
         ///    // Match any TypeScript file in `someFolder` inside this workspace folder
         ///    const pattern2 = new vscode.RelativePattern(folder, 'someFolder/*.ts');
         /// }
@@ -1940,7 +1955,7 @@ This method shows unexpected behavior and will be removed in the next major upda
     /// <summary>
     /// A file glob pattern to match file paths against. This can either be a glob pattern string
     /// (like <c>**​/*.{ts,js}</c> or <c>*.{ts,js}</c>) or a <see cref="RelativePattern">relative pattern</see>.
-    /// 
+    ///
     /// Glob patterns can have the following syntax:
     /// * <c>*</c> to match one or more characters in a path segment
     /// * <c>?</c> to match on one character in a path segment
@@ -1948,7 +1963,7 @@ This method shows unexpected behavior and will be removed in the next major upda
     /// * <c>{}</c> to group conditions (e.g. <c>**​/*.{ts,js}</c> matches all TypeScript and JavaScript files)
     /// * <c>[]</c> to declare a range of characters to match in a path segment (e.g., <c>example.[0-9]</c> to match on <c>example.0</c>, <c>example.1</c>, …)
     /// * <c>[!...]</c> to negate a range of characters to match in a path segment (e.g., <c>example.[!0-9]</c> to match on <c>example.a</c>, <c>example.b</c>, but not <c>example.0</c>)
-    /// 
+    ///
     /// Note: a backslash (<c>\</c>) is not valid within a glob pattern. If you have an existing file
     /// path to match against, consider to use the <see cref="RelativePattern">relative pattern</see> support
     /// that takes care of converting any backslash into slash. Otherwise, make sure to convert
@@ -1973,6 +1988,18 @@ This method shows unexpected behavior and will be removed in the next major upda
     type [<AllowNullLiteral>] DocumentFilter =
         /// <summary>A language id, like <c>typescript</c>.</summary>
         abstract language: string option
+        /// <summary>
+        /// The <see cref="NotebookDocument.notebookType">type</see> of a notebook, like <c>jupyter-notebook</c>. This allows
+        /// to narrow down on the type of a notebook that a <see cref="NotebookCell.document">cell document</see> belongs to.
+        ///
+        /// *Note* that setting the <c>notebookType</c>-property changes how <c>scheme</c> and <c>pattern</c> are interpreted. When set
+        /// they are evaluated against the <see cref="NotebookDocument.uri">notebook uri</see>, not the document uri.
+        /// </summary>
+        /// <example>
+        /// &lt;caption&gt;Match python document inside jupyter notebook that aren't stored yet (<c>untitled</c>)&lt;/caption&gt;
+        /// { language: 'python', notebookType: 'jupyter-notebook', scheme: 'untitled' }
+        /// </example>
+        abstract notebookType: string option
         /// <summary>A Uri <see cref="Uri.scheme">scheme</see>, like <c>file</c> or <c>untitled</c>.</summary>
         abstract scheme: string option
         /// <summary>
@@ -1984,7 +2011,7 @@ This method shows unexpected behavior and will be removed in the next major upda
     /// <summary>
     /// A language selector is the combination of one or many language identifiers
     /// and <see cref="DocumentFilter">language filters</see>.
-    /// 
+    ///
     /// *Note* that a document selector that is just a language identifier selects *all*
     /// documents, even those that are not saved on disk. Only use such selectors when
     /// a feature works without further context, e.g. without the need to resolve related
@@ -1999,16 +2026,16 @@ This method shows unexpected behavior and will be removed in the next major upda
     /// may return. For once this is the actual result type <c>T</c>, like <c>Hover</c>, or a thenable that resolves
     /// to that type <c>T</c>. In addition, <c>null</c> and <c>undefined</c> can be returned - either directly or from a
     /// thenable.
-    /// 
+    ///
     /// The snippets below are all valid implementations of the {@linkcode HoverProvider}:
-    /// 
+    ///
     /// <code lang="ts">
     /// let a: HoverProvider = {
     ///      provideHover(doc, pos, token): ProviderResult&lt;Hover&gt; {
     ///          return new Hover('Hello World');
     ///      }
     /// }
-    /// 
+    ///
     /// let b: HoverProvider = {
     ///      provideHover(doc, pos, token): ProviderResult&lt;Hover&gt; {
     ///          return new Promise(resolve =&gt; {
@@ -2016,7 +2043,7 @@ This method shows unexpected behavior and will be removed in the next major upda
     ///           });
     ///      }
     /// }
-    /// 
+    ///
     /// let c: HoverProvider = {
     ///      provideHover(doc, pos, token): ProviderResult&lt;Hover&gt; {
     ///          return; // undefined
@@ -2029,9 +2056,9 @@ This method shows unexpected behavior and will be removed in the next major upda
 
     /// <summary>
     /// Kind of a code action.
-    /// 
+    ///
     /// Kinds are a hierarchical list of identifiers separated by <c>.</c>, e.g. <c>"refactor.extract.function"</c>.
-    /// 
+    ///
     /// Code action kinds are used by the editor for UI elements such as the refactoring context menu. Users
     /// can also trigger code actions with a specific kind with the <c>editor.action.codeAction</c> command.
     /// </summary>
@@ -2039,12 +2066,12 @@ This method shows unexpected behavior and will be removed in the next major upda
         /// <summary>String value of the kind, e.g. <c>"refactor.extract.function"</c>.</summary>
         abstract value: string
         /// Create a new kind by appending a more specific selector to the current kind.
-        /// 
+        ///
         /// Does not modify the current kind.
         abstract append: parts: string -> CodeActionKind
         /// <summary>
         /// Checks if this code action kind intersects <c>other</c>.
-        /// 
+        ///
         /// The kind <c>"refactor.extract"</c> for example intersects <c>refactor</c>, <c>"refactor.extract"</c> and <c></c>"refactor.extract.function"`,
         /// but not <c>"unicorn.refactor.extract"</c>, or <c>"refactor.extractAll"</c>.
         /// </summary>
@@ -2052,7 +2079,7 @@ This method shows unexpected behavior and will be removed in the next major upda
         abstract intersects: other: CodeActionKind -> bool
         /// <summary>
         /// Checks if <c>other</c> is a sub-kind of this <c>CodeActionKind</c>.
-        /// 
+        ///
         /// The kind <c>"refactor.extract"</c> for example contains <c>"refactor.extract"</c> and <c></c>"refactor.extract.function"`,
         /// but not <c>"unicorn.refactor.extract"</c>, or <c>"refactor.extractAll"</c> or <c>refactor</c>.
         /// </summary>
@@ -2061,9 +2088,9 @@ This method shows unexpected behavior and will be removed in the next major upda
 
     /// <summary>
     /// Kind of a code action.
-    /// 
+    ///
     /// Kinds are a hierarchical list of identifiers separated by <c>.</c>, e.g. <c>"refactor.extract.function"</c>.
-    /// 
+    ///
     /// Code action kinds are used by the editor for UI elements such as the refactoring context menu. Users
     /// can also trigger code actions with a specific kind with the <c>editor.action.codeAction</c> command.
     /// </summary>
@@ -2072,21 +2099,21 @@ This method shows unexpected behavior and will be removed in the next major upda
         abstract Empty: CodeActionKind
         /// <summary>
         /// Base kind for quickfix actions: <c>quickfix</c>.
-        /// 
+        ///
         /// Quick fix actions address a problem in the code and are shown in the normal code action context menu.
         /// </summary>
         abstract QuickFix: CodeActionKind
         /// <summary>
         /// Base kind for refactoring actions: <c>refactor</c>
-        /// 
+        ///
         /// Refactoring actions are shown in the refactoring context menu.
         /// </summary>
         abstract Refactor: CodeActionKind
         /// <summary>
         /// Base kind for refactoring extraction actions: <c>refactor.extract</c>
-        /// 
+        ///
         /// Example extract actions:
-        /// 
+        ///
         /// - Extract method
         /// - Extract function
         /// - Extract variable
@@ -2096,9 +2123,9 @@ This method shows unexpected behavior and will be removed in the next major upda
         abstract RefactorExtract: CodeActionKind
         /// <summary>
         /// Base kind for refactoring inline actions: <c>refactor.inline</c>
-        /// 
+        ///
         /// Example inline actions:
-        /// 
+        ///
         /// - Inline function
         /// - Inline variable
         /// - Inline constant
@@ -2107,9 +2134,9 @@ This method shows unexpected behavior and will be removed in the next major upda
         abstract RefactorInline: CodeActionKind
         /// <summary>
         /// Base kind for refactoring rewrite actions: <c>refactor.rewrite</c>
-        /// 
+        ///
         /// Example rewrite actions:
-        /// 
+        ///
         /// - Convert JavaScript function to class
         /// - Add or remove parameter
         /// - Encapsulate field
@@ -2120,7 +2147,7 @@ This method shows unexpected behavior and will be removed in the next major upda
         abstract RefactorRewrite: CodeActionKind
         /// <summary>
         /// Base kind for source actions: <c>source</c>
-        /// 
+        ///
         /// Source code actions apply to the entire file. They must be explicitly requested and will not show in the
         /// normal <see href="https://code.visualstudio.com/docs/editor/editingevolved#_code-action">lightbulb</see> menu. Source actions
         /// can be run on save using <c>editor.codeActionsOnSave</c> and are also shown in the <c>source</c> context menu.
@@ -2130,7 +2157,7 @@ This method shows unexpected behavior and will be removed in the next major upda
         abstract SourceOrganizeImports: CodeActionKind
         /// <summary>
         /// Base kind for auto-fix source actions: <c>source.fixAll</c>.
-        /// 
+        ///
         /// Fix all actions automatically fix errors that have a clear fix that do not require user input.
         /// They should not suppress errors or perform unsafe fixes such as generating new types or classes.
         /// </summary>
@@ -2141,7 +2168,7 @@ This method shows unexpected behavior and will be removed in the next major upda
         /// Code actions were explicitly requested by the user or by an extension.
         | Invoke = 1
         /// Code actions were requested automatically.
-        /// 
+        ///
         /// This typically happens when current selection in a file changes, but can
         /// also be triggered when file content changes.
         | Automatic = 2
@@ -2157,7 +2184,7 @@ This method shows unexpected behavior and will be removed in the next major upda
         abstract diagnostics: ResizeArray<Diagnostic>
         /// <summary>
         /// Requested kind of actions to return.
-        /// 
+        ///
         /// Actions not of this kind are filtered out before being shown by the <see href="https://code.visualstudio.com/docs/editor/editingevolved#_code-action">lightbulb</see>.
         /// </summary>
         abstract only: CodeActionKind option
@@ -2165,7 +2192,7 @@ This method shows unexpected behavior and will be removed in the next major upda
     /// <summary>
     /// A code action represents a change that can be performed in code, e.g. to fix a problem or
     /// to refactor code.
-    /// 
+    ///
     /// A CodeAction must set either {@linkcode CodeAction.edit edit} and/or a {@linkcode CodeAction.command command}. If both are supplied, the <c>edit</c> is applied first, then the command is executed.
     /// </summary>
     type [<AllowNullLiteral>] CodeAction =
@@ -2177,34 +2204,34 @@ This method shows unexpected behavior and will be removed in the next major upda
         abstract diagnostics: ResizeArray<Diagnostic> option with get, set
         /// <summary>
         /// A <see cref="Command" /> this code action executes.
-        /// 
+        ///
         /// If this command throws an exception, the editor displays the exception message to users in the editor at the
         /// current cursor position.
         /// </summary>
         abstract command: Command option with get, set
         /// <summary>
         /// <see cref="CodeActionKind">Kind</see> of the code action.
-        /// 
+        ///
         /// Used to filter code actions.
         /// </summary>
         abstract kind: CodeActionKind option with get, set
         /// <summary>
         /// Marks this as a preferred action. Preferred actions are used by the <c>auto fix</c> command and can be targeted
         /// by keybindings.
-        /// 
+        ///
         /// A quick fix should be marked preferred if it properly addresses the underlying error.
         /// A refactoring should be marked preferred if it is the most reasonable choice of actions to take.
         /// </summary>
         abstract isPreferred: bool option with get, set
         /// <summary>
         /// Marks that the code action cannot currently be applied.
-        /// 
+        ///
         /// - Disabled code actions are not shown in automatic <see href="https://code.visualstudio.com/docs/editor/editingevolved#_code-action">lightbulb</see>
         /// code action menu.
-        /// 
+        ///
         /// - Disabled actions are shown as faded out in the code action menu when the user request a more specific type
         /// of code action, such as refactorings.
-        /// 
+        ///
         /// - If the user has a <see href="https://code.visualstudio.com/docs/editor/refactoring#_keybindings-for-code-actions">keybinding</see>
         /// that auto applies a code action and only a disabled code actions are returned, the editor will show the user an
         /// error message with <c>reason</c> in the editor.
@@ -2214,13 +2241,13 @@ This method shows unexpected behavior and will be removed in the next major upda
     /// <summary>
     /// A code action represents a change that can be performed in code, e.g. to fix a problem or
     /// to refactor code.
-    /// 
+    ///
     /// A CodeAction must set either {@linkcode CodeAction.edit edit} and/or a {@linkcode CodeAction.command command}. If both are supplied, the <c>edit</c> is applied first, then the command is executed.
     /// </summary>
     type [<AllowNullLiteral>] CodeActionStatic =
         /// <summary>
         /// Creates a new code action.
-        /// 
+        ///
         /// A code action must have at least a <see cref="CodeAction.title">title</see> and <see cref="CodeAction.edit">edits</see>
         /// and/or a <see cref="CodeAction.command">command</see>.
         /// </summary>
@@ -2231,7 +2258,7 @@ This method shows unexpected behavior and will be removed in the next major upda
     /// <summary>
     /// The code action interface defines the contract between extensions and
     /// the <see href="https://code.visualstudio.com/docs/editor/editingevolved#_code-action">lightbulb</see> feature.
-    /// 
+    ///
     /// A code action can be any command that is <see cref="commands.getCommands">known</see> to the system.
     /// </summary>
     type CodeActionProvider =
@@ -2240,7 +2267,7 @@ This method shows unexpected behavior and will be removed in the next major upda
     /// <summary>
     /// The code action interface defines the contract between extensions and
     /// the <see href="https://code.visualstudio.com/docs/editor/editingevolved#_code-action">lightbulb</see> feature.
-    /// 
+    ///
     /// A code action can be any command that is <see cref="commands.getCommands">known</see> to the system.
     /// </summary>
     type [<AllowNullLiteral>] CodeActionProvider<'T when 'T :> CodeAction> =
@@ -2255,7 +2282,7 @@ This method shows unexpected behavior and will be removed in the next major upda
         /// <returns>
         /// An array of code actions, such as quick fixes or refactorings. The lack of a result can be signaled
         /// by returning <c>undefined</c>, <c>null</c>, or an empty array.
-        /// 
+        ///
         /// We also support returning <c>Command</c> for legacy reasons, however all new extensions should return
         /// <c>CodeAction</c> object instead.
         /// </returns>
@@ -2264,7 +2291,7 @@ This method shows unexpected behavior and will be removed in the next major upda
         /// Given a code action fill in its {@linkcode CodeAction.edit edit}-property. Changes to
         /// all other properties, like title, are ignored. A code action that has an edit
         /// will not be resolved.
-        /// 
+        ///
         /// *Note* that a code action provider that returns commands, not code actions, cannot successfully
         /// implement this function. Returning commands is deprecated and instead code actions should be
         /// returned.
@@ -2281,7 +2308,7 @@ This method shows unexpected behavior and will be removed in the next major upda
     type [<AllowNullLiteral>] CodeActionProviderMetadata =
         /// <summary>
         /// List of <see cref="CodeActionKind">CodeActionKinds</see> that a <see cref="CodeActionProvider" /> may return.
-        /// 
+        ///
         /// This list is used to determine if a given <c>CodeActionProvider</c> should be invoked or not.
         /// To avoid unnecessary computation, every <c>CodeActionProvider</c> should list use <c>providedCodeActionKinds</c>. The
         /// list of kinds may either be generic, such as <c>[CodeActionKind.Refactor]</c>, or list out every kind provided,
@@ -2290,16 +2317,16 @@ This method shows unexpected behavior and will be removed in the next major upda
         abstract providedCodeActionKinds: ResizeArray<CodeActionKind> option
         /// <summary>
         /// Static documentation for a class of code actions.
-        /// 
+        ///
         /// Documentation from the provider is shown in the code actions menu if either:
-        /// 
+        ///
         /// - Code actions of <c>kind</c> are requested by the editor. In this case, the editor will show the documentation that
         ///    most closely matches the requested code action kind. For example, if a provider has documentation for
         ///    both <c>Refactor</c> and <c>RefactorExtract</c>, when the user requests code actions for <c>RefactorExtract</c>,
         ///    the editor will use the documentation for <c>RefactorExtract</c> instead of the documentation for <c>Refactor</c>.
-        /// 
+        ///
         /// - Any code actions of <c>kind</c> are returned by the provider.
-        /// 
+        ///
         /// At most one documentation entry will be shown per provider.
         /// </summary>
         abstract documentation: ReadonlyArray<{| kind: CodeActionKind; command: Command |}> option
@@ -2307,7 +2334,7 @@ This method shows unexpected behavior and will be removed in the next major upda
     /// <summary>
     /// A code lens represents a <see cref="Command" /> that should be shown along with
     /// source text, like the number of references, a way to run tests, etc.
-    /// 
+    ///
     /// A code lens is _unresolved_ when no command is associated to it. For performance
     /// reasons the creation of a code lens and resolving should be done to two stages.
     /// </summary>
@@ -2324,7 +2351,7 @@ This method shows unexpected behavior and will be removed in the next major upda
     /// <summary>
     /// A code lens represents a <see cref="Command" /> that should be shown along with
     /// source text, like the number of references, a way to run tests, etc.
-    /// 
+    ///
     /// A code lens is _unresolved_ when no command is associated to it. For performance
     /// reasons the creation of a code lens and resolving should be done to two stages.
     /// </summary>
@@ -2373,7 +2400,7 @@ This method shows unexpected behavior and will be removed in the next major upda
 
     /// <summary>
     /// Information about where a symbol is defined.
-    /// 
+    ///
     /// Provides additional metadata over normal <see cref="Location" /> definitions, including the range of
     /// the defining symbol
     /// </summary>
@@ -2452,10 +2479,10 @@ This method shows unexpected behavior and will be removed in the next major upda
 
     /// <summary>
     /// Human-readable text that supports formatting via the <see href="https://commonmark.org">markdown syntax</see>.
-    /// 
+    ///
     /// Rendering of <see cref="ThemeIcon">theme icons</see> via the <c>$(&lt;name&gt;)</c>-syntax is supported
     /// when the {@linkcode supportThemeIcons} is set to <c>true</c>.
-    /// 
+    ///
     /// Rendering of embedded html is supported when {@linkcode supportHtml} is set to <c>true</c>.
     /// </summary>
     type [<AllowNullLiteral>] MarkdownString =
@@ -2470,15 +2497,35 @@ This method shows unexpected behavior and will be removed in the next major upda
         abstract supportThemeIcons: bool option with get, set
         /// <summary>
         /// Indicates that this markdown string can contain raw html tags. Defaults to <c>false</c>.
-        /// 
+        ///
         /// When <c>supportHtml</c> is false, the markdown renderer will strip out any raw html tags
         /// that appear in the markdown text. This means you can only use markdown syntax for rendering.
-        /// 
+        ///
         /// When <c>supportHtml</c> is true, the markdown render will also allow a safe subset of html tags
         /// and attributes to be rendered. See <see href="https://github.com/microsoft/vscode/blob/6d2920473c6f13759c978dd89104c4270a83422d/src/vs/base/browser/markdownRenderer.ts#L296" />
         /// for a list of all supported tags and attributes.
         /// </summary>
         abstract supportHtml: bool option with get, set
+        /// <summary>
+        /// Uri that relative paths are resolved relative to.
+        ///
+        /// If the <c>baseUri</c> ends with <c>/</c>, it is considered a directory and relative paths in the markdown are resolved relative to that directory:
+        ///
+        /// <code lang="ts">
+        /// const md = new vscode.MarkdownString(`[link](./file.js)`);
+        /// md.baseUri = vscode.Uri.file('/path/to/dir/');
+        /// // Here 'link' in the rendered markdown resolves to '/path/to/dir/file.js'
+        /// </code>
+        ///
+        /// If the <c>baseUri</c> is a file, relative paths in the markdown are resolved relative to the parent dir of that file:
+        ///
+        /// <code lang="ts">
+        /// const md = new vscode.MarkdownString(`[link](./file.js)`);
+        /// md.baseUri = vscode.Uri.file('/path/to/otherFile.js');
+        /// // Here 'link' in the rendered markdown resolves to '/path/to/file.js'
+        /// </code>
+        /// </summary>
+        abstract baseUri: Uri option with get, set
         /// <summary>Appends and escapes the given string to this markdown string.</summary>
         /// <param name="value">Plain text.</param>
         abstract appendText: value: string -> MarkdownString
@@ -2492,10 +2539,10 @@ This method shows unexpected behavior and will be removed in the next major upda
 
     /// <summary>
     /// Human-readable text that supports formatting via the <see href="https://commonmark.org">markdown syntax</see>.
-    /// 
+    ///
     /// Rendering of <see cref="ThemeIcon">theme icons</see> via the <c>$(&lt;name&gt;)</c>-syntax is supported
     /// when the {@linkcode supportThemeIcons} is set to <c>true</c>.
-    /// 
+    ///
     /// Rendering of embedded html is supported when {@linkcode supportHtml} is set to <c>true</c>.
     /// </summary>
     type [<AllowNullLiteral>] MarkdownStringStatic =
@@ -2855,12 +2902,12 @@ This method shows unexpected behavior and will be removed in the next major upda
     type [<AllowNullLiteral>] WorkspaceSymbolProvider<'T when 'T :> SymbolInformation> =
         /// <summary>
         /// Project-wide search for a symbol matching the given query string.
-        /// 
+        ///
         /// The <c>query</c>-parameter should be interpreted in a *relaxed way* as the editor will apply its own highlighting
         /// and scoring on the results. A good rule of thumb is to match case-insensitive and to simply check that the
         /// characters of *query* appear in their order in a candidate symbol. Don't use prefix, substring, or similar
         /// strict matching.
-        /// 
+        ///
         /// To improve performance implementors can implement <c>resolveWorkspaceSymbol</c> and then provide symbols with partial
         /// <see cref="SymbolInformation.location">location</see>-objects, without a <c>range</c> defined. The editor will then call
         /// <c>resolveWorkspaceSymbol</c> for selected symbols only, e.g. when opening a workspace symbol.
@@ -2918,7 +2965,7 @@ This method shows unexpected behavior and will be removed in the next major upda
         /// The string this edit will insert.
         abstract newText: string with get, set
         /// The eol-sequence used in the document.
-        /// 
+        ///
         /// *Note* that the eol-sequence will be applied to the
         /// whole document.
         abstract newEol: EndOfLine option with get, set
@@ -2965,7 +3012,7 @@ This method shows unexpected behavior and will be removed in the next major upda
     /// <summary>
     /// A workspace edit is a collection of textual and files changes for
     /// multiple resources and documents.
-    /// 
+    ///
     /// Use the <see cref="workspace.applyEdit">applyEdit</see>-function to apply a workspace edit.
     /// </summary>
     type [<AllowNullLiteral>] WorkspaceEdit =
@@ -3030,7 +3077,7 @@ This method shows unexpected behavior and will be removed in the next major upda
     /// <summary>
     /// A workspace edit is a collection of textual and files changes for
     /// multiple resources and documents.
-    /// 
+    ///
     /// Use the <see cref="workspace.applyEdit">applyEdit</see>-function to apply a workspace edit.
     /// </summary>
     type [<AllowNullLiteral>] WorkspaceEditStatic =
@@ -3039,7 +3086,7 @@ This method shows unexpected behavior and will be removed in the next major upda
     /// <summary>
     /// A snippet string is a template which allows to insert text
     /// and to control the editor cursor when insertion happens.
-    /// 
+    ///
     /// A snippet can define tab stops and placeholders with <c>$1</c>, <c>$2</c>
     /// and <c>${3:foo}</c>. <c>$0</c> defines the final tab stop, it defaults to
     /// the end of the snippet. Variables are defined with <c>$name</c> and
@@ -3106,7 +3153,7 @@ This method shows unexpected behavior and will be removed in the next major upda
     /// <summary>
     /// A snippet string is a template which allows to insert text
     /// and to control the editor cursor when insertion happens.
-    /// 
+    ///
     /// A snippet can define tab stops and placeholders with <c>$1</c>, <c>$2</c>
     /// and <c>${3:foo}</c>. <c>$0</c> defines the final tab stop, it defaults to
     /// the end of the snippet. Variables are defined with <c>$name</c> and
@@ -3138,7 +3185,7 @@ This method shows unexpected behavior and will be removed in the next major upda
         /// Optional function for resolving and validating a position *before* running rename. The result can
         /// be a range or a range and a placeholder text. The placeholder text should be the identifier of the symbol
         /// which is being renamed - when omitted the text in the returned range is used.
-        /// 
+        ///
         /// *Note: * This function should throw an error or return a rejected thenable when the provided location
         /// doesn't allow for a rename.
         /// </summary>
@@ -3194,7 +3241,7 @@ This method shows unexpected behavior and will be removed in the next major upda
     type [<AllowNullLiteral>] SemanticTokens =
         /// <summary>
         /// The result id of the tokens.
-        /// 
+        ///
         /// This is the id that will be passed to <c>DocumentSemanticTokensProvider.provideDocumentSemanticTokensEdits</c> (if implemented).
         /// </summary>
         abstract resultId: string option
@@ -3213,7 +3260,7 @@ This method shows unexpected behavior and will be removed in the next major upda
     type [<AllowNullLiteral>] SemanticTokensEdits =
         /// <summary>
         /// The result id of the tokens.
-        /// 
+        ///
         /// This is the id that will be passed to <c>DocumentSemanticTokensProvider.provideDocumentSemanticTokensEdits</c> (if implemented).
         /// </summary>
         abstract resultId: string option
@@ -3249,7 +3296,7 @@ This method shows unexpected behavior and will be removed in the next major upda
         /// <summary>
         /// Tokens in a file are represented as an array of integers. The position of each token is expressed relative to
         /// the token before it, because most tokens remain stable relative to each other when edits are made in a file.
-        /// 
+        ///
         /// ---
         /// In short, each token takes 5 integers to represent, so a specific token <c>i</c> in the file consists of the following array indices:
         ///   - at index <c>5*i</c>   - <c>deltaLine</c>: token line number, relative to the previous token
@@ -3257,24 +3304,24 @@ This method shows unexpected behavior and will be removed in the next major upda
         ///   - at index <c>5*i+2</c> - <c>length</c>: the length of the token. A token cannot be multiline.
         ///   - at index <c>5*i+3</c> - <c>tokenType</c>: will be looked up in <c>SemanticTokensLegend.tokenTypes</c>. We currently ask that <c>tokenType</c> &lt; 65536.
         ///   - at index <c>5*i+4</c> - <c>tokenModifiers</c>: each set bit will be looked up in <c>SemanticTokensLegend.tokenModifiers</c>
-        /// 
+        ///
         /// ---
         /// ### How to encode tokens
-        /// 
+        ///
         /// Here is an example for encoding a file with 3 tokens in a uint32 array:
         /// <code>
         ///     { line: 2, startChar:  5, length: 3, tokenType: "property",  tokenModifiers: ["private", "static"] },
         ///     { line: 2, startChar: 10, length: 4, tokenType: "type",      tokenModifiers: [] },
         ///     { line: 5, startChar:  2, length: 7, tokenType: "class",     tokenModifiers: [] }
         /// </code>
-        /// 
+        ///
         /// 1. First of all, a legend must be devised. This legend must be provided up-front and capture all possible token types.
         /// For this example, we will choose the following legend which must be passed in when registering the provider:
         /// <code>
         ///     tokenTypes: ['property', 'type', 'class'],
         ///     tokenModifiers: ['private', 'static']
         /// </code>
-        /// 
+        ///
         /// 2. The first transformation step is to encode <c>tokenType</c> and <c>tokenModifiers</c> as integers using the legend. Token types are looked
         /// up by index, so a <c>tokenType</c> value of <c>1</c> means <c>tokenTypes[1]</c>. Multiple token modifiers can be set by using bit flags,
         /// so a <c>tokenModifier</c> value of <c>3</c> is first viewed as binary <c>0b00000011</c>, which means <c>[tokenModifiers[0], tokenModifiers[1]]</c> because
@@ -3284,7 +3331,7 @@ This method shows unexpected behavior and will be removed in the next major upda
         ///     { line: 2, startChar: 10, length: 4, tokenType: 1, tokenModifiers: 0 },
         ///     { line: 5, startChar:  2, length: 7, tokenType: 2, tokenModifiers: 0 }
         /// </code>
-        /// 
+        ///
         /// 3. The next step is to represent each token relative to the previous token in the file. In this case, the second token
         /// is on the same line as the first token, so the <c>startChar</c> of the second token is made relative to the <c>startChar</c>
         /// of the first token, so it will be <c>10 - 5</c>. The third token is on a different line than the second token, so the
@@ -3294,7 +3341,7 @@ This method shows unexpected behavior and will be removed in the next major upda
         ///     { deltaLine: 0, deltaStartChar: 5, length: 4, tokenType: 1, tokenModifiers: 0 },
         ///     { deltaLine: 3, deltaStartChar: 2, length: 7, tokenType: 2, tokenModifiers: 0 }
         /// </code>
-        /// 
+        ///
         /// 4. Finally, the last step is to inline each of the 5 fields for a token in a single array, which is a memory friendly representation:
         /// <code>
         ///     // 1st token,  2nd token,  3rd token
@@ -3310,16 +3357,16 @@ This method shows unexpected behavior and will be removed in the next major upda
         /// <summary>
         /// Instead of always returning all the tokens in a file, it is possible for a <c>DocumentSemanticTokensProvider</c> to implement
         /// this method (<c>provideDocumentSemanticTokensEdits</c>) and then return incremental updates to the previously provided semantic tokens.
-        /// 
+        ///
         /// ---
         /// ### How tokens change when the document changes
-        /// 
+        ///
         /// Suppose that <c>provideDocumentSemanticTokens</c> has previously returned the following semantic tokens:
         /// <code>
         ///     // 1st token,  2nd token,  3rd token
         ///     [  2,5,3,0,3,  0,5,4,1,0,  3,2,7,2,0 ]
         /// </code>
-        /// 
+        ///
         /// Also suppose that after some edits, the new semantic tokens in a file are:
         /// <code>
         ///     // 1st token,  2nd token,  3rd token
@@ -3329,10 +3376,10 @@ This method shows unexpected behavior and will be removed in the next major upda
         /// <code>
         ///     [  2,5,3,0,3,  0,5,4,1,0,  3,2,7,2,0 ] // old tokens
         ///     [  3,5,3,0,3,  0,5,4,1,0,  3,2,7,2,0 ] // new tokens
-        /// 
+        ///
         ///     edit: { start:  0, deleteCount: 1, data: [3] } // replace integer at offset 0 with 3
         /// </code>
-        /// 
+        ///
         /// *NOTE*: If the provider cannot compute <c>SemanticTokensEdits</c>, it can "give up" and return all the tokens in the document again.
         /// *NOTE*: All edits in <c>SemanticTokensEdits</c> contain indices in the old integers array, so they all refer to the previous result state.
         /// </summary>
@@ -3371,7 +3418,7 @@ This method shows unexpected behavior and will be removed in the next major upda
     type [<AllowNullLiteral>] DocumentRangeFormattingEditProvider =
         /// <summary>
         /// Provide formatting edits for a range in a document.
-        /// 
+        ///
         /// The given range is a hint and providers can decide to format a smaller
         /// or larger range. Often this is done by adjusting the start and end
         /// of the range to full syntax nodes.
@@ -3391,7 +3438,7 @@ This method shows unexpected behavior and will be removed in the next major upda
     type [<AllowNullLiteral>] OnTypeFormattingEditProvider =
         /// <summary>
         /// Provide formatting edits after a character has been typed.
-        /// 
+        ///
         /// The given position and character should hint to the provider
         /// what range the position to expand to, like find the matching <c>{</c>
         /// when <c>}</c> has been entered.
@@ -3412,7 +3459,7 @@ This method shows unexpected behavior and will be removed in the next major upda
     type [<AllowNullLiteral>] ParameterInformation =
         /// <summary>
         /// The label of this signature.
-        /// 
+        ///
         /// Either a string or inclusive start and exclusive end offsets within its containing
         /// <see cref="SignatureInformation.label">signature label</see>. *Note*: A label of type string must be
         /// a substring of its containing signature information's <see cref="SignatureInformation.label">label</see>.
@@ -3443,7 +3490,7 @@ This method shows unexpected behavior and will be removed in the next major upda
         /// The parameters of this signature.
         abstract parameters: ResizeArray<ParameterInformation> with get, set
         /// The index of the active parameter.
-        /// 
+        ///
         /// If provided, this is used in place of {@linkcode SignatureHelp.activeSignature}.
         abstract activeParameter: float option with get, set
 
@@ -3489,21 +3536,21 @@ This method shows unexpected behavior and will be removed in the next major upda
         abstract triggerKind: SignatureHelpTriggerKind
         /// <summary>
         /// Character that caused signature help to be triggered.
-        /// 
+        ///
         /// This is <c>undefined</c> when signature help is not triggered by typing, such as when manually invoking
         /// signature help or when moving the cursor.
         /// </summary>
         abstract triggerCharacter: string option
         /// <summary>
         /// <c>true</c> if signature help was already showing when it was triggered.
-        /// 
+        ///
         /// Retriggers occur when the signature help is already active and can be caused by actions such as
         /// typing a trigger character, a cursor move, or document content changes.
         /// </summary>
         abstract isRetrigger: bool
         /// <summary>
         /// The currently active {@linkcode SignatureHelp}.
-        /// 
+        ///
         /// The <c>activeSignatureHelp</c> has its [<c>SignatureHelp.activeSignature</c>] field updated based on
         /// the user arrowing through available signatures.
         /// </summary>
@@ -3530,7 +3577,7 @@ This method shows unexpected behavior and will be removed in the next major upda
         /// List of characters that trigger signature help.
         abstract triggerCharacters: ResizeArray<string>
         /// List of characters that re-trigger signature help.
-        /// 
+        ///
         /// These trigger characters are only active when signature help is already showing. All trigger characters
         /// are also counted as re-trigger characters.
         abstract retriggerCharacters: ResizeArray<string>
@@ -3538,7 +3585,7 @@ This method shows unexpected behavior and will be removed in the next major upda
     /// <summary>A structured label for a <see cref="CompletionItem">completion item</see>.</summary>
     type [<AllowNullLiteral>] CompletionItemLabel =
         /// The label of this completion item.
-        /// 
+        ///
         /// By default this is also the text that is inserted when this completion is selected.
         abstract label: string with get, set
         /// <summary>
@@ -3590,12 +3637,12 @@ This method shows unexpected behavior and will be removed in the next major upda
 
     /// <summary>
     /// A completion item represents a text snippet that is proposed to complete text that is being typed.
-    /// 
+    ///
     /// It is sufficient to create a completion item from just a <see cref="CompletionItem.label">label</see>. In that
     /// case the completion item will replace the <see cref="TextDocument.getWordRangeAtPosition">word</see>
     /// until the cursor with the given label or <see cref="CompletionItem.insertText">insertText</see>. Otherwise the
     /// given <see cref="CompletionItem.textEdit">edit</see> is used.
-    /// 
+    ///
     /// When selecting a completion item in the editor its defined or synthesized text edit will be applied
     /// to *all* cursors/selections whereas <see cref="CompletionItem.additionalTextEdits">additionalTextEdits</see> will be
     /// applied as provided.
@@ -3621,7 +3668,7 @@ This method shows unexpected behavior and will be removed in the next major upda
         /// A string that should be used when comparing this item
         /// with other items. When <c>falsy</c> the <see cref="CompletionItem.label">label</see>
         /// is used.
-        /// 
+        ///
         /// Note that <c>sortText</c> is only used for the initial ordering of completion
         /// items. When having a leading word (prefix) ordering is based on how
         /// well completions match that prefix and the initial ordering is only used
@@ -3634,7 +3681,7 @@ This method shows unexpected behavior and will be removed in the next major upda
         /// A string that should be used when filtering a set of
         /// completion items. When <c>falsy</c> the <see cref="CompletionItem.label">label</see>
         /// is used.
-        /// 
+        ///
         /// Note that the filter text is matched against the leading word (prefix) which is defined
         /// by the {@linkcode CompletionItem.range range}-property.
         /// </summary>
@@ -3651,11 +3698,11 @@ This method shows unexpected behavior and will be removed in the next major upda
         abstract insertText: U2<string, SnippetString> option with get, set
         /// <summary>
         /// A range or a insert and replace range selecting the text that should be replaced by this completion item.
-        /// 
+        ///
         /// When omitted, the range of the <see cref="TextDocument.getWordRangeAtPosition">current word</see> is used as replace-range
         /// and as insert-range the start of the <see cref="TextDocument.getWordRangeAtPosition">current word</see> to the
         /// current position is used.
-        /// 
+        ///
         /// *Note 1:* A range must be a <see cref="Range.isSingleLine">single line</see> and it must
         /// <see cref="Range.contains">contain</see> the position at which completion has been <see cref="CompletionItemProvider.provideCompletionItems">requested</see>.
         /// *Note 2:* A insert range must be a prefix of a replace range, that means it must be contained and starting at the same position.
@@ -3697,12 +3744,12 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
 
     /// <summary>
     /// A completion item represents a text snippet that is proposed to complete text that is being typed.
-    /// 
+    ///
     /// It is sufficient to create a completion item from just a <see cref="CompletionItem.label">label</see>. In that
     /// case the completion item will replace the <see cref="TextDocument.getWordRangeAtPosition">word</see>
     /// until the cursor with the given label or <see cref="CompletionItem.insertText">insertText</see>. Otherwise the
     /// given <see cref="CompletionItem.textEdit">edit</see> is used.
-    /// 
+    ///
     /// When selecting a completion item in the editor its defined or synthesized text edit will be applied
     /// to *all* cursors/selections whereas <see cref="CompletionItem.additionalTextEdits">additionalTextEdits</see> will be
     /// applied as provided.
@@ -3712,7 +3759,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     type [<AllowNullLiteral>] CompletionItemStatic =
         /// <summary>
         /// Creates a new completion item.
-        /// 
+        ///
         /// Completion items must have at least a <see cref="CompletionItem.label">label</see> which then
         /// will be used as insert text as well as for sorting and filtering.
         /// </summary>
@@ -3766,9 +3813,9 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract triggerKind: CompletionTriggerKind
         /// <summary>
         /// Character that triggered the completion item provider.
-        /// 
+        ///
         /// <c>undefined</c> if the provider was not triggered by a character.
-        /// 
+        ///
         /// The trigger character is already in the document when the completion provider is triggered.
         /// </summary>
         abstract triggerCharacter: string option
@@ -3776,13 +3823,13 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// <summary>
     /// The completion item provider interface defines the contract between extensions and
     /// <see href="https://code.visualstudio.com/docs/editor/intellisense">IntelliSense</see>.
-    /// 
+    ///
     /// Providers can delay the computation of the {@linkcode CompletionItem.detail detail}
     /// and {@linkcode CompletionItem.documentation documentation} properties by implementing the
     /// {@linkcode CompletionItemProvider.resolveCompletionItem resolveCompletionItem}-function. However, properties that
     /// are needed for the initial sorting and filtering, like <c>sortText</c>, <c>filterText</c>, <c>insertText</c>, and <c>range</c>, must
     /// not be changed during resolve.
-    /// 
+    ///
     /// Providers are asked for completions either explicitly by a user gesture or -depending on the configuration-
     /// implicitly when typing words or trigger characters.
     /// </summary>
@@ -3792,13 +3839,13 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// <summary>
     /// The completion item provider interface defines the contract between extensions and
     /// <see href="https://code.visualstudio.com/docs/editor/intellisense">IntelliSense</see>.
-    /// 
+    ///
     /// Providers can delay the computation of the {@linkcode CompletionItem.detail detail}
     /// and {@linkcode CompletionItem.documentation documentation} properties by implementing the
     /// {@linkcode CompletionItemProvider.resolveCompletionItem resolveCompletionItem}-function. However, properties that
     /// are needed for the initial sorting and filtering, like <c>sortText</c>, <c>filterText</c>, <c>insertText</c>, and <c>range</c>, must
     /// not be changed during resolve.
-    /// 
+    ///
     /// Providers are asked for completions either explicitly by a user gesture or -depending on the configuration-
     /// implicitly when typing words or trigger characters.
     /// </summary>
@@ -3816,13 +3863,13 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// <summary>
         /// Given a completion item fill in more data, like <see cref="CompletionItem.documentation">doc-comment</see>
         /// or <see cref="CompletionItem.detail">details</see>.
-        /// 
+        ///
         /// The editor will only resolve a completion item once.
-        /// 
+        ///
         /// *Note* that this function is called when completion items are already showing in the UI or when an item has been
         /// selected for insertion. Because of that, no property that changes the presentation (label, sorting, filtering etc)
         /// or the (primary) insert behaviour (<see cref="CompletionItem.insertText">insertText</see>) can be changed.
-        /// 
+        ///
         /// This function may fill in <see cref="CompletionItem.additionalTextEdits">additionalTextEdits</see>. However, that means an item might be
         /// inserted *before* resolving is done and in that case the editor will do a best effort to still apply those additional
         /// text edits.
@@ -3844,7 +3891,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract target: Uri option with get, set
         /// <summary>
         /// The tooltip text when you hover over this link.
-        /// 
+        ///
         /// If a tooltip is provided, is will be displayed in a string that includes instructions on how to
         /// trigger the link, such as <c>{0} (ctrl + click)</c>. The specific instructions vary depending on OS,
         /// user settings, and localization.
@@ -3920,13 +3967,12 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// <summary>Creates a new color range.</summary>
         /// <param name="range">The range the color appears in. Must not be empty.</param>
         /// <param name="color">The value of the color.</param>
-        /// <param name="format">The format in which this color is currently formatted.</param>
         [<EmitConstructor>] abstract Create: range: Range * color: Color -> ColorInformation
 
     /// <summary>
     /// A color presentation object describes how a {@linkcode Color} should be represented as text and what
     /// edits are required to refer to it from source code.
-    /// 
+    ///
     /// For some languages one color can have multiple presentations, e.g. css can represent the color red with
     /// the constant <c>Red</c>, the hex-value <c>#ff0000</c>, or in rgba and hsla forms. In csharp other representations
     /// apply, e.g. <c>System.Drawing.Color.Red</c>.
@@ -3951,7 +3997,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// <summary>
     /// A color presentation object describes how a {@linkcode Color} should be represented as text and what
     /// edits are required to refer to it from source code.
-    /// 
+    ///
     /// For some languages one color can have multiple presentations, e.g. css can represent the color red with
     /// the constant <c>Red</c>, the hex-value <c>#ff0000</c>, or in rgba and hsla forms. In csharp other representations
     /// apply, e.g. <c>System.Drawing.Color.Red</c>.
@@ -3983,7 +4029,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract provideColorPresentations: color: Color * context: {| document: TextDocument; range: Range |} * token: CancellationToken -> ProviderResult<ResizeArray<ColorPresentation>>
 
     /// Inlay hint kinds.
-    /// 
+    ///
     /// The kind of an inline hint defines its appearance, e.g the corresponding foreground and background colors are being
     /// used.
     type [<RequireQualifiedAccess>] InlayHintKind =
@@ -3998,7 +4044,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract value: string with get, set
         /// <summary>
         /// The tooltip text when you hover over this label part.
-        /// 
+        ///
         /// *Note* that this property can be set late during
         /// <see cref="InlayHintsProvider.resolveInlayHint">resolving</see> of inlay hints.
         /// </summary>
@@ -4006,22 +4052,22 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// <summary>
         /// An optional <see cref="Location">source code location</see> that represents this label
         /// part.
-        /// 
+        ///
         /// The editor will use this location for the hover and for code navigation features: This
         /// part will become a clickable link that resolves to the definition of the symbol at the
         /// given location (not necessarily the location itself), it shows the hover that shows at
         /// the given location, and it shows a context menu with further code navigation commands.
-        /// 
+        ///
         /// *Note* that this property can be set late during
         /// <see cref="InlayHintsProvider.resolveInlayHint">resolving</see> of inlay hints.
         /// </summary>
         abstract location: Location option with get, set
         /// <summary>
         /// An optional command for this label part.
-        /// 
+        ///
         /// The editor renders parts with commands as clickable links. The command is added to the context menu
         /// when a label part defines <see cref="InlayHintLabelPart.location">location</see> and <see cref="InlayHintLabelPart.command">command</see> .
-        /// 
+        ///
         /// *Note* that this property can be set late during
         /// <see cref="InlayHintsProvider.resolveInlayHint">resolving</see> of inlay hints.
         /// </summary>
@@ -4039,14 +4085,30 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract position: Position with get, set
         /// <summary>
         /// The label of this hint. A human readable string or an array of <see cref="InlayHintLabelPart">label parts</see>.
-        /// 
+        ///
         /// *Note* that neither the string nor the label part can be empty.
         /// </summary>
         abstract label: U2<string, ResizeArray<InlayHintLabelPart>> with get, set
+        /// <summary>
         /// The tooltip text when you hover over this item.
+        ///
+        /// *Note* that this property can be set late during
+        /// <see cref="InlayHintsProvider.resolveInlayHint">resolving</see> of inlay hints.
+        /// </summary>
         abstract tooltip: U2<string, MarkdownString> option with get, set
         /// The kind of this hint. The inlay hint kind defines the appearance of this inlay hint.
         abstract kind: InlayHintKind option with get, set
+        /// <summary>
+        /// Optional <see cref="TextEdit">text edits</see> that are performed when accepting this inlay hint. The default
+        /// gesture for accepting an inlay hint is the double click.
+        ///
+        /// *Note* that edits are expected to change the document so that the inlay hint (or its nearest variant) is
+        /// now part of the document and the inlay hint itself is now obsolete.
+        ///
+        /// *Note* that this property can be set late during
+        /// <see cref="InlayHintsProvider.resolveInlayHint">resolving</see> of inlay hints.
+        /// </summary>
+        abstract textEdits: ResizeArray<TextEdit> option with get, set
         /// Render padding before the hint. Padding will use the editor's background color,
         /// not the background color of the hint itself. That means padding can be used to visually
         /// align/separate an inlay hint.
@@ -4076,7 +4138,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract onDidChangeInlayHints: Event<unit> option with get, set
         /// <summary>
         /// Provide inlay hints for the given range and document.
-        /// 
+        ///
         /// *Note* that inlay hints that are not <see cref="Range.contains">contained</see> by the given range are ignored.
         /// </summary>
         /// <param name="document">The document in which the command was invoked.</param>
@@ -4085,9 +4147,9 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// <returns>An array of inlay hints or a thenable that resolves to such.</returns>
         abstract provideInlayHints: document: TextDocument * range: Range * token: CancellationToken -> ProviderResult<ResizeArray<'T>>
         /// <summary>
-        /// Given an inlay hint fill in <see cref="InlayHint.tooltip">tooltip</see>, <see cref="InlayHint.command">command</see>, or complete
-        /// label <see cref="InlayHintLabelPart">parts</see>.
-        /// 
+        /// Given an inlay hint fill in <see cref="InlayHint.tooltip">tooltip</see>, <see cref="InlayHint.textEdits">text edits</see>,
+        /// or complete label <see cref="InlayHintLabelPart">parts</see>.
+        ///
         /// *Note* that the editor will resolve an inlay hint at most once.
         /// </summary>
         /// <param name="hint">An inlay hint.</param>
@@ -4175,7 +4237,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     type [<AllowNullLiteral>] SelectionRangeProvider =
         /// <summary>
         /// Provide selection ranges for the given positions.
-        /// 
+        ///
         /// Selection ranges should be computed individually and independent for each position. The editor will merge
         /// and deduplicate ranges but providers must return hierarchies of selection ranges so that a range
         /// is <see cref="Range.contains">contained</see> by its parent.
@@ -4483,15 +4545,15 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
 
     /// <summary>
     /// Represents the configuration. It is a merged view of
-    /// 
+    ///
     /// - *Default Settings*
     /// - *Global (User) Settings*
     /// - *Workspace settings*
     /// - *Workspace Folder settings* - From one of the <see cref="workspace.workspaceFolders">Workspace Folders</see> under which requested resource belongs to.
     /// - *Language settings* - Settings defined under requested language.
-    /// 
+    ///
     /// The *effective* value (returned by {@linkcode WorkspaceConfiguration.get get}) is computed by overriding or merging the values in the following order:
-    /// 
+    ///
     /// 1. <c>defaultValue</c> (if defined in <c>package.json</c> otherwise derived from the value's type)
     /// 1. <c>globalValue</c> (if defined)
     /// 1. <c>workspaceValue</c> (if defined)
@@ -4500,20 +4562,20 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// 1. <c>globalLanguageValue</c> (if defined)
     /// 1. <c>workspaceLanguageValue</c> (if defined)
     /// 1. <c>workspaceFolderLanguageValue</c> (if defined)
-    /// 
+    ///
     /// **Note:** Only <c>object</c> value types are merged and all other value types are overridden.
-    /// 
+    ///
     /// Example 1: Overriding
-    /// 
+    ///
     /// <code lang="ts">
     /// defaultValue = 'on';
     /// globalValue = 'relative'
     /// workspaceFolderValue = 'off'
     /// value = 'off'
     /// </code>
-    /// 
+    ///
     /// Example 2: Language Values
-    /// 
+    ///
     /// <code lang="ts">
     /// defaultValue = 'on';
     /// globalValue = 'relative'
@@ -4521,27 +4583,27 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// globalLanguageValue = 'on'
     /// value = 'on'
     /// </code>
-    /// 
+    ///
     /// Example 3: Object Values
-    /// 
+    ///
     /// <code lang="ts">
     /// defaultValue = { "a": 1, "b": 2 };
     /// globalValue = { "b": 3, "c": 4 };
     /// value = { "a": 1, "b": 3, "c": 4 };
     /// </code>
-    /// 
+    ///
     /// *Note:* Workspace and Workspace Folder configurations contains <c>launch</c> and <c>tasks</c> settings. Their basename will be
     /// part of the section identifier. The following snippets shows how to retrieve all configurations
     /// from <c>launch.json</c>:
-    /// 
+    ///
     /// <code lang="ts">
     /// // launch.json configuration
     /// const config = workspace.getConfiguration('launch', vscode.workspace.workspaceFolders[0].uri);
-    /// 
+    ///
     /// // retrieve values
     /// const values = config.get('configurations');
     /// </code>
-    /// 
+    ///
     /// Refer to <see href="https://code.visualstudio.com/docs/getstarted/settings">Settings</see> for more information.
     /// </summary>
     type [<AllowNullLiteral>] WorkspaceConfiguration =
@@ -4563,9 +4625,9 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// often consists of a *default* value, a global or installation-wide value,
         /// a workspace-specific value, folder-specific value
         /// and language-specific values (if <see cref="WorkspaceConfiguration" /> is scoped to a language).
-        /// 
+        ///
         /// Also provides all language ids under which the given configuration setting is defined.
-        /// 
+        ///
         /// *Note:* The configuration name must denote a leaf in the configuration tree
         /// (<c>editor.fontSize</c> vs <c>editor</c>) otherwise no result is returned.
         /// </summary>
@@ -4574,14 +4636,14 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract inspect: section: string -> WorkspaceConfigurationInspect<'T> option
         /// <summary>
         /// Update a configuration value. The updated configuration values are persisted.
-        /// 
+        ///
         /// A value can be changed in
-        /// 
+        ///
         /// - <see cref="ConfigurationTarget.Global">Global settings</see>: Changes the value for all instances of the editor.
         /// - <see cref="ConfigurationTarget.Workspace">Workspace settings</see>: Changes the value for current workspace, if available.
         /// - <see cref="ConfigurationTarget.WorkspaceFolder">Workspace folder settings</see>: Changes the value for settings from one of the <see cref="workspace.workspaceFolders">Workspace Folders</see> under which the requested resource belongs to.
         /// - Language settings: Changes the value for the requested languageId.
-        /// 
+        ///
         /// *Note:* To remove a configuration value use <c>undefined</c>, like so: <c>config.update('somekey', undefined)</c>
         /// </summary>
         /// <param name="section">Configuration name, supports _dotted_ names.</param>
@@ -4632,7 +4694,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// </summary>
     type [<AllowNullLiteral>] LocationLink =
         /// Span of the origin of this link.
-        /// 
+        ///
         /// Used as the underlined span for mouse definition hover. Defaults to the word range at
         /// the definition position.
         abstract originSelectionRange: Range option with get, set
@@ -4682,7 +4744,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     type [<RequireQualifiedAccess>] DiagnosticTag =
         /// <summary>
         /// Unused or unnecessary code.
-        /// 
+        ///
         /// Diagnostics with this tag are rendered faded out. The amount of fading
         /// is controlled by the <c>"editorUnnecessaryCode.opacity"</c> theme color. For
         /// example, <c>"editorUnnecessaryCode.opacity": "#000000c0"</c> will render the
@@ -4692,7 +4754,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// </summary>
         | Unnecessary = 1
         /// Deprecated or obsolete code.
-        /// 
+        ///
         /// Diagnostics with this tag are rendered with a strike through.
         | Deprecated = 2
 
@@ -4732,7 +4794,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// A diagnostics collection is a container that manages a set of
     /// <see cref="Diagnostic">diagnostics</see>. Diagnostics are always scopes to a
     /// diagnostics collection and a resource.
-    /// 
+    ///
     /// To get an instance of a <c>DiagnosticCollection</c> use
     /// <see cref="languages.createDiagnosticCollection">createDiagnosticCollection</see>.
     /// </summary>
@@ -4752,7 +4814,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract set: uri: Uri * diagnostics: ResizeArray<Diagnostic> option -> unit
         /// <summary>
         /// Replace diagnostics for multiple resources in this collection.
-        /// 
+        ///
         ///   _Note_ that multiple tuples of the same uri will be merged, e.g
         /// <c>[[file1, [d1]], [file1, [d2]]]</c> is equivalent to <c>[[file1, [d1, d2]]]</c>.
         /// If a diagnostics item is <c>undefined</c> as in <c>[file1, undefined]</c>
@@ -4815,7 +4877,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract selector: DocumentSelector with get, set
         /// <summary>
         /// The severity of this item.
-        /// 
+        ///
         /// Defaults to <see cref="LanguageStatusSeverity.Information">information</see>. You can use this property to
         /// signal to users that there is a problem that needs attention, like a missing executable or an
         /// invalid configuration.
@@ -4823,9 +4885,9 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract severity: LanguageStatusSeverity with get, set
         /// <summary>
         /// The text to show for the entry. You can embed icons in the text by leveraging the syntax:
-        /// 
+        ///
         /// <c>My text $(icon-name) contains icons like $(icon-name) this one.</c>
-        /// 
+        ///
         /// Where the icon-name is taken from the ThemeIcon <see href="https://code.visualstudio.com/api/references/icons-in-labels#icon-listing">icon set</see>, e.g.
         /// <c>light-bulb</c>, <c>thumbsup</c>, <c>zap</c> etc.
         /// </summary>
@@ -4878,7 +4940,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
 
     /// <summary>
     /// An output channel is a container for readonly textual information.
-    /// 
+    ///
     /// To get an instance of an <c>OutputChannel</c> use
     /// <see cref="window.createOutputChannel">createOutputChannel</see>.
     /// </summary>
@@ -4936,7 +4998,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     type [<AllowNullLiteral>] StatusBarItem =
         /// <summary>
         /// The identifier of this item.
-        /// 
+        ///
         /// *Note*: if no identifier was provided by the {@linkcode window.createStatusBarItem}
         /// method, the identifier will match the <see cref="Extension.id">extension identifier</see>.
         /// </summary>
@@ -4952,9 +5014,9 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract name: string option with get, set
         /// <summary>
         /// The text to show for the entry. You can embed icons in the text by leveraging the syntax:
-        /// 
+        ///
         /// <c>My text $(icon-name) contains icons like $(icon-name) this one.</c>
-        /// 
+        ///
         /// Where the icon-name is taken from the ThemeIcon <see href="https://code.visualstudio.com/api/references/icons-in-labels#icon-listing">icon set</see>, e.g.
         /// <c>light-bulb</c>, <c>thumbsup</c>, <c>zap</c> etc.
         /// </summary>
@@ -4965,22 +5027,22 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract color: U2<string, ThemeColor> option with get, set
         /// <summary>
         /// The background color for this entry.
-        /// 
+        ///
         /// *Note*: only the following colors are supported:
         /// * <c>new ThemeColor('statusBarItem.errorBackground')</c>
         /// * <c>new ThemeColor('statusBarItem.warningBackground')</c>
-        /// 
+        ///
         /// More background colors may be supported in the future.
-        /// 
+        ///
         /// *Note*: when a background color is set, the statusbar may override
         /// the <c>color</c> choice to ensure the entry is readable in all themes.
         /// </summary>
         abstract backgroundColor: ThemeColor option with get, set
         /// <summary>
         /// {@linkcode Command} or identifier of a command to run on click.
-        /// 
+        ///
         /// The command must be <see cref="commands.getCommands">known</see>.
-        /// 
+        ///
         /// Note that if this is a {@linkcode Command} object, only the {@linkcode Command.command command} and {@linkcode Command.arguments arguments}
         /// are used by the editor.
         /// </summary>
@@ -5017,7 +5079,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// folder the shell was launched in.
         abstract creationOptions: obj
         /// The exit status of the terminal, this will be undefined while the terminal is active.
-        /// 
+        ///
         /// **Example:** Show a notification with the exit code when the terminal exits with a
         /// non-zero exit code.
         /// <code lang="typescript">
@@ -5085,12 +5147,12 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// terminal has sent data to the process which depending on the terminal's _mode_. By
         /// default input is sent when a key is pressed or when a command or extension sends text,
         /// but based on the terminal's mode it can also happen on:
-        /// 
+        ///
         /// - a pointer click event
         /// - a pointer scroll event
         /// - a pointer move event
         /// - terminal focus in/out
-        /// 
+        ///
         /// For more information on events that can send data see "DEC Private Mode Set (DECSET)" on
         /// <see href="https://invisible-island.net/xterm/ctlseqs/ctlseqs.html" />
         /// </summary>
@@ -5130,7 +5192,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract length: float with get, set
         /// <summary>
         /// The tooltip text when you hover over this link.
-        /// 
+        ///
         /// If a tooltip is provided, is will be displayed in a string that includes instructions on
         /// how to trigger the link, such as <c>{0} (ctrl + click)</c>. The specific instructions vary
         /// depending on OS, user settings, and localization.
@@ -5144,7 +5206,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// <param name="length">The length of the link on <see cref="TerminalLinkContext.line" />.</param>
         /// <param name="tooltip">
         /// The tooltip text when you hover over this link.
-        /// 
+        ///
         /// If a tooltip is provided, is will be displayed in a string that includes instructions on
         /// how to trigger the link, such as <c>{0} (ctrl + click)</c>. The specific instructions vary
         /// depending on OS, user settings, and localization.
@@ -5195,14 +5257,14 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     type [<AllowNullLiteral>] FileDecorationProvider =
         /// <summary>
         /// An optional event to signal that decorations for one or many files have changed.
-        /// 
+        ///
         /// *Note* that this event should be used to propagate information about children.
         /// </summary>
         /// <seealso cref="EventEmitter" />
         abstract onDidChangeFileDecorations: Event<U2<Uri, ResizeArray<Uri>> option> option with get, set
         /// <summary>
         /// Provide decorations for a given uri.
-        /// 
+        ///
         /// *Note* that this function is only called when a file gets rendered in the UI.
         /// This means a decoration from a descendent that propagates upwards must be signaled
         /// to the editor via the <see cref="FileDecorationProvider.onDidChangeFileDecorations">onDidChangeFileDecorations</see>-event.
@@ -5222,7 +5284,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
 
     /// <summary>
     /// Represents an extension.
-    /// 
+    ///
     /// To get an instance of an <c>Extension</c> use <see cref="extensions.getExtension">getExtension</see>.
     /// </summary>
     type [<AllowNullLiteral>] Extension<'T> =
@@ -5247,8 +5309,10 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// the value is {@linkcode ExtensionKind.UI}.
         /// </summary>
         abstract extensionKind: ExtensionKind with get, set
-        /// The public API exported by this extension. It is an invalid action
-        /// to access this field before this extension has been activated.
+        /// <summary>
+        /// The public API exported by this extension (return value of <c>activate</c>).
+        /// It is an invalid action to access this field before this extension has been activated.
+        /// </summary>
         abstract exports: 'T
         /// <summary>Activates this extension and returns its public API.</summary>
         /// <returns>A promise that will resolve when this extension has been activated.</returns>
@@ -5276,14 +5340,14 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// <summary>
     /// An extension context is a collection of utilities private to an
     /// extension.
-    /// 
+    ///
     /// An instance of an <c>ExtensionContext</c> is provided as the first
     /// parameter to the <c>activate</c>-call of an extension.
     /// </summary>
     type [<AllowNullLiteral>] ExtensionContext =
         /// An array to which disposables can be added. When this
         /// extension is deactivated the disposables will be disposed.
-        /// 
+        ///
         /// *Note* that asynchronous dispose-functions aren't awaited.
         abstract subscriptions: ResizeArray<{| dispose: unit -> obj option |}>
         /// <summary>
@@ -5313,7 +5377,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract environmentVariableCollection: EnvironmentVariableCollection
         /// <summary>
         /// Get the absolute path of a resource contained in the extension.
-        /// 
+        ///
         /// *Note* that an absolute uri can be constructed via {@linkcode Uri.joinPath} and
         /// {@linkcode ExtensionContext.extensionUri extensionUri}, e.g. <c>vscode.Uri.joinPath(context.extensionUri, relativePath);</c>
         /// </summary>
@@ -5325,7 +5389,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// can store private state. The directory might not exist and creation is
         /// up to the extension. However, the parent directory is guaranteed to be existent.
         /// The value is <c>undefined</c> when no workspace nor folder has been opened.
-        /// 
+        ///
         /// Use {@linkcode ExtensionContext.workspaceState workspaceState} or
         /// {@linkcode ExtensionContext.globalState globalState} to store key value data.
         /// </summary>
@@ -5334,7 +5398,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// An absolute file path of a workspace specific directory in which the extension
         /// can store private state. The directory might not exist on disk and creation is
         /// up to the extension. However, the parent directory is guaranteed to be existent.
-        /// 
+        ///
         /// Use {@linkcode ExtensionContext.workspaceState workspaceState} or
         /// {@linkcode ExtensionContext.globalState globalState} to store key value data.
         [<Obsolete("Use {@link ExtensionContext.storageUri storageUri} instead.")>]
@@ -5343,7 +5407,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// The uri of a directory in which the extension can store global state.
         /// The directory might not exist on disk and creation is
         /// up to the extension. However, the parent directory is guaranteed to be existent.
-        /// 
+        ///
         /// Use {@linkcode ExtensionContext.globalState globalState} to store key value data.
         /// </summary>
         /// <seealso cref="{" />
@@ -5351,7 +5415,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// An absolute file path in which the extension can store global state.
         /// The directory might not exist on disk and creation is
         /// up to the extension. However, the parent directory is guaranteed to be existent.
-        /// 
+        ///
         /// Use {@linkcode ExtensionContext.globalState globalState} to store key value data.
         [<Obsolete("Use {@link ExtensionContext.globalStorageUri globalStorageUri} instead.")>]
         abstract globalStoragePath: string
@@ -5396,7 +5460,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract get: key: string * defaultValue: 'T -> 'T
         /// <summary>
         /// Store a value. The value must be JSON-stringifyable.
-        /// 
+        ///
         /// *Note* that using <c>undefined</c> as value removes the key from the underlying
         /// storage.
         /// </summary>
@@ -5434,10 +5498,11 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         | Light = 1
         | Dark = 2
         | HighContrast = 3
+        | HighContrastLight = 4
 
     /// Represents a color theme.
     type [<AllowNullLiteral>] ColorTheme =
-        /// The kind of this color theme: light, dark or high contrast.
+        /// The kind of this color theme: light, dark, high contrast dark and high contrast light.
         abstract kind: ColorThemeKind
 
     /// Controls the behaviour of the terminal's visibility.
@@ -5517,7 +5582,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         ///      script: string;
         /// }
         /// </code>
-        /// 
+        ///
         /// Note that type identifier starting with a '$' are reserved for internal
         /// usages and shouldn't be used by extensions.
         abstract ``type``: string
@@ -5719,7 +5784,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// A task to execute
     type [<AllowNullLiteral>] TaskStatic =
         /// <summary>Creates a new task.</summary>
-        /// <param name="definition">The task definition as defined in the taskDefinitions extension point.</param>
+        /// <param name="taskDefinition">The task definition as defined in the taskDefinitions extension point.</param>
         /// <param name="scope">Specifies the task's scope. It is either a global or a workspace task or a task for a specific workspace folder. Global tasks are currently not supported.</param>
         /// <param name="name">The task's name. Is presented in the user interface.</param>
         /// <param name="source">The task's source (e.g. 'gulp', 'npm', ...). Is presented in the user interface.</param>
@@ -5731,7 +5796,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// </param>
         [<EmitConstructor>] abstract Create: taskDefinition: TaskDefinition * scope: U2<WorkspaceFolder, TaskScope> * name: string * source: string * ?execution: U3<ProcessExecution, ShellExecution, CustomExecution> * ?problemMatchers: U2<string, ResizeArray<string>> -> Task
         /// <summary>Creates a new task.</summary>
-        /// <param name="definition">The task definition as defined in the taskDefinitions extension point.</param>
+        /// <param name="taskDefinition">The task definition as defined in the taskDefinitions extension point.</param>
         /// <param name="name">The task's name. Is presented in the user interface.</param>
         /// <param name="source">The task's source (e.g. 'gulp', 'npm', ...). Is presented in the user interface.</param>
         /// <param name="execution">The process or shell execution.</param>
@@ -5767,7 +5832,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// called for tasks returned from the above <c>provideTasks</c> method since those
         /// tasks are always fully resolved. A valid default implementation for the
         /// <c>resolveTask</c> method is to return <c>undefined</c>.
-        /// 
+        ///
         /// Note that when filling in the properties of <c>task</c>, you _must_ be sure to
         /// use the exact same <c>TaskDefinition</c> and not create a new one. Other properties
         /// may be changed.
@@ -5779,7 +5844,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
 
     /// An object representing an executed Task. It can be used
     /// to terminate a task.
-    /// 
+    ///
     /// This interface is not intended to be implemented.
     type [<AllowNullLiteral>] TaskExecution =
         /// The task that got started.
@@ -5788,14 +5853,14 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract terminate: unit -> unit
 
     /// An event signaling the start of a task execution.
-    /// 
+    ///
     /// This interface is not intended to be implemented.
     type [<AllowNullLiteral>] TaskStartEvent =
         /// The task item representing the task that got started.
         abstract execution: TaskExecution
 
     /// An event signaling the end of an executed task.
-    /// 
+    ///
     /// This interface is not intended to be implemented.
     type [<AllowNullLiteral>] TaskEndEvent =
         /// The task item representing the task that finished.
@@ -5884,7 +5949,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     type [<RequireQualifiedAccess>] FilePermission =
         /// <summary>
         /// The file is readonly.
-        /// 
+        ///
         /// *Note:* All <c>FileStat</c> from a <c>FileSystemProvider</c> that is registered with
         /// the option <c>isReadonly: true</c> will be implicitly handled as if <c>FilePermission.Readonly</c>
         /// is set. As a consequence, it is not possible to have a readonly file system provider
@@ -5897,7 +5962,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// <summary>
         /// The type of the file, e.g. is a regular file, a directory, or symbolic link
         /// to a file.
-        /// 
+        ///
         /// *Note:* This value might be a bitmask, e.g. <c>FileType.File | FileType.SymbolicLink</c>.
         /// </summary>
         abstract ``type``: FileType with get, set
@@ -5905,7 +5970,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract ctime: float with get, set
         /// <summary>
         /// The modification timestamp in milliseconds elapsed since January 1, 1970 00:00:00 UTC.
-        /// 
+        ///
         /// *Note:* If the file changed, it is important to provide an updated <c>mtime</c> that advanced
         /// from the previous value. Otherwise there may be optimizations in place that will not show
         /// the updated file contents in an editor for example.
@@ -5913,7 +5978,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract mtime: float with get, set
         /// <summary>
         /// The size in bytes.
-        /// 
+        ///
         /// *Note:* If the file changed, it is important to provide an updated <c>size</c>. Otherwise there
         /// may be optimizations in place that will not show the updated file contents in an editor for
         /// example.
@@ -5921,14 +5986,14 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract size: float with get, set
         /// <summary>
         /// The permissions of the file, e.g. whether the file is readonly.
-        /// 
+        ///
         /// *Note:* This value might be a bitmask, e.g. <c>FilePermission.Readonly | FilePermission.Other</c>.
         /// </summary>
         abstract permissions: FilePermission option with get, set
 
     /// <summary>
     /// A type that filesystem providers should use to signal errors.
-    /// 
+    ///
     /// This class has factory methods for common error-cases, like <c>FileNotFound</c> when
     /// a file or folder doesn't exist, use them like so: <c>throw vscode.FileSystemError.FileNotFound(someUri);</c>
     /// </summary>
@@ -5936,7 +6001,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         inherit Error
         /// <summary>
         /// A code that identifies this error.
-        /// 
+        ///
         /// Possible values are names of errors, like {@linkcode FileSystemError.FileNotFound FileNotFound},
         /// or <c>Unknown</c> for unspecified errors.
         /// </summary>
@@ -5944,7 +6009,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
 
     /// <summary>
     /// A type that filesystem providers should use to signal errors.
-    /// 
+    ///
     /// This class has factory methods for common error-cases, like <c>FileNotFound</c> when
     /// a file or folder doesn't exist, use them like so: <c>throw vscode.FileSystemError.FileNotFound(someUri);</c>
     /// </summary>
@@ -5997,7 +6062,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// The filesystem provider defines what the editor needs to read, write, discover,
     /// and to manage files and folders. It allows extensions to serve files from remote places,
     /// like ftp-servers, and to seamlessly integrate those into the editor.
-    /// 
+    ///
     /// * *Note 1:* The filesystem provider API works with <see cref="Uri">uris</see> and assumes hierarchical
     /// paths, e.g. <c>foo:/my/path</c> is a child of <c>foo:/my/</c> and a parent of <c>foo:/my/path/deeper</c>.
     /// * *Note 2:* There is an activation event <c>onFileSystem:&lt;scheme&gt;</c> that fires when a file
@@ -6010,7 +6075,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// An event to signal that a resource has been created, changed, or deleted. This
         /// event should fire for resources that are being <see cref="FileSystemProvider.watch">watched</see>
         /// by clients of this provider.
-        /// 
+        ///
         /// *Note:* It is important that the metadata of the file that changed provides an
         /// updated <c>mtime</c> that advanced from the previous value in the <see cref="FileStat">stat</see> and a
         /// correct <c>size</c> value. Otherwise there may be optimizations in place that will not show
@@ -6022,14 +6087,14 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// the option <c>recursive</c> indicates whether subfolders, sub-subfolders, etc. should
         /// be watched for file changes as well. With <c>recursive: false</c>, only changes to the
         /// files that are direct children of the folder should trigger an event.
-        /// 
+        ///
         /// The <c>excludes</c> array is used to indicate paths that should be excluded from file
         /// watching. It is typically derived from the <c>files.watcherExclude</c> setting that
         /// is configurable by the user. Each entry can be be:
         /// - the absolute path to exclude
         /// - a relative path to exclude (for example <c>build/output</c>)
         /// - a simple glob pattern (for example <c>**​/build</c>, <c>output/**</c>)
-        /// 
+        ///
         /// It is the file system provider's job to call {@linkcode FileSystemProvider.onDidChangeFile onDidChangeFile}
         /// for every change given these rules. No event should be emitted for files that match any of the provided
         /// excludes.
@@ -6040,7 +6105,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract watch: uri: Uri * options: {| recursive: bool; excludes: ResizeArray<string> |} -> Disposable
         /// <summary>
         /// Retrieve metadata about a file.
-        /// 
+        ///
         /// Note that the metadata for symbolic links should be the metadata of the file they refer to.
         /// Still, the <see cref="FileType.SymbolicLink">SymbolicLink</see>-type must be used in addition to the actual type, e.g.
         /// <c>FileType.SymbolicLink | FileType.Directory</c>.
@@ -6107,7 +6172,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// <see cref="FileSystemProvider">file system providers</see>. It allows extensions to work
     /// with files from the local disk as well as files from remote places, like the
     /// remote extension host or ftp-servers.
-    /// 
+    ///
     /// *Note* that an instance of this interface is available as {@linkcode workspace.fs}.
     /// </summary>
     type [<AllowNullLiteral>] FileSystem =
@@ -6121,7 +6186,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract readDirectory: uri: Uri -> Thenable<ResizeArray<string * FileType>>
         /// <summary>
         /// Create a new directory (Note, that new files are created via <c>write</c>-calls).
-        /// 
+        ///
         /// *Note* that missing directories are created automatically, e.g this call has
         /// <c>mkdirp</c> semantics.
         /// </summary>
@@ -6140,18 +6205,18 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// <param name="options">Defines if trash can should be used and if deletion of folders is recursive</param>
         abstract delete: uri: Uri * ?options: {| recursive: bool option; useTrash: bool option |} -> Thenable<unit>
         /// <summary>Rename a file or folder.</summary>
-        /// <param name="oldUri">The existing file.</param>
-        /// <param name="newUri">The new location.</param>
+        /// <param name="source">The existing file.</param>
+        /// <param name="target">The new location.</param>
         /// <param name="options">Defines if existing files should be overwritten.</param>
         abstract rename: source: Uri * target: Uri * ?options: {| overwrite: bool option |} -> Thenable<unit>
         /// <summary>Copy files or folders.</summary>
         /// <param name="source">The existing file.</param>
-        /// <param name="destination">The destination location.</param>
+        /// <param name="target">The destination location.</param>
         /// <param name="options">Defines if existing files should be overwritten.</param>
         abstract copy: source: Uri * target: Uri * ?options: {| overwrite: bool option |} -> Thenable<unit>
         /// <summary>
         /// Check if a given file system supports writing files.
-        /// 
+        ///
         /// Keep in mind that just because a file system supports writing, that does
         /// not mean that writes will always succeed. There may be permissions issues
         /// or other errors that prevent writing a file.
@@ -6174,38 +6239,38 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// Content settings for a webview.
     type [<AllowNullLiteral>] WebviewOptions =
         /// Controls whether scripts are enabled in the webview content or not.
-        /// 
+        ///
         /// Defaults to false (scripts-disabled).
         abstract enableScripts: bool option
         /// <summary>
         /// Controls whether forms are enabled in the webview content or not.
-        /// 
+        ///
         /// Defaults to true if <see cref="WebviewOptions.enableScripts">scripts are enabled</see>. Otherwise defaults to false.
         /// Explicitly setting this property to either true or false overrides the default.
         /// </summary>
         abstract enableForms: bool option
         /// Controls whether command uris are enabled in webview content or not.
-        /// 
+        ///
         /// Defaults to false.
         abstract enableCommandUris: bool option
         /// <summary>
         /// Root paths from which the webview can load local (filesystem) resources using uris from <c>asWebviewUri</c>
-        /// 
+        ///
         /// Default to the root folders of the current workspace plus the extension's install directory.
-        /// 
+        ///
         /// Pass in an empty array to disallow access to any local resources.
         /// </summary>
         abstract localResourceRoots: ResizeArray<Uri> option
         /// <summary>
         /// Mappings of localhost ports used inside the webview.
-        /// 
+        ///
         /// Port mapping allow webviews to transparently define how localhost ports are resolved. This can be used
         /// to allow using a static localhost port inside the webview that is resolved to random port that a service is
         /// running on.
-        /// 
+        ///
         /// If a webview accesses localhost content, we recommend that you specify port mappings even if
         /// the <c>webviewPort</c> and <c>extensionHostPort</c> ports are the same.
-        /// 
+        ///
         /// *Note* that port mappings only work for <c>http</c> or <c>https</c> urls. Websocket urls (e.g. <c>ws://localhost:3000</c>)
         /// cannot be mapped to another port.
         /// </summary>
@@ -6217,24 +6282,24 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract options: WebviewOptions with get, set
         /// <summary>
         /// HTML contents of the webview.
-        /// 
+        ///
         /// This should be a complete, valid html document. Changing this property causes the webview to be reloaded.
-        /// 
+        ///
         /// Webviews are sandboxed from normal extension process, so all communication with the webview must use
         /// message passing. To send a message from the extension to the webview, use {@linkcode Webview.postMessage postMessage}.
         /// To send message from the webview back to an extension, use the <c>acquireVsCodeApi</c> function inside the webview
         /// to get a handle to the editor's api and then call <c>.postMessage()</c>:
-        /// 
+        ///
         /// <code lang="html">
         /// &lt;script&gt;
         ///      const vscode = acquireVsCodeApi(); // acquireVsCodeApi can only be invoked once
         ///      vscode.postMessage({ message: 'hello!' });
         /// &lt;/script&gt;
         /// </code>
-        /// 
+        ///
         /// To load a resources from the workspace inside a webview, use the {@linkcode Webview.asWebviewUri asWebviewUri} method
         /// and ensure the resource's directory is listed in {@linkcode WebviewOptions.localResourceRoots}.
-        /// 
+        ///
         /// Keep in mind that even though webviews are sandboxed, they still allow running scripts and loading arbitrary content,
         /// so extensions must follow all standard web security best practices when working with webviews. This includes
         /// properly sanitizing all untrusted input (including content from the workspace) and
@@ -6243,7 +6308,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract html: string with get, set
         /// <summary>
         /// Fired when the webview content posts a message.
-        /// 
+        ///
         /// Webview content can post strings or json serializable objects back to an extension. They cannot
         /// post <c>Blob</c>, <c>File</c>, <c>ImageData</c> and other DOM specific objects since the extension that receives the
         /// message does not run in a browser environment.
@@ -6251,18 +6316,18 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract onDidReceiveMessage: Event<obj option>
         /// <summary>
         /// Post a message to the webview content.
-        /// 
+        ///
         /// Messages are only delivered if the webview is live (either visible or in the
         /// background with <c>retainContextWhenHidden</c>).
         /// </summary>
         /// <param name="message">
         /// Body of the message. This must be a string or other json serializable object.
-        /// 
+        ///
         /// For older versions of vscode, if an <c>ArrayBuffer</c> is included in <c>message</c>,
         /// it will not be serialized properly and will not be received by the webview.
         /// Similarly any TypedArrays, such as a <c>Uint8Array</c>, will be very inefficiently
         /// serialized and will also not be recreated as a typed array inside the webview.
-        /// 
+        ///
         /// However if your extension targets vscode 1.57+ in the <c>engines</c> field of its
         /// <c>package.json</c>, any <c>ArrayBuffer</c> values that appear in <c>message</c> will be more
         /// efficiently transferred to the webview and will also be correctly recreated inside
@@ -6271,20 +6336,20 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract postMessage: message: obj option -> Thenable<bool>
         /// <summary>
         /// Convert a uri for the local file system to one that can be used inside webviews.
-        /// 
+        ///
         /// Webviews cannot directly load resources from the workspace or local file system using <c>file:</c> uris. The
         /// <c>asWebviewUri</c> function takes a local <c>file:</c> uri and converts it into a uri that can be used inside of
         /// a webview to load the same resource:
-        /// 
+        ///
         /// <code lang="ts">
         /// webview.html = `&lt;img src="${webview.asWebviewUri(vscode.Uri.file('/Users/codey/workspace/cat.gif'))}"&gt;`
         /// </code>
         /// </summary>
         abstract asWebviewUri: localResource: Uri -> Uri
         /// Content security policy source for webview resources.
-        /// 
+        ///
         /// This is the origin that should be used in a content security policy rule:
-        /// 
+        ///
         /// <code lang="ts">
         /// `img-src https: ${webview.cspSource} ...;`
         /// </code>
@@ -6294,14 +6359,14 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     type [<AllowNullLiteral>] WebviewPanelOptions =
         /// <summary>
         /// Controls if the find widget is enabled in the panel.
-        /// 
+        ///
         /// Defaults to <c>false</c>.
         /// </summary>
         abstract enableFindWidget: bool option
         /// <summary>
         /// Controls if the webview panel's content (iframe) is kept around even when the panel
         /// is no longer visible.
-        /// 
+        ///
         /// Normally the webview panel's html context is created when the panel becomes visible
         /// and destroyed when it is hidden. Extensions that have complex state
         /// or UI can set the <c>retainContextWhenHidden</c> to make the editor keep the webview
@@ -6310,7 +6375,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// When the panel becomes visible again, the context is automatically restored
         /// in the exact same state it was in originally. You cannot send messages to a
         /// hidden webview, even with <c>retainContextWhenHidden</c> enabled.
-        /// 
+        ///
         /// <c>retainContextWhenHidden</c> has a high memory overhead and should only be used if
         /// your panel's context cannot be quickly saved and restored.
         /// </summary>
@@ -6339,16 +6404,16 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract onDidChangeViewState: Event<WebviewPanelOnDidChangeViewStateEvent>
         /// <summary>
         /// Fired when the panel is disposed.
-        /// 
+        ///
         /// This may be because the user closed the panel or because <c>.dispose()</c> was
         /// called on it.
-        /// 
+        ///
         /// Trying to use the panel after it has been disposed throws an exception.
         /// </summary>
         abstract onDidDispose: Event<unit>
         /// <summary>
         /// Show the webview panel in a given column.
-        /// 
+        ///
         /// A webview panel may only show in a single column at a time. If it is already showing, this
         /// method moves it to a new column.
         /// </summary>
@@ -6357,7 +6422,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract reveal: ?viewColumn: ViewColumn * ?preserveFocus: bool -> unit
         /// <summary>
         /// Dispose of the webview panel.
-        /// 
+        ///
         /// This closes the panel if it showing and disposes of the resources owned by the webview.
         /// Webview panels are also disposed when the user closes the webview panel. Both cases
         /// fire the <c>onDispose</c> event.
@@ -6371,30 +6436,30 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
 
     /// <summary>
     /// Restore webview panels that have been persisted when vscode shuts down.
-    /// 
+    ///
     /// There are two types of webview persistence:
-    /// 
+    ///
     /// - Persistence within a session.
     /// - Persistence across sessions (across restarts of the editor).
-    /// 
+    ///
     /// A <c>WebviewPanelSerializer</c> is only required for the second case: persisting a webview across sessions.
-    /// 
+    ///
     /// Persistence within a session allows a webview to save its state when it becomes hidden
     /// and restore its content from this state when it becomes visible again. It is powered entirely
     /// by the webview content itself. To save off a persisted state, call <c>acquireVsCodeApi().setState()</c> with
     /// any json serializable object. To restore the state again, call <c>getState()</c>
-    /// 
+    ///
     /// <code lang="js">
     /// // Within the webview
     /// const vscode = acquireVsCodeApi();
-    /// 
+    ///
     /// // Get existing state
     /// const oldState = vscode.getState() || { value: 0 };
-    /// 
+    ///
     /// // Update state
     /// setState({ value: oldState.value + 1 })
     /// </code>
-    /// 
+    ///
     /// A <c>WebviewPanelSerializer</c> extends this persistence across restarts of the editor. When the editor is shutdown,
     /// it will save off the state from <c>setState</c> of all webviews that have a serializer. When the
     /// webview first becomes visible after the restart, this state is passed to <c>deserializeWebviewPanel</c>.
@@ -6406,30 +6471,30 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
 
     /// <summary>
     /// Restore webview panels that have been persisted when vscode shuts down.
-    /// 
+    ///
     /// There are two types of webview persistence:
-    /// 
+    ///
     /// - Persistence within a session.
     /// - Persistence across sessions (across restarts of the editor).
-    /// 
+    ///
     /// A <c>WebviewPanelSerializer</c> is only required for the second case: persisting a webview across sessions.
-    /// 
+    ///
     /// Persistence within a session allows a webview to save its state when it becomes hidden
     /// and restore its content from this state when it becomes visible again. It is powered entirely
     /// by the webview content itself. To save off a persisted state, call <c>acquireVsCodeApi().setState()</c> with
     /// any json serializable object. To restore the state again, call <c>getState()</c>
-    /// 
+    ///
     /// <code lang="js">
     /// // Within the webview
     /// const vscode = acquireVsCodeApi();
-    /// 
+    ///
     /// // Get existing state
     /// const oldState = vscode.getState() || { value: 0 };
-    /// 
+    ///
     /// // Update state
     /// setState({ value: oldState.value + 1 })
     /// </code>
-    /// 
+    ///
     /// A <c>WebviewPanelSerializer</c> extends this persistence across restarts of the editor. When the editor is shutdown,
     /// it will save off the state from <c>setState</c> of all webviews that have a serializer. When the
     /// webview first becomes visible after the restart, this state is passed to <c>deserializeWebviewPanel</c>.
@@ -6439,7 +6504,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     type [<AllowNullLiteral>] WebviewPanelSerializer<'T> =
         /// <summary>
         /// Restore a webview panel from its serialized <c>state</c>.
-        /// 
+        ///
         /// Called when a serialized webview first becomes visible.
         /// </summary>
         /// <param name="webviewPanel">
@@ -6458,37 +6523,37 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract webview: Webview
         /// <summary>
         /// View title displayed in the UI.
-        /// 
+        ///
         /// The view title is initially taken from the extension <c>package.json</c> contribution.
         /// </summary>
         abstract title: string option with get, set
         /// Human-readable string which is rendered less prominently in the title.
         abstract description: string option with get, set
         /// Event fired when the view is disposed.
-        /// 
+        ///
         /// Views are disposed when they are explicitly hidden by a user (this happens when a user
         /// right clicks in a view and unchecks the webview view).
-        /// 
+        ///
         /// Trying to use the view after it has been disposed throws an exception.
         abstract onDidDispose: Event<unit>
         /// Tracks if the webview is currently visible.
-        /// 
+        ///
         /// Views are visible when they are on the screen and expanded.
         abstract visible: bool
         /// <summary>
         /// Event fired when the visibility of the view changes.
-        /// 
+        ///
         /// Actions that trigger a visibility change:
-        /// 
+        ///
         /// - The view is collapsed or expanded.
         /// - The user switches to a different view group in the sidebar or panel.
-        /// 
+        ///
         /// Note that hiding a view using the context menu instead disposes of the view and fires <c>onDidDispose</c>.
         /// </summary>
         abstract onDidChangeVisibility: Event<unit>
         /// <summary>
         /// Reveal the view in the UI.
-        /// 
+        ///
         /// If the view is collapsed, this will expand it.
         /// </summary>
         /// <param name="preserveFocus">When <c>true</c> the view will not take focus.</param>
@@ -6504,30 +6569,30 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     type [<AllowNullLiteral>] WebviewViewResolveContext<'T> =
         /// <summary>
         /// Persisted state from the webview content.
-        /// 
+        ///
         /// To save resources, the editor normally deallocates webview documents (the iframe content) that are not visible.
         /// For example, when the user collapse a view or switches to another top level activity in the sidebar, the
         /// <c>WebviewView</c> itself is kept alive but the webview's underlying document is deallocated. It is recreated when
         /// the view becomes visible again.
-        /// 
+        ///
         /// You can prevent this behavior by setting <c>retainContextWhenHidden</c> in the <c>WebviewOptions</c>. However this
         /// increases resource usage and should be avoided wherever possible. Instead, you can use persisted state to
         /// save off a webview's state so that it can be quickly recreated as needed.
-        /// 
+        ///
         /// To save off a persisted state, inside the webview call <c>acquireVsCodeApi().setState()</c> with
         /// any json serializable object. To restore the state again, call <c>getState()</c>. For example:
-        /// 
+        ///
         /// <code lang="js">
         /// // Within the webview
         /// const vscode = acquireVsCodeApi();
-        /// 
+        ///
         /// // Get existing state
         /// const oldState = vscode.getState() || { value: 0 };
-        /// 
+        ///
         /// // Update state
         /// setState({ value: oldState.value + 1 })
         /// </code>
-        /// 
+        ///
         /// The editor ensures that the persisted state is saved correctly when a webview is hidden and across
         /// editor restarts.
         /// </summary>
@@ -6537,7 +6602,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     type [<AllowNullLiteral>] WebviewViewProvider =
         /// <summary>
         /// Revolves a webview view.
-        /// 
+        ///
         /// <c>resolveWebviewView</c> is called when a view first becomes visible. This may happen when the view is
         /// first loaded or when the user hides and then shows a view again.
         /// </summary>
@@ -6552,7 +6617,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
 
     /// <summary>
     /// Provider for text based custom editors.
-    /// 
+    ///
     /// Text based custom editors use a {@linkcode TextDocument} as their data model. This considerably simplifies
     /// implementing a custom editor as it allows the editor to handle many common operations such as
     /// undo and backup. The provider is responsible for synchronizing text changes between the webview and the <c>TextDocument</c>.
@@ -6560,14 +6625,14 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     type [<AllowNullLiteral>] CustomTextEditorProvider =
         /// <summary>
         /// Resolve a custom editor for a given text resource.
-        /// 
+        ///
         /// This is called when a user first opens a resource for a <c>CustomTextEditorProvider</c>, or if they reopen an
         /// existing editor using this <c>CustomTextEditorProvider</c>.
         /// </summary>
         /// <param name="document">Document for the resource to resolve.</param>
         /// <param name="webviewPanel">
         /// The webview panel used to display the editor UI for this resource.
-        /// 
+        ///
         /// During resolve, the provider must fill in the initial html for the content webview panel and hook up all
         /// the event listeners on it that it is interested in. The provider can also hold onto the <c>WebviewPanel</c> to
         /// use later for example in a command. See {
@@ -6578,7 +6643,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
 
     /// <summary>
     /// Represents a custom document used by a {@linkcode CustomEditorProvider}.
-    /// 
+    ///
     /// Custom documents are only used within a given <c>CustomEditorProvider</c>. The lifecycle of a <c>CustomDocument</c> is
     /// managed by the editor. When no more references remain to a <c>CustomDocument</c>, it is disposed of.
     /// </summary>
@@ -6587,7 +6652,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract uri: Uri
         /// <summary>
         /// Dispose of the custom document.
-        /// 
+        ///
         /// This is invoked by the editor when there are no more references to a given <c>CustomDocument</c> (for example when
         /// all editors associated with the document have been closed.)
         /// </summary>
@@ -6605,7 +6670,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract document: 'T
         /// <summary>
         /// Undo the edit operation.
-        /// 
+        ///
         /// This is invoked by the editor when the user undoes this edit. To implement <c>undo</c>, your
         /// extension should restore the document and editor to the state they were in just before this
         /// edit was added to the editor's internal edit stack by <c>onDidChangeCustomDocument</c>.
@@ -6613,14 +6678,14 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract undo: unit -> U2<Thenable<unit>, unit>
         /// <summary>
         /// Redo the edit operation.
-        /// 
+        ///
         /// This is invoked by the editor when the user redoes this edit. To implement <c>redo</c>, your
         /// extension should restore the document and editor to the state they were in just after this
         /// edit was added to the editor's internal edit stack by <c>onDidChangeCustomDocument</c>.
         /// </summary>
         abstract redo: unit -> U2<Thenable<unit>, unit>
         /// Display name describing the edit.
-        /// 
+        ///
         /// This will be shown to users in the UI for undo/redo operations.
         abstract label: string option
 
@@ -6645,12 +6710,12 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     type [<AllowNullLiteral>] CustomDocumentBackup =
         /// <summary>
         /// Unique identifier for the backup.
-        /// 
+        ///
         /// This id is passed back to your extension in <c>openCustomDocument</c> when opening a custom editor from a backup.
         /// </summary>
         abstract id: string
         /// Delete the current backup.
-        /// 
+        ///
         /// This is called by the editor when it is clear the current backup is no longer needed, such as when a new backup
         /// is made or when the file is saved.
         abstract delete: unit -> unit
@@ -6659,9 +6724,9 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     type [<AllowNullLiteral>] CustomDocumentBackupContext =
         /// <summary>
         /// Suggested file location to write the new backup.
-        /// 
+        ///
         /// Note that your extension is free to ignore this and use its own strategy for backup.
-        /// 
+        ///
         /// If the editor is for a resource from the current workspace, <c>destination</c> will point to a file inside
         /// <c>ExtensionContext.storagePath</c>. The parent folder of <c>destination</c> may not exist, so make sure to created it
         /// before writing the backup to this location.
@@ -6672,21 +6737,21 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     type [<AllowNullLiteral>] CustomDocumentOpenContext =
         /// <summary>
         /// The id of the backup to restore the document from or <c>undefined</c> if there is no backup.
-        /// 
+        ///
         /// If this is provided, your extension should restore the editor from the backup instead of reading the file
         /// from the user's workspace.
         /// </summary>
         abstract backupId: string option
         /// If the URI is an untitled file, this will be populated with the byte data of that file
-        /// 
+        ///
         /// If this is provided, your extension should utilize this byte data rather than executing fs APIs on the URI passed in
         abstract untitledDocumentData: Uint8Array option
 
     /// <summary>
     /// Provider for readonly custom editors that use a custom document model.
-    /// 
+    ///
     /// Custom editors use {@linkcode CustomDocument} as their document model instead of a {@linkcode TextDocument}.
-    /// 
+    ///
     /// You should use this type of custom editor when dealing with binary files or more complex scenarios. For simple
     /// text based documents, use {@linkcode CustomTextEditorProvider} instead.
     /// </summary>
@@ -6696,9 +6761,9 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
 
     /// <summary>
     /// Provider for readonly custom editors that use a custom document model.
-    /// 
+    ///
     /// Custom editors use {@linkcode CustomDocument} as their document model instead of a {@linkcode TextDocument}.
-    /// 
+    ///
     /// You should use this type of custom editor when dealing with binary files or more complex scenarios. For simple
     /// text based documents, use {@linkcode CustomTextEditorProvider} instead.
     /// </summary>
@@ -6706,10 +6771,10 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     type [<AllowNullLiteral>] CustomReadonlyEditorProvider<'T when 'T :> CustomDocument> =
         /// <summary>
         /// Create a new document for a given resource.
-        /// 
+        ///
         /// <c>openCustomDocument</c> is called when the first time an editor for a given resource is opened. The opened
         /// document is then passed to <c>resolveCustomEditor</c> so that the editor can be shown to the user.
-        /// 
+        ///
         /// Already opened <c>CustomDocument</c> are re-used if the user opened additional editors. When all editors for a
         /// given resource are closed, the <c>CustomDocument</c> is disposed of. Opening an editor at this point will
         /// trigger another call to <c>openCustomDocument</c>.
@@ -6721,13 +6786,13 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract openCustomDocument: uri: Uri * openContext: CustomDocumentOpenContext * token: CancellationToken -> U2<Thenable<'T>, 'T>
         /// <summary>
         /// Resolve a custom editor for a given resource.
-        /// 
+        ///
         /// This is called whenever the user opens a new editor for this <c>CustomEditorProvider</c>.
         /// </summary>
         /// <param name="document">Document for the resource being resolved.</param>
         /// <param name="webviewPanel">
         /// The webview panel used to display the editor UI for this resource.
-        /// 
+        ///
         /// During resolve, the provider must fill in the initial html for the content webview panel and hook up all
         /// the event listeners on it that it is interested in. The provider can also hold onto the <c>WebviewPanel</c> to
         /// use later for example in a command. See {
@@ -6738,10 +6803,10 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
 
     /// <summary>
     /// Provider for editable custom editors that use a custom document model.
-    /// 
+    ///
     /// Custom editors use {@linkcode CustomDocument} as their document model instead of a {@linkcode TextDocument}.
     /// This gives extensions full control over actions such as edit, save, and backup.
-    /// 
+    ///
     /// You should use this type of custom editor when dealing with binary files or more complex scenarios. For simple
     /// text based documents, use {@linkcode CustomTextEditorProvider} instead.
     /// </summary>
@@ -6751,10 +6816,10 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
 
     /// <summary>
     /// Provider for editable custom editors that use a custom document model.
-    /// 
+    ///
     /// Custom editors use {@linkcode CustomDocument} as their document model instead of a {@linkcode TextDocument}.
     /// This gives extensions full control over actions such as edit, save, and backup.
-    /// 
+    ///
     /// You should use this type of custom editor when dealing with binary files or more complex scenarios. For simple
     /// text based documents, use {@linkcode CustomTextEditorProvider} instead.
     /// </summary>
@@ -6763,31 +6828,31 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         inherit CustomReadonlyEditorProvider<'T>
         /// <summary>
         /// Signal that an edit has occurred inside a custom editor.
-        /// 
+        ///
         /// This event must be fired by your extension whenever an edit happens in a custom editor. An edit can be
         /// anything from changing some text, to cropping an image, to reordering a list. Your extension is free to
         /// define what an edit is and what data is stored on each edit.
-        /// 
+        ///
         /// Firing <c>onDidChange</c> causes the editors to be marked as being dirty. This is cleared when the user either
         /// saves or reverts the file.
-        /// 
+        ///
         /// Editors that support undo/redo must fire a <c>CustomDocumentEditEvent</c> whenever an edit happens. This allows
         /// users to undo and redo the edit using the editor's standard keyboard shortcuts. The editor will also mark
         /// the editor as no longer being dirty if the user undoes all edits to the last saved state.
-        /// 
+        ///
         /// Editors that support editing but cannot use the editor's standard undo/redo mechanism must fire a <c>CustomDocumentContentChangeEvent</c>.
         /// The only way for a user to clear the dirty state of an editor that does not support undo/redo is to either
         /// <c>save</c> or <c>revert</c> the file.
-        /// 
+        ///
         /// An editor should only ever fire <c>CustomDocumentEditEvent</c> events, or only ever fire <c>CustomDocumentContentChangeEvent</c> events.
         /// </summary>
         abstract onDidChangeCustomDocument: U2<Event<CustomDocumentEditEvent<'T>>, Event<CustomDocumentContentChangeEvent<'T>>>
         /// <summary>
         /// Save a custom document.
-        /// 
+        ///
         /// This method is invoked by the editor when the user saves a custom editor. This can happen when the user
         /// triggers save while the custom editor is active, by commands such as <c>save all</c>, or by auto save if enabled.
-        /// 
+        ///
         /// To implement <c>save</c>, the implementer must persist the custom editor. This usually means writing the
         /// file data for the custom document to disk. After <c>save</c> completes, any associated editor instances will
         /// no longer be marked as dirty.
@@ -6798,10 +6863,10 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract saveCustomDocument: document: 'T * cancellation: CancellationToken -> Thenable<unit>
         /// <summary>
         /// Save a custom document to a different location.
-        /// 
+        ///
         /// This method is invoked by the editor when the user triggers 'save as' on a custom editor. The implementer must
         /// persist the custom editor to <c>destination</c>.
-        /// 
+        ///
         /// When the user accepts save as, the current editor is be replaced by an non-dirty editor for the newly saved file.
         /// </summary>
         /// <param name="document">Document to save.</param>
@@ -6811,10 +6876,10 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract saveCustomDocumentAs: document: 'T * destination: Uri * cancellation: CancellationToken -> Thenable<unit>
         /// <summary>
         /// Revert a custom document to its last saved state.
-        /// 
+        ///
         /// This method is invoked by the editor when the user triggers <c>File: Revert File</c> in a custom editor. (Note that
         /// this is only used using the editor's <c>File: Revert File</c> command and not on a <c>git revert</c> of the file).
-        /// 
+        ///
         /// To implement <c>revert</c>, the implementer must make sure all editor instances (webviews) for <c>document</c>
         /// are displaying the document in the same state is saved in. This usually means reloading the file from the
         /// workspace.
@@ -6825,16 +6890,16 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract revertCustomDocument: document: 'T * cancellation: CancellationToken -> Thenable<unit>
         /// <summary>
         /// Back up a dirty custom document.
-        /// 
+        ///
         /// Backups are used for hot exit and to prevent data loss. Your <c>backup</c> method should persist the resource in
         /// its current state, i.e. with the edits applied. Most commonly this means saving the resource to disk in
         /// the <c>ExtensionContext.storagePath</c>. When the editor reloads and your custom editor is opened for a resource,
         /// your extension should first check to see if any backups exist for the resource. If there is a backup, your
         /// extension should load the file contents from there instead of from the resource in the workspace.
-        /// 
+        ///
         /// <c>backup</c> is triggered approximately one second after the user stops editing the document. If the user
         /// rapidly edits the document, <c>backup</c> will not be invoked until the editing stops.
-        /// 
+        ///
         /// <c>backup</c> is not invoked when <c>auto save</c> is enabled (since auto save already persists the resource).
         /// </summary>
         /// <param name="document">Document to backup.</param>
@@ -6870,7 +6935,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// The application name of the editor, like 'VS Code'.
             abstract appName: string
             /// The application root folder from which the editor is running.
-            /// 
+            ///
             /// *Note* that the value is the empty string when running in an
             /// environment that has no representation of an application root folder.
             abstract appRoot: string
@@ -6906,7 +6971,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// <summary>
             /// The name of a remote. Defined by extensions, popular samples are <c>wsl</c> for the Windows
             /// Subsystem for Linux or <c>ssh-remote</c> for remotes using a secure shell.
-            /// 
+            ///
             /// *Note* that the value is <c>undefined</c> when there is no remote extension host but that the
             /// value is defined in all extension hosts (local and remote) in case a remote extension host
             /// exists. Use <see cref="Extension.extensionKind" /> to know if
@@ -6929,7 +6994,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// * a browser (<c>http:</c>, <c>https:</c>)
             /// * a mail client (<c>mailto:</c>)
             /// * VSCode itself (<c>vscode:</c> from <c>vscode.env.uriScheme</c>)
-            /// 
+            ///
             /// *Note* that {@linkcode window.showTextDocument showTextDocument} is the right
             /// way to open a text document inside the editor, not this function.
             /// </summary>
@@ -6938,32 +7003,32 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract openExternal: target: Uri -> Thenable<bool>
             /// <summary>
             /// Resolves a uri to a form that is accessible externally.
-            /// 
+            ///
             /// #### <c>http:</c> or <c>https:</c> scheme
-            /// 
+            ///
             /// Resolves an *external* uri, such as a <c>http:</c> or <c>https:</c> link, from where the extension is running to a
             /// uri to the same resource on the client machine.
-            /// 
+            ///
             /// This is a no-op if the extension is running on the client machine.
-            /// 
+            ///
             /// If the extension is running remotely, this function automatically establishes a port forwarding tunnel
             /// from the local machine to <c>target</c> on the remote and returns a local uri to the tunnel. The lifetime of
             /// the port forwarding tunnel is managed by the editor and the tunnel can be closed by the user.
-            /// 
+            ///
             /// *Note* that uris passed through <c>openExternal</c> are automatically resolved and you should not call <c>asExternalUri</c> on them.
-            /// 
+            ///
             /// #### <c>vscode.env.uriScheme</c>
-            /// 
+            ///
             /// Creates a uri that - if opened in a browser (e.g. via <c>openExternal</c>) - will result in a registered <see cref="UriHandler" />
             /// to trigger.
-            /// 
+            ///
             /// Extensions should not make any assumptions about the resulting uri and should not alter it in any way.
             /// Rather, extensions can e.g. use this uri in an authentication flow, by adding the uri as callback query
             /// argument to the server to authenticate to.
-            /// 
+            ///
             /// *Note* that if the server decides to add additional query parameters to the uri (e.g. a token or secret), it
             /// will appear in the uri that is passed to the <see cref="UriHandler" />.
-            /// 
+            ///
             /// **Example** of an authentication flow:
             /// <code lang="typescript">
             /// vscode.window.registerUriHandler({
@@ -6973,17 +7038,17 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             ///      }
             ///    }
             /// });
-            /// 
+            ///
             /// const callableUri = await vscode.env.asExternalUri(vscode.Uri.parse(`${vscode.env.uriScheme}://my.extension/did-authenticate`));
             /// await vscode.env.openExternal(callableUri);
             /// </code>
-            /// 
+            ///
             /// *Note* that extensions should not cache the result of <c>asExternalUri</c> as the resolved uri may become invalid due to
             /// a system or user action — for example, in remote cases, a user may close a port forwarding tunnel that was opened by
             /// <c>asExternalUri</c>.
-            /// 
+            ///
             /// #### Any other scheme
-            /// 
+            ///
             /// Any other scheme will be handled as if the provided URI is a workspace URI. In that case, the method will return
             /// a URI which, when handled, will make the editor open the workspace.
             /// </summary>
@@ -6993,20 +7058,20 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// <summary>
     /// Namespace for dealing with commands. In short, a command is a function with a
     /// unique identifier. The function is sometimes also called _command handler_.
-    /// 
+    ///
     /// Commands can be added to the editor using the <see cref="commands.registerCommand">registerCommand</see>
     /// and <see cref="commands.registerTextEditorCommand">registerTextEditorCommand</see> functions. Commands
     /// can be executed <see cref="commands.executeCommand">manually</see> or from a UI gesture. Those are:
-    /// 
+    ///
     /// * palette - Use the <c>commands</c>-section in <c>package.json</c> to make a command show in
     /// the <see href="https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette">command palette</see>.
     /// * keybinding - Use the <c>keybindings</c>-section in <c>package.json</c> to enable
     /// <see href="https://code.visualstudio.com/docs/getstarted/keybindings#_customizing-shortcuts">keybindings</see>
     /// for your extension.
-    /// 
+    ///
     /// Commands from other extensions and from the editor itself are accessible to an extension. However,
     /// when invoking an editor command not all argument types are supported.
-    /// 
+    ///
     /// This is a sample that registers a command handler and adds an entry for that command to the palette. First
     /// register a command handler with the identifier <c>extension.sayHello</c>.
     /// <code lang="javascript">
@@ -7032,7 +7097,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// <summary>
             /// Registers a command that can be invoked via a keyboard shortcut,
             /// a menu item, an action, or directly.
-            /// 
+            ///
             /// Registering a command with an existing command identifier twice
             /// will cause an error.
             /// </summary>
@@ -7044,7 +7109,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// <summary>
             /// Registers a text editor command that can be invoked via a keyboard shortcut,
             /// a menu item, an action, or directly.
-            /// 
+            ///
             /// Text editor commands are different from ordinary <see cref="commands.registerCommand">commands</see> as
             /// they only execute when there is an active editor when the command is called. Also, the
             /// command handler of an editor command has access to the active editor and to an
@@ -7058,7 +7123,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract registerTextEditorCommand: command: string * callback: (TextEditor -> TextEditorEdit -> ResizeArray<obj option> -> unit) * ?thisArg: obj -> Disposable
             /// <summary>
             /// Executes the command denoted by the given command identifier.
-            /// 
+            ///
             /// * *Note 1:* When executing an editor command not all types are allowed to
             /// be passed as arguments. Allowed are the primitive types <c>string</c>, <c>boolean</c>,
             /// <c>number</c>, <c>undefined</c>, and <c>null</c>, as well as {@linkcode Position}, {@linkcode Range}, {@linkcode Uri} and {@linkcode Location}.
@@ -7184,6 +7249,23 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// <param name="options">Rendering options for the decoration type.</param>
             /// <returns>A new decoration type instance.</returns>
             abstract createTextEditorDecorationType: options: DecorationRenderOptions -> TextEditorDecorationType
+            /// <summary>
+            /// Show an information message to users. Optionally provide an array of items which will be presented as
+            /// clickable buttons.
+            /// </summary>
+            /// <param name="message">The message to show.</param>
+            /// <param name="items">A set of items that will be rendered as actions in the message.</param>
+            /// <returns>A thenable that resolves to the selected item or <c>undefined</c> when being dismissed.</returns>
+            abstract showInformationMessage: message: string * [<ParamArray>] items: string[] -> Thenable<string option>
+            /// <summary>
+            /// Show an information message to users. Optionally provide an array of items which will be presented as
+            /// clickable buttons.
+            /// </summary>
+            /// <param name="message">The message to show.</param>
+            /// <param name="options">Configures the behaviour of the message.</param>
+            /// <param name="items">A set of items that will be rendered as actions in the message.</param>
+            /// <returns>A thenable that resolves to the selected item or <c>undefined</c> when being dismissed.</returns>
+            abstract showInformationMessage: message: string * options: MessageOptions * [<ParamArray>] items: string[] -> Thenable<string option>
             /// <summary>Show an information message.</summary>
             /// <seealso cref="window.showInformationMessage">showInformationMessage</seealso>
             /// <param name="message">The message to show.</param>
@@ -7202,6 +7284,19 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// <param name="message">The message to show.</param>
             /// <param name="items">A set of items that will be rendered as actions in the message.</param>
             /// <returns>A thenable that resolves to the selected item or <c>undefined</c> when being dismissed.</returns>
+            abstract showWarningMessage: message: string * [<ParamArray>] items: string[] -> Thenable<string option>
+            /// <summary>Show a warning message.</summary>
+            /// <seealso cref="window.showInformationMessage">showInformationMessage</seealso>
+            /// <param name="message">The message to show.</param>
+            /// <param name="options">Configures the behaviour of the message.</param>
+            /// <param name="items">A set of items that will be rendered as actions in the message.</param>
+            /// <returns>A thenable that resolves to the selected item or <c>undefined</c> when being dismissed.</returns>
+            abstract showWarningMessage: message: string * options: MessageOptions * [<ParamArray>] items: string[] -> Thenable<string option>
+            /// <summary>Show a warning message.</summary>
+            /// <seealso cref="window.showInformationMessage">showInformationMessage</seealso>
+            /// <param name="message">The message to show.</param>
+            /// <param name="items">A set of items that will be rendered as actions in the message.</param>
+            /// <returns>A thenable that resolves to the selected item or <c>undefined</c> when being dismissed.</returns>
             abstract showWarningMessage: message: string * [<ParamArray>] items: 'T[] -> Thenable<'T option> when 'T :> MessageItem
             /// <summary>Show a warning message.</summary>
             /// <seealso cref="window.showInformationMessage">showInformationMessage</seealso>
@@ -7210,6 +7305,19 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// <param name="items">A set of items that will be rendered as actions in the message.</param>
             /// <returns>A thenable that resolves to the selected item or <c>undefined</c> when being dismissed.</returns>
             abstract showWarningMessage: message: string * options: MessageOptions * [<ParamArray>] items: 'T[] -> Thenable<'T option> when 'T :> MessageItem
+            /// <summary>Show an error message.</summary>
+            /// <seealso cref="window.showInformationMessage">showInformationMessage</seealso>
+            /// <param name="message">The message to show.</param>
+            /// <param name="items">A set of items that will be rendered as actions in the message.</param>
+            /// <returns>A thenable that resolves to the selected item or <c>undefined</c> when being dismissed.</returns>
+            abstract showErrorMessage: message: string * [<ParamArray>] items: string[] -> Thenable<string option>
+            /// <summary>Show an error message.</summary>
+            /// <seealso cref="window.showInformationMessage">showInformationMessage</seealso>
+            /// <param name="message">The message to show.</param>
+            /// <param name="options">Configures the behaviour of the message.</param>
+            /// <param name="items">A set of items that will be rendered as actions in the message.</param>
+            /// <returns>A thenable that resolves to the selected item or <c>undefined</c> when being dismissed.</returns>
+            abstract showErrorMessage: message: string * options: MessageOptions * [<ParamArray>] items: string[] -> Thenable<string option>
             /// <summary>Show an error message.</summary>
             /// <seealso cref="window.showInformationMessage">showInformationMessage</seealso>
             /// <param name="message">The message to show.</param>
@@ -7270,7 +7378,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract showSaveDialog: ?options: SaveDialogOptions -> Thenable<Uri option>
             /// <summary>
             /// Opens an input box to ask the user for input.
-            /// 
+            ///
             /// The returned value will be <c>undefined</c> if the input box was canceled (e.g. pressing ESC). Otherwise the
             /// returned value will be the string typed by the user or an empty string if the user did not type
             /// anything but dismissed the input box with OK.
@@ -7282,7 +7390,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// <summary>
             /// Creates a <see cref="QuickPick" /> to let the user pick an item from a list
             /// of items of type T.
-            /// 
+            ///
             /// Note that in many cases the more convenient <see cref="window.showQuickPick" />
             /// is easier to use. <see cref="window.createQuickPick" /> should be used
             /// when <see cref="window.showQuickPick" /> does not offer the required flexibility.
@@ -7291,16 +7399,23 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract createQuickPick: unit -> QuickPick<'T> when 'T :> QuickPickItem
             /// <summary>
             /// Creates a <see cref="InputBox" /> to let the user enter some text input.
-            /// 
+            ///
             /// Note that in many cases the more convenient <see cref="window.showInputBox" />
             /// is easier to use. <see cref="window.createInputBox" /> should be used
             /// when <see cref="window.showInputBox" /> does not offer the required flexibility.
             /// </summary>
             /// <returns>A new <see cref="InputBox" />.</returns>
             abstract createInputBox: unit -> InputBox
-            /// <summary>Creates a new <see cref="OutputChannel">output channel</see> with the given name.</summary>
+            /// <summary>
+            /// Creates a new <see cref="OutputChannel">output channel</see> with the given name and language id
+            /// If language id is not provided, then **Log** is used as default language id.
+            ///
+            /// You can access the visible or active output channel as a <see cref="TextDocument">text document</see> from <see cref="window.visibleTextEditors">visible editors</see> or <see cref="window.activeTextEditor">active editor</see>
+            /// and use the langage id to contribute language features like syntax coloring, code lens etc.,
+            /// </summary>
             /// <param name="name">Human-readable string which will be used to represent the channel in the UI.</param>
-            abstract createOutputChannel: name: string -> OutputChannel
+            /// <param name="languageId">The identifier of the language associated with the channel.</param>
+            abstract createOutputChannel: name: string * ?languageId: string -> OutputChannel
             /// <summary>Create and show a new webview panel.</summary>
             /// <param name="viewType">Identifies the type of the webview panel.</param>
             /// <param name="title">Title of the panel.</param>
@@ -7327,7 +7442,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// <summary>
             /// Set a message to the status bar. This is a short hand for the more powerful
             /// status bar <see cref="window.createStatusBarItem">items</see>.
-            /// 
+            ///
             /// *Note* that status bar messages stack and that they must be disposed when no
             /// longer used.
             /// </summary>
@@ -7353,12 +7468,12 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// <param name="task">
             /// A callback returning a promise. Progress state can be reported with
             /// the provided <see cref="Progress" />-object.
-            /// 
+            ///
             /// To report discrete progress, use <c>increment</c> to indicate how much work has been completed. Each call with
             /// a <c>increment</c> value will be summed up and reflected as overall progress until 100% is reached (a value of
             /// e.g. <c>10</c> accounts for <c>10%</c> of work done).
             /// Note that currently only <c>ProgressLocation.Notification</c> is capable of showing discrete progress.
-            /// 
+            ///
             /// To monitor if the operation has been cancelled by the user, use the provided {
             /// </param>
             /// <returns>The thenable the task-callback returned.</returns>
@@ -7403,7 +7518,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// <summary>
             /// Register a <see cref="TreeDataProvider" /> for the view contributed using the extension point <c>views</c>.
             /// This will allow you to contribute data to the <see cref="TreeView" /> and update if the data changes.
-            /// 
+            ///
             /// **Note:** To get access to the <see cref="TreeView" /> and perform operations on it, use <see cref="window.createTreeView">createTreeView</see>.
             /// </summary>
             /// <param name="viewId">Id of the view contributed using the extension point <c>views</c>.</param>
@@ -7420,16 +7535,16 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// A uri handler is scoped to the extension it is contributed from; it will only
             /// be able to handle uris which are directed to the extension itself. A uri must respect
             /// the following rules:
-            /// 
+            ///
             /// - The uri-scheme must be <c>vscode.env.uriScheme</c>;
             /// - The uri-authority must be the extension id (e.g. <c>my.extension</c>);
             /// - The uri-path, -query and -fragment parts are arbitrary.
-            /// 
+            ///
             /// For example, if the <c>my.extension</c> extension registers a uri handler, it will only
             /// be allowed to handle uris with the prefix <c>product-name://my.extension</c>.
-            /// 
+            ///
             /// An extension can only register a single uri handler in its entire activation lifetime.
-            /// 
+            ///
             /// * *Note:* There is an activation event <c>onUri</c> that fires when a uri directed for
             /// the current extension is about to be handled.
             /// </summary>
@@ -7437,10 +7552,10 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract registerUriHandler: handler: UriHandler -> Disposable
             /// <summary>
             /// Registers a webview panel serializer.
-            /// 
+            ///
             /// Extensions that support reviving should have an <c>"onWebviewPanel:viewType"</c> activation event and
             /// make sure that <c>registerWebviewPanelSerializer</c> is called during activation.
-            /// 
+            ///
             /// Only a single serializer may be registered at a time for a given <c>viewType</c>.
             /// </summary>
             /// <param name="viewType">Type of the webview panel that can be serialized.</param>
@@ -7456,7 +7571,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract registerWebviewViewProvider: viewId: string * provider: WebviewViewProvider * ?options: {| webviewOptions: {| retainContextWhenHidden: bool option |} option |} -> Disposable
             /// <summary>
             /// Register a provider for custom editors for the <c>viewType</c> contributed by the <c>customEditors</c> extension point.
-            /// 
+            ///
             /// When a custom editor is opened, an <c>onCustomEditor:viewType</c> activation event is fired. Your extension
             /// must register a {@linkcode CustomTextEditorProvider}, {@linkcode CustomReadonlyEditorProvider},
             /// {@linkcode CustomEditorProvider}for <c>viewType</c> as part of activation.
@@ -7499,6 +7614,8 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// the first argument to the command is the tree item that the command was executed on and the second argument is an
         /// array containing all selected tree items.
         abstract canSelectMany: bool option with get, set
+        /// An optional interface to implement drag and drop in the tree view.
+        abstract dragAndDropController: TreeDragAndDropController<'T> option with get, set
 
     /// <summary>The event that is fired when an element in the <see cref="TreeView" /> is expanded or collapsed</summary>
     type [<AllowNullLiteral>] TreeViewExpansionEvent<'T> =
@@ -7514,6 +7631,111 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     type [<AllowNullLiteral>] TreeViewVisibilityChangeEvent =
         /// <summary><c>true</c> if the <see cref="TreeView">tree view</see> is visible otherwise <c>false</c>.</summary>
         abstract visible: bool
+
+    /// <summary>
+    /// A class for encapsulating data transferred during a drag and drop event.
+    ///
+    /// You can use the <c>value</c> of the <c>DataTransferItem</c> to get back the object you put into it
+    /// so long as the extension that created the <c>DataTransferItem</c> runs in the same extension host.
+    /// </summary>
+    type [<AllowNullLiteral>] DataTransferItem =
+        abstract asString: unit -> Thenable<string>
+        abstract value: obj option
+
+    /// <summary>
+    /// A class for encapsulating data transferred during a drag and drop event.
+    ///
+    /// You can use the <c>value</c> of the <c>DataTransferItem</c> to get back the object you put into it
+    /// so long as the extension that created the <c>DataTransferItem</c> runs in the same extension host.
+    /// </summary>
+    type [<AllowNullLiteral>] DataTransferItemStatic =
+        [<EmitConstructor>] abstract Create: value: obj option -> DataTransferItem
+
+    /// <summary>
+    /// A map containing a mapping of the mime type of the corresponding transferred data.
+    ///
+    /// Drag and drop controllers that implement <see cref="TreeDragAndDropController.handleDrag"><c>handleDrag</c></see> can add additional mime types to the
+    /// data transfer. These additional mime types will only be included in the <c>handleDrop</c> when the the drag was initiated from
+    /// an element in the same drag and drop controller.
+    /// </summary>
+    type [<AllowNullLiteral>] DataTransfer =
+        /// <summary>Retrieves the data transfer item for a given mime type.</summary>
+        /// <param name="mimeType">
+        /// The mime type to get the data transfer item for, such as <c>text/plain</c> or <c>image/png</c>.
+        ///
+        /// Special mime types:
+        /// - <c>text/uri-list</c> — A string with <c>toString()</c>ed Uris separated by newlines. To specify a cursor position in the file,
+        /// set the Uri's fragment to <c>L3,5</c>, where 3 is the line number and 5 is the column number.
+        /// </param>
+        abstract get: mimeType: string -> DataTransferItem option
+        /// <summary>Sets a mime type to data transfer item mapping.</summary>
+        /// <param name="mimeType">The mime type to set the data for.</param>
+        /// <param name="value">The data transfer item for the given mime type.</param>
+        abstract set: mimeType: string * value: DataTransferItem -> unit
+        /// <summary>Allows iteration through the data transfer items.</summary>
+        /// <param name="callbackfn">Callback for iteration through the data transfer items.</param>
+        abstract forEach: callbackfn: (DataTransferItem -> string -> unit) -> unit
+
+    /// <summary>
+    /// A map containing a mapping of the mime type of the corresponding transferred data.
+    ///
+    /// Drag and drop controllers that implement <see cref="TreeDragAndDropController.handleDrag"><c>handleDrag</c></see> can add additional mime types to the
+    /// data transfer. These additional mime types will only be included in the <c>handleDrop</c> when the the drag was initiated from
+    /// an element in the same drag and drop controller.
+    /// </summary>
+    type [<AllowNullLiteral>] DataTransferStatic =
+        [<EmitConstructor>] abstract Create: unit -> DataTransfer
+
+    /// <summary>Provides support for drag and drop in <c>TreeView</c>.</summary>
+    type [<AllowNullLiteral>] TreeDragAndDropController<'T> =
+        /// <summary>
+        /// The mime types that the <see cref="TreeDragAndDropController.handleDrop"><c>handleDrop</c></see> method of this <c>DragAndDropController</c> supports.
+        /// This could be well-defined, existing, mime types, and also mime types defined by the extension.
+        ///
+        /// To support drops from trees, you will need to add the mime type of that tree.
+        /// This includes drops from within the same tree.
+        /// The mime type of a tree is recommended to be of the format <c>application/vnd.code.tree.&lt;treeidlowercase&gt;</c>.
+        ///
+        /// To learn the mime type of a dragged item:
+        /// 1. Set up your <c>DragAndDropController</c>
+        /// 2. Use the Developer: Set Log Level... command to set the level to "Debug"
+        /// 3. Open the developer tools and drag the item with unknown mime type over your tree. The mime types will be logged to the developer console
+        ///
+        /// Note that mime types that cannot be sent to the extension will be omitted.
+        /// </summary>
+        abstract dropMimeTypes: ResizeArray<string>
+        /// <summary>
+        /// The mime types that the <see cref="TreeDragAndDropController.handleDrag"><c>handleDrag</c></see> method of this <c>TreeDragAndDropController</c> may add to the tree data transfer.
+        /// This could be well-defined, existing, mime types, and also mime types defined by the extension.
+        ///
+        /// The recommended mime type of the tree (<c>application/vnd.code.tree.&lt;treeidlowercase&gt;</c>) will be automatically added.
+        /// </summary>
+        abstract dragMimeTypes: ResizeArray<string>
+        /// <summary>
+        /// When the user starts dragging items from this <c>DragAndDropController</c>, <c>handleDrag</c> will be called.
+        /// Extensions can use <c>handleDrag</c> to add their <see cref="DataTransferItem"><c>DataTransferItem</c></see> items to the drag and drop.
+        ///
+        /// When the items are dropped on **another tree item** in **the same tree**, your <c>DataTransferItem</c> objects
+        /// will be preserved. Use the recommended mime type for the tree (<c>application/vnd.code.tree.&lt;treeidlowercase&gt;</c>) to add
+        /// tree objects in a data transfer. See the documentation for <c>DataTransferItem</c> for how best to take advantage of this.
+        ///
+        /// To add a data transfer item that can be dragged into the editor, use the application specific mime type "text/uri-list".
+        /// The data for "text/uri-list" should be a string with <c>toString()</c>ed Uris separated by newlines. To specify a cursor position in the file,
+        /// set the Uri's fragment to <c>L3,5</c>, where 3 is the line number and 5 is the column number.
+        /// </summary>
+        /// <param name="source">The source items for the drag and drop operation.</param>
+        /// <param name="dataTransfer">The data transfer associated with this drag.</param>
+        /// <param name="token">A cancellation token indicating that drag has been cancelled.</param>
+        abstract handleDrag: source: ResizeArray<'T> * dataTransfer: DataTransfer * token: CancellationToken -> U2<Thenable<unit>, unit>
+        /// <summary>
+        /// Called when a drag and drop action results in a drop on the tree that this <c>DragAndDropController</c> belongs to.
+        ///
+        /// Extensions should fire <see cref="TreeDataProvider.onDidChangeTreeData">onDidChangeTreeData</see> for any elements that need to be refreshed.
+        /// </summary>
+        /// <param name="dataTransfer">The data transfer items of the source of the drag.</param>
+        /// <param name="target">The target tree element that the drop is occurring on. When undefined, the target is the root.</param>
+        /// <param name="token">A cancellation token indicating that the drop has been cancelled.</param>
+        abstract handleDrop: target: 'T option * dataTransfer: DataTransfer * token: CancellationToken -> U2<Thenable<unit>, unit>
 
     /// Represents a Tree view
     type [<AllowNullLiteral>] TreeView<'T> =
@@ -7542,13 +7764,13 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// <summary>
         /// Reveals the given element in the tree view.
         /// If the tree view is not visible then the tree view is shown and element is revealed.
-        /// 
+        ///
         /// By default revealed element is selected.
         /// In order to not to select, set the option <c>select</c> to <c>false</c>.
         /// In order to focus, set the option <c>focus</c> to <c>true</c>.
         /// In order to expand the revealed element, set the option <c>expand</c> to <c>true</c>. To expand recursively set <c>expand</c> to the number of levels to expand.
         /// **NOTE:** You can expand only to 3 levels maximum.
-        /// 
+        ///
         /// **NOTE:** The <see cref="TreeDataProvider" /> that the <c>TreeView</c> <see cref="window.createTreeView">is registered with</see> with must implement <see cref="TreeDataProvider.getParent">getParent</see> method to access this API.
         /// </summary>
         abstract reveal: element: 'T * ?options: {| select: bool option; focus: bool option; expand: U2<bool, float> option |} -> Thenable<unit>
@@ -7560,7 +7782,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// This will trigger the view to update the changed element/root and its children recursively (if shown).
         /// To signal that root has changed, do not pass any argument or pass <c>undefined</c> or <c>null</c>.
         /// </summary>
-        abstract onDidChangeTreeData: Event<U2<'T, unit> option> option with get, set
+        abstract onDidChangeTreeData: Event<U3<'T, ResizeArray<'T>, unit> option> option with get, set
         /// <summary>Get <see cref="TreeItem" /> representation of the <c>element</c></summary>
         /// <param name="element">The element for which <see cref="TreeItem" /> representation is asked for.</param>
         /// <returns>TreeItem representation of the element.</returns>
@@ -7572,7 +7794,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// <summary>
         /// Optional method to return the parent of <c>element</c>.
         /// Return <c>null</c> or <c>undefined</c> if <c>element</c> is a child of root.
-        /// 
+        ///
         /// **NOTE:** This method should be implemented in order to access <see cref="TreeView.reveal">reveal</see> API.
         /// </summary>
         /// <param name="element">The element for which the parent has to be returned.</param>
@@ -7584,11 +7806,11 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// Only properties that were undefined can be resolved in <c>resolveTreeItem</c>.
         /// Functionality may be expanded later to include being called to resolve other missing
         /// properties on selection and/or on open.
-        /// 
+        ///
         /// Will only ever be called once per TreeItem.
-        /// 
+        ///
         /// onDidChangeTreeData should not be triggered from within resolveTreeItem.
-        /// 
+        ///
         /// *Note* that this function is called when tree items are already showing in the UI.
         /// Because of that, no property that changes the presentation (label, description, etc.)
         /// can be changed.
@@ -7606,7 +7828,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// <summary>A human-readable string describing this item. When <c>falsy</c>, it is derived from <see cref="TreeItem.resourceUri">resourceUri</see>.</summary>
         abstract label: U2<string, TreeItemLabel> option with get, set
         /// Optional id for the tree item that has to be unique across tree. The id is used to preserve the selection and expansion state of the tree item.
-        /// 
+        ///
         /// If not provided, an id is generated using the tree item's label. **Note** that when labels change, ids will change and that selection and expansion state cannot be kept stable anymore.
         abstract id: string option with get, set
         /// <summary>
@@ -7622,7 +7844,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract description: U2<string, bool> option with get, set
         /// <summary>
         /// The <see cref="Uri" /> of the resource representing this item.
-        /// 
+        ///
         /// Will be used to derive the <see cref="TreeItem.label">label</see>, when it is not provided.
         /// Will be used to derive the icon from current file icon theme, when <see cref="TreeItem.iconPath">iconPath</see> has <see cref="ThemeIcon" /> value.
         /// </summary>
@@ -7631,7 +7853,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract tooltip: U2<string, MarkdownString> option with get, set
         /// <summary>
         /// The <see cref="Command" /> that should be executed when the tree item is selected.
-        /// 
+        ///
         /// Please use <c>vscode.open</c> or <c>vscode.diff</c> as command IDs when the tree item is opening
         /// something in the editor. Using these commands ensures that the resulting editor will
         /// appear consistent with how other built-in trees open editors.
@@ -7773,12 +7995,12 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// <see cref="Terminal.sendText" /> which sends text to the underlying child
         /// pseudo-device (the child), this will write the text to parent pseudo-device (the
         /// _terminal_ itself).
-        /// 
+        ///
         /// Note writing <c>\n</c> will just move the cursor down 1 row, you need to write <c>\r</c> as well
         /// to move the cursor to the left-most cell.
-        /// 
+        ///
         /// Events fired before <see cref="Pseudoterminal.open" /> is called will be be ignored.
-        /// 
+        ///
         /// **Example:** Write red text to the terminal
         /// <code lang="typescript">
         /// const writeEmitter = new vscode.EventEmitter&lt;string&gt;();
@@ -7789,7 +8011,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// };
         /// vscode.window.createTerminal({ name: 'My terminal', pty });
         /// </code>
-        /// 
+        ///
         /// **Example:** Move the cursor to the 10th row and 20th column and write an asterisk
         /// <code lang="typescript">
         /// writeEmitter.fire('\x1b[10;20H*');
@@ -7802,9 +8024,9 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// are lower than the actual dimensions of the terminal (ie. there will never be a scroll
         /// bar). Set to <c>undefined</c> for the terminal to go back to the regular dimensions (fit to
         /// the size of the panel).
-        /// 
+        ///
         /// Events fired before <see cref="Pseudoterminal.open" /> is called will be be ignored.
-        /// 
+        ///
         /// **Example:** Override the dimensions of a terminal to 20 columns and 10 rows
         /// <code lang="typescript">
         /// const dimensionsEmitter = new vscode.EventEmitter&lt;vscode.TerminalDimensions&gt;();
@@ -7825,14 +8047,14 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract onDidOverrideDimensions: Event<TerminalDimensions option> option with get, set
         /// <summary>
         /// An event that when fired will signal that the pty is closed and dispose of the terminal.
-        /// 
+        ///
         /// Events fired before <see cref="Pseudoterminal.open" /> is called will be be ignored.
-        /// 
+        ///
         /// A number can be used to provide an exit code for the terminal. Exit codes must be
         /// positive and a non-zero exit codes signals failure which shows a notification for a
         /// regular terminal and allows dependent tasks to proceed when used with the
         /// <c>CustomExecution</c> API.
-        /// 
+        ///
         /// **Example:** Exit the terminal when "y" is pressed, otherwise show a notification.
         /// <code lang="typescript">
         /// const writeEmitter = new vscode.EventEmitter&lt;string&gt;();
@@ -7855,9 +8077,9 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract onDidClose: Event<U2<unit, float>> option with get, set
         /// <summary>
         /// An event that when fired allows changing the name of the terminal.
-        /// 
+        ///
         /// Events fired before <see cref="Pseudoterminal.open" /> is called will be be ignored.
-        /// 
+        ///
         /// **Example:** Change the terminal name to "My new terminal".
         /// <code lang="typescript">
         /// const writeEmitter = new vscode.EventEmitter&lt;string&gt;();
@@ -7887,7 +8109,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// </summary>
         /// <param name="data">
         /// The incoming data.
-        /// 
+        ///
         /// **Example:** Echo input in the terminal. The sequence for enter (<c>\r</c>) is translated to
         /// CRLF to go to a new line and move the cursor to the start of the line.
         /// <code lang="typescript">
@@ -7907,7 +8129,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// changes, for example when font size changes or when the panel is resized. The initial
         /// state of a terminal's dimensions should be treated as <c>undefined</c> until this is triggered
         /// as the size of a terminal isn't known until it shows up in the user interface.
-        /// 
+        ///
         /// When dimensions are overridden by
         /// <see cref="Pseudoterminal.onDidOverrideDimensions">onDidOverrideDimensions</see>, <c>setDimensions</c> will
         /// continue to be called with the regular panel dimensions, allowing the extension continue
@@ -7960,7 +8182,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract persistent: bool with get, set
         /// <summary>
         /// Replace an environment variable with a value.
-        /// 
+        ///
         /// Note that an extension can only make a single change to any one variable, so this will
         /// overwrite any previous calls to replace, append or prepend.
         /// </summary>
@@ -7969,7 +8191,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract replace: variable: string * value: string -> unit
         /// <summary>
         /// Append a value to an environment variable.
-        /// 
+        ///
         /// Note that an extension can only make a single change to any one variable, so this will
         /// overwrite any previous calls to replace, append or prepend.
         /// </summary>
@@ -7978,7 +8200,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract append: variable: string * value: string -> unit
         /// <summary>
         /// Prepend a value to an environment variable.
-        /// 
+        ///
         /// Note that an extension can only make a single change to any one variable, so this will
         /// overwrite any previous calls to replace, append or prepend.
         /// </summary>
@@ -8002,11 +8224,16 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// location how progress is visually represented.
     type [<RequireQualifiedAccess>] ProgressLocation =
         /// Show progress for the source control viewlet, as overlay for the icon and as progress bar
-        /// inside the viewlet (when visible). Neither supports cancellation nor discrete progress.
+        /// inside the viewlet (when visible). Neither supports cancellation nor discrete progress nor
+        /// a label to describe the operation.
         | SourceControl = 1
+        /// <summary>
         /// Show progress in the status bar of the editor. Neither supports cancellation nor discrete progress.
+        /// Supports rendering of <see cref="ThemeIcon">theme icons</see> via the <c>$(&lt;name&gt;)</c>-syntax in the progress label.
+        /// </summary>
         | Window = 10
-        /// Show progress as notification with an optional cancel button. Supports to show infinite and discrete progress.
+        /// Show progress as notification with an optional cancel button. Supports to show infinite and discrete
+        /// progress but does not support rendering of icons.
         | Notification = 15
 
     /// Value-object describing where and how progress should show.
@@ -8028,21 +8255,21 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// A light-weight user input UI that is initially not visible. After
     /// configuring it through its properties the extension can make it
     /// visible by calling <see cref="QuickInput.show" />.
-    /// 
+    ///
     /// There are several reasons why this UI might have to be hidden and
     /// the extension will be notified through <see cref="QuickInput.onDidHide" />.
     /// (Examples include: an explicit call to <see cref="QuickInput.hide" />,
     /// the user pressing Esc, some other input UI opening, etc.)
-    /// 
+    ///
     /// A user pressing Enter or some other gesture implying acceptance
     /// of the current state does not automatically hide this UI component.
     /// It is up to the extension to decide whether to accept the user's input
     /// and if the UI should indeed be hidden through a call to <see cref="QuickInput.hide" />.
-    /// 
+    ///
     /// When the extension no longer needs this input UI, it should
     /// <see cref="QuickInput.dispose" /> it to allow for freeing up
     /// any resources associated with it.
-    /// 
+    ///
     /// See <see cref="QuickPick" /> and <see cref="InputBox" /> for concrete UIs.
     /// </summary>
     type [<AllowNullLiteral>] QuickInput =
@@ -8053,12 +8280,12 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// An optional total step count.
         abstract totalSteps: float option with get, set
         /// If the UI should allow for user input. Defaults to true.
-        /// 
+        ///
         /// Change this to false, e.g., while validating user input or
         /// loading data for the next step in user input.
         abstract enabled: bool with get, set
         /// If the UI should show a progress indicator. Defaults to false.
-        /// 
+        ///
         /// Change this to true, e.g., while loading more data or validating
         /// user input.
         abstract busy: bool with get, set
@@ -8077,7 +8304,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract hide: unit -> unit
         /// <summary>
         /// An event signaling when this input UI is hidden.
-        /// 
+        ///
         /// There are several reasons why this UI might have to be hidden and
         /// the extension will be notified through <see cref="QuickInput.onDidHide" />.
         /// (Examples include: an explicit call to <see cref="QuickInput.hide" />,
@@ -8095,7 +8322,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// list of items of type T. The items can be filtered through a filter text field and
     /// there is an option <see cref="QuickPick.canSelectMany">canSelectMany</see> to allow for
     /// selecting multiple items.
-    /// 
+    ///
     /// Note that in many cases the more convenient <see cref="window.showQuickPick" />
     /// is easier to use. <see cref="window.createQuickPick" /> should be used
     /// when <see cref="window.showQuickPick" /> does not offer the required flexibility.
@@ -8142,7 +8369,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
 
     /// <summary>
     /// A concrete <see cref="QuickInput" /> to let the user input a text value.
-    /// 
+    ///
     /// Note that in many cases the more convenient <see cref="window.showInputBox" />
     /// is easier to use. <see cref="window.createInputBox" /> should be used
     /// when <see cref="window.showInputBox" /> does not offer the required flexibility.
@@ -8183,7 +8410,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     type [<AllowNullLiteral>] QuickInputButtonsStatic =
         /// <summary>
         /// A back button for <see cref="QuickPick" /> and <see cref="InputBox" />.
-        /// 
+        ///
         /// When a navigation 'back' button is needed this one should be used for consistency.
         /// It comes with a predefined icon, tooltip and location.
         /// </summary>
@@ -8240,7 +8467,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
 
     /// <summary>
     /// An event that is fired when a <see cref="TextDocument">document</see> will be saved.
-    /// 
+    ///
     /// To make modifications to the document before it is being saved, call the
     /// {@linkcode TextDocumentWillSaveEvent.waitUntil waitUntil}-function with a thenable
     /// that resolves to an array of <see cref="TextEdit">text edits</see>.
@@ -8254,15 +8481,15 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// Allows to pause the event loop and to apply <see cref="TextEdit">pre-save-edits</see>.
         /// Edits of subsequent calls to this function will be applied in order. The
         /// edits will be *ignored* if concurrent modifications of the document happened.
-        /// 
+        ///
         /// *Note:* This function can only be called during event dispatch and not
         /// in an asynchronous manner:
-        /// 
+        ///
         /// <code lang="ts">
         /// workspace.onWillSaveTextDocument(event =&gt; {
         ///      // async, will *throw* an error
         ///      setTimeout(() =&gt; event.waitUntil(promise));
-        /// 
+        ///
         ///      // sync, OK
         ///      event.waitUntil(promise);
         /// })
@@ -8272,7 +8499,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract waitUntil: thenable: Thenable<ResizeArray<TextEdit>> -> unit
         /// <summary>
         /// Allows to pause the event loop until the provided thenable resolved.
-        /// 
+        ///
         /// *Note:* This function can only be called during event dispatch.
         /// </summary>
         /// <param name="thenable">A thenable that delays saving.</param>
@@ -8280,7 +8507,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
 
     /// <summary>
     /// An event that is fired when files are going to be created.
-    /// 
+    ///
     /// To make modifications to the workspace before the files are created,
     /// call the {@linkcode FileWillCreateEvent.waitUntil waitUntil}-function with a
     /// thenable that resolves to a <see cref="WorkspaceEdit">workspace edit</see>.
@@ -8292,15 +8519,15 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract files: ResizeArray<Uri>
         /// <summary>
         /// Allows to pause the event and to apply a <see cref="WorkspaceEdit">workspace edit</see>.
-        /// 
+        ///
         /// *Note:* This function can only be called during event dispatch and not
         /// in an asynchronous manner:
-        /// 
+        ///
         /// <code lang="ts">
         /// workspace.onWillCreateFiles(event =&gt; {
         ///      // async, will *throw* an error
         ///      setTimeout(() =&gt; event.waitUntil(promise));
-        /// 
+        ///
         ///      // sync, OK
         ///      event.waitUntil(promise);
         /// })
@@ -8310,7 +8537,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract waitUntil: thenable: Thenable<WorkspaceEdit> -> unit
         /// <summary>
         /// Allows to pause the event until the provided thenable resolves.
-        /// 
+        ///
         /// *Note:* This function can only be called during event dispatch.
         /// </summary>
         /// <param name="thenable">A thenable that delays saving.</param>
@@ -8323,7 +8550,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
 
     /// <summary>
     /// An event that is fired when files are going to be deleted.
-    /// 
+    ///
     /// To make modifications to the workspace before the files are deleted,
     /// call the <see cref="FileWillCreateEvent.waitUntil">`waitUntil</see>-function with a
     /// thenable that resolves to a <see cref="WorkspaceEdit">workspace edit</see>.
@@ -8335,15 +8562,15 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract files: ResizeArray<Uri>
         /// <summary>
         /// Allows to pause the event and to apply a <see cref="WorkspaceEdit">workspace edit</see>.
-        /// 
+        ///
         /// *Note:* This function can only be called during event dispatch and not
         /// in an asynchronous manner:
-        /// 
+        ///
         /// <code lang="ts">
         /// workspace.onWillCreateFiles(event =&gt; {
         ///      // async, will *throw* an error
         ///      setTimeout(() =&gt; event.waitUntil(promise));
-        /// 
+        ///
         ///      // sync, OK
         ///      event.waitUntil(promise);
         /// })
@@ -8353,7 +8580,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract waitUntil: thenable: Thenable<WorkspaceEdit> -> unit
         /// <summary>
         /// Allows to pause the event until the provided thenable resolves.
-        /// 
+        ///
         /// *Note:* This function can only be called during event dispatch.
         /// </summary>
         /// <param name="thenable">A thenable that delays saving.</param>
@@ -8366,7 +8593,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
 
     /// <summary>
     /// An event that is fired when files are going to be renamed.
-    /// 
+    ///
     /// To make modifications to the workspace before the files are renamed,
     /// call the <see cref="FileWillCreateEvent.waitUntil">`waitUntil</see>-function with a
     /// thenable that resolves to a <see cref="WorkspaceEdit">workspace edit</see>.
@@ -8378,15 +8605,15 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract files: ReadonlyArray<{| oldUri: Uri; newUri: Uri |}>
         /// <summary>
         /// Allows to pause the event and to apply a <see cref="WorkspaceEdit">workspace edit</see>.
-        /// 
+        ///
         /// *Note:* This function can only be called during event dispatch and not
         /// in an asynchronous manner:
-        /// 
+        ///
         /// <code lang="ts">
         /// workspace.onWillCreateFiles(event =&gt; {
         ///      // async, will *throw* an error
         ///      setTimeout(() =&gt; event.waitUntil(promise));
-        /// 
+        ///
         ///      // sync, OK
         ///      event.waitUntil(promise);
         /// })
@@ -8396,7 +8623,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract waitUntil: thenable: Thenable<WorkspaceEdit> -> unit
         /// <summary>
         /// Allows to pause the event until the provided thenable resolves.
-        /// 
+        ///
         /// *Note:* This function can only be called during event dispatch.
         /// </summary>
         /// <param name="thenable">A thenable that delays saving.</param>
@@ -8419,7 +8646,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     type [<AllowNullLiteral>] WorkspaceFolder =
         /// <summary>
         /// The associated uri for this workspace folder.
-        /// 
+        ///
         /// *Note:* The <see cref="Uri" />-type was intentionally chosen such that future releases of the editor can support
         /// workspace folders that are not stored on the local disk, e.g. <c>ftp://server/workspaces/foo</c>.
         /// </summary>
@@ -8435,15 +8662,15 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// <summary>
     /// Namespace for dealing with the current workspace. A workspace is the collection of one
     /// or more folders that are opened in an editor window (instance).
-    /// 
+    ///
     /// It is also possible to open an editor without a workspace. For example, when you open a
     /// new editor window by selecting a file from your platform's File menu, you will not be
     /// inside a workspace. In this mode, some of the editor's capabilities are reduced but you can
     /// still open text files and edit them.
-    /// 
+    ///
     /// Refer to <see href="https://code.visualstudio.com/docs/editor/workspaces" /> for more information on
     /// the concept of workspaces.
-    /// 
+    ///
     /// The workspace offers support for <see cref="workspace.createFileSystemWatcher">listening</see> to fs
     /// events and for <see cref="workspace.findFiles">finding</see> files. Both perform well and run _outside_
     /// the editor-process so that they should be always used instead of nodejs-equivalents.
@@ -8461,7 +8688,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// <summary>
             /// The uri of the first entry of {@linkcode workspace.workspaceFolders workspaceFolders}
             /// as <c>string</c>. <c>undefined</c> if there is no first entry.
-            /// 
+            ///
             /// Refer to <see href="https://code.visualstudio.com/docs/editor/workspaces" /> for more information
             /// on workspaces.
             /// </summary>
@@ -8470,7 +8697,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// <summary>
             /// List of workspace folders (0-N) that are open in the editor. <c>undefined</c> when no workspace
             /// has been opened.
-            /// 
+            ///
             /// Refer to <see href="https://code.visualstudio.com/docs/editor/workspaces" /> for more information
             /// on workspaces.
             /// </summary>
@@ -8478,38 +8705,38 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// <summary>
             /// The name of the workspace. <c>undefined</c> when no workspace
             /// has been opened.
-            /// 
+            ///
             /// Refer to <see href="https://code.visualstudio.com/docs/editor/workspaces" /> for more information on
             /// the concept of workspaces.
             /// </summary>
             abstract name: string option
             /// <summary>
             /// The location of the workspace file, for example:
-            /// 
+            ///
             /// <c>file:///Users/name/Development/myProject.code-workspace</c>
-            /// 
+            ///
             /// or
-            /// 
+            ///
             /// <c>untitled:1555503116870</c>
-            /// 
+            ///
             /// for a workspace that is untitled and not yet saved.
-            /// 
+            ///
             /// Depending on the workspace that is opened, the value will be:
             ///   * <c>undefined</c> when no workspace is opened
             ///   * the path of the workspace file as <c>Uri</c> otherwise. if the workspace
             /// is untitled, the returned URI will use the <c>untitled:</c> scheme
-            /// 
+            ///
             /// The location can e.g. be used with the <c>vscode.openFolder</c> command to
             /// open the workspace again after it has been closed.
-            /// 
+            ///
             /// **Example:**
             /// <code lang="typescript">
             /// vscode.commands.executeCommand('vscode.openFolder', uriOfWorkspace);
             /// </code>
-            /// 
+            ///
             /// Refer to <see href="https://code.visualstudio.com/docs/editor/workspaces" /> for more information on
             /// the concept of workspaces.
-            /// 
+            ///
             /// **Note:** it is not advised to use <c>workspace.workspaceFile</c> to write
             /// configuration data into the file. You can use <c>workspace.getConfiguration().update()</c>
             /// for that purpose which will work both when a single folder is opened as
@@ -8518,7 +8745,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract workspaceFile: Uri option
             /// <summary>
             /// An event that is emitted when a workspace folder is added or removed.
-            /// 
+            ///
             /// **Note:** this event will not fire if the first workspace folder is added, removed or changed,
             /// because in that case the currently executing extensions (including the one that listens to this
             /// event) will be terminated and restarted so that the (deprecated) <c>rootPath</c> property is updated
@@ -8535,7 +8762,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract getWorkspaceFolder: uri: Uri -> WorkspaceFolder option
             /// <summary>
             /// Returns a path that is relative to the workspace folder or folders.
-            /// 
+            ///
             /// When there are no <see cref="workspace.workspaceFolders">workspace folders</see> or when the path
             /// is not contained in them, the input is returned.
             /// </summary>
@@ -8551,32 +8778,32 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// This method replaces <c>deleteCount</c> <see cref="workspace.workspaceFolders">workspace folders</see> starting at index <c>start</c>
             /// by an optional set of <c>workspaceFoldersToAdd</c> on the <c>vscode.workspace.workspaceFolders</c> array. This "splice"
             /// behavior can be used to add, remove and change workspace folders in a single operation.
-            /// 
+            ///
             /// If the first workspace folder is added, removed or changed, the currently executing extensions (including the
             /// one that called this method) will be terminated and restarted so that the (deprecated) <c>rootPath</c> property is
             /// updated to point to the first workspace folder.
-            /// 
+            ///
             /// Use the {@linkcode onDidChangeWorkspaceFolders onDidChangeWorkspaceFolders()} event to get notified when the
             /// workspace folders have been updated.
-            /// 
+            ///
             /// **Example:** adding a new workspace folder at the end of workspace folders
             /// <code lang="typescript">
             /// workspace.updateWorkspaceFolders(workspace.workspaceFolders ? workspace.workspaceFolders.length : 0, null, { uri: ...});
             /// </code>
-            /// 
+            ///
             /// **Example:** removing the first workspace folder
             /// <code lang="typescript">
             /// workspace.updateWorkspaceFolders(0, 1);
             /// </code>
-            /// 
+            ///
             /// **Example:** replacing an existing workspace folder with a new one
             /// <code lang="typescript">
             /// workspace.updateWorkspaceFolders(0, 1, { uri: ...});
             /// </code>
-            /// 
+            ///
             /// It is valid to remove an existing workspace folder and add it again with a different name
             /// to rename that folder.
-            /// 
+            ///
             /// **Note:** it is not valid to call <see cref="updateWorkspaceFolders">updateWorkspaceFolders()</see> multiple times
             /// without waiting for the {@linkcode onDidChangeWorkspaceFolders onDidChangeWorkspaceFolders()} to fire.
             /// </summary>
@@ -8597,32 +8824,32 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// <summary>
             /// Creates a file system watcher that is notified on file events (create, change, delete)
             /// depending on the parameters provided.
-            /// 
+            ///
             /// By default, all opened <see cref="workspace.workspaceFolders">workspace folders</see> will be watched
             /// for file changes recursively.
-            /// 
+            ///
             /// Additional folders can be added for file watching by providing a <see cref="RelativePattern" /> with
             /// a <c>base</c> that is outside of any of the currently opened workspace folders. If the <c>pattern</c> is
             /// complex (e.g. contains <c>**</c> or path segments), the folder will be watched recursively and
             /// otherwise will be watched non-recursively (i.e. only changes to the first level of the path
             /// will be reported).
-            /// 
+            ///
             /// Providing a <c>string</c> as <c>globPattern</c> acts as convenience method for watching file events in
             /// all opened workspace folders. It cannot be used to add more folders for file watching, nor will
             /// it report any file events from folders that are not part of the opened workspace folders.
-            /// 
+            ///
             /// Optionally, flags to ignore certain kinds of events can be provided.
-            /// 
+            ///
             /// To stop listening to events the watcher must be disposed.
-            /// 
+            ///
             /// *Note* that file events from file watchers may be excluded based on user configuration.
             /// The setting <c>files.watcherExclude</c> helps to reduce the overhead of file events from folders
             /// that are known to produce many file changes at once (such as <c>node_modules</c> folders). As such,
             /// it is highly recommended to watch with simple patterns that do not require recursive watchers.
-            /// 
+            ///
             /// *Note* that symbolic links are not automatically followed for file watching unless the path to
             /// watch itself is a symbolic link.
-            /// 
+            ///
             /// *Note* that file changes for the path to be watched may not be delivered when the path itself
             /// changes. For example, when watching a path <c>/Users/somename/Desktop</c> and the path itself is
             /// being deleted, the watcher may not report an event and may not work anymore from that moment on.
@@ -8631,11 +8858,11 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             ///    excluded via <c>files.watcherExclude</c> setting
             /// * if the path is equal to any of the workspace folders, deletions are not tracked
             /// * if the path is outside of any of the workspace folders, deletions are not tracked
-            /// 
+            ///
             /// If you are interested in being notified when the watched path itself is being deleted, you have
             /// to watch it's parent folder. Make sure to use a simple <c>pattern</c> (such as putting the name of the
             /// folder) to not accidentally watch all sibling folders recursively.
-            /// 
+            ///
             /// *Note* that the file paths that are reported for having changed may have a different path casing
             /// compared to the actual casing on disk on case-insensitive platforms (typically macOS and Windows
             /// but not Linux). We allow a user to open a workspace folder with any desired path casing and try
@@ -8646,54 +8873,54 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             ///    path that was provided for watching
             /// In the same way, symbolic links are preserved, i.e. the file event will report the path of the
             /// symbolic link as it was provided for watching and not the target.
-            /// 
+            ///
             /// ### Examples
-            /// 
+            ///
             /// The basic anatomy of a file watcher is as follows:
-            /// 
+            ///
             /// <code lang="ts">
             /// const watcher = vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(&lt;folder&gt;, &lt;pattern&gt;));
-            /// 
+            ///
             /// watcher.onDidChange(uri =&gt; { ... }); // listen to files being changed
             /// watcher.onDidCreate(uri =&gt; { ... }); // listen to files/folders being created
             /// watcher.onDidDelete(uri =&gt; { ... }); // listen to files/folders getting deleted
-            /// 
+            ///
             /// watcher.dispose(); // dispose after usage
             /// </code>
-            /// 
+            ///
             /// #### Workspace file watching
-            /// 
+            ///
             /// If you only care about file events in a specific workspace folder:
-            /// 
+            ///
             /// <code lang="ts">
             /// vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(vscode.workspace.workspaceFolders[0], '**​/*.js'));
             /// </code>
-            /// 
+            ///
             /// If you want to monitor file events across all opened workspace folders:
-            /// 
+            ///
             /// <code lang="ts">
             /// vscode.workspace.createFileSystemWatcher('**​/*.js'));
             /// </code>
-            /// 
+            ///
             /// *Note:* the array of workspace folders can be empy if no workspace is opened (empty window).
-            /// 
+            ///
             /// #### Out of workspace file watching
-            /// 
+            ///
             /// To watch a folder for changes to *.js files outside the workspace (non recursively), pass in a <c>Uri</c> to such
             /// a folder:
-            /// 
+            ///
             /// <code lang="ts">
             /// vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(vscode.Uri.file(&lt;path to folder outside workspace&gt;), '*.js'));
             /// </code>
-            /// 
+            ///
             /// And use a complex glob pattern to watch recursively:
-            /// 
+            ///
             /// <code lang="ts">
             /// vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(vscode.Uri.file(&lt;path to folder outside workspace&gt;), '**​/*.js'));
             /// </code>
-            /// 
+            ///
             /// Here is an example for watching the active editor for file changes:
-            /// 
+            ///
             /// <code lang="ts">
             /// vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(vscode.window.activeTextEditor.document.uri, '*'));
             /// </code>
@@ -8733,12 +8960,12 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// <summary>
             /// Make changes to one or many resources or create, delete, and rename resources as defined by the given
             /// <see cref="WorkspaceEdit">workspace edit</see>.
-            /// 
+            ///
             /// All changes of a workspace edit are applied in the same order in which they have been added. If
             /// multiple textual inserts are made at the same position, these strings appear in the resulting text
             /// in the order the 'inserts' were made, unless that are interleaved with resource edits. Invalid sequences
             /// like 'delete file a' -&gt; 'insert text in file a' cause failure of the operation.
-            /// 
+            ///
             /// When applying a workspace edit that consists only of text edits an 'all-or-nothing'-strategy is used.
             /// A workspace edit with resource creations or deletions aborts the operation, e.g. consecutive edits will
             /// not be attempted, when a single edit fails.
@@ -8751,7 +8978,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// <summary>
             /// Opens a document. Will return early if this document is already open. Otherwise
             /// the document is loaded and the <see cref="workspace.onDidOpenTextDocument">didOpen</see>-event fires.
-            /// 
+            ///
             /// The document is denoted by an <see cref="Uri" />. Depending on the <see cref="Uri.scheme">scheme</see> the
             /// following rules apply:
             /// * <c>file</c>-scheme: Open a file on disk (<c>openTextDocument(Uri.file(path))</c>). Will be rejected if the file
@@ -8760,7 +8987,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// The language will be derived from the file name.
             /// * For all other schemes contributed <see cref="TextDocumentContentProvider">text document content providers</see> and
             /// <see cref="FileSystemProvider">file system providers</see> are consulted.
-            /// 
+            ///
             /// *Note* that the lifecycle of the returned document is owned by the editor and not by the extension. That means an
             /// {@linkcode workspace.onDidCloseTextDocument onDidClose}-event can occur at any time after opening it.
             /// </summary>
@@ -8782,7 +9009,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract openTextDocument: ?options: {| language: string option; content: string option |} -> Thenable<TextDocument>
             /// <summary>
             /// Register a text document content provider.
-            /// 
+            ///
             /// Only one provider can be registered per scheme.
             /// </summary>
             /// <param name="scheme">The uri-scheme to register for.</param>
@@ -8792,10 +9019,10 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// <summary>
             /// An event that is emitted when a <see cref="TextDocument">text document</see> is opened or when the language id
             /// of a text document <see cref="languages.setTextDocumentLanguage">has been changed</see>.
-            /// 
+            ///
             /// To add an event listener when a visible text document is opened, use the <see cref="TextEditor" /> events in the
             /// <see cref="window" /> namespace. Note that:
-            /// 
+            ///
             /// - The event is emitted before the <see cref="TextDocument">document</see> is updated in the
             /// <see cref="window.activeTextEditor">active text editor</see>
             /// - When a <see cref="TextDocument">text document</see> is already open (e.g.: open in another <see cref="window.visibleTextEditors">visible text editor</see>) this event is not emitted
@@ -8804,10 +9031,10 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// <summary>
             /// An event that is emitted when a <see cref="TextDocument">text document</see> is disposed or when the language id
             /// of a text document <see cref="languages.setTextDocumentLanguage">has been changed</see>.
-            /// 
+            ///
             /// *Note 1:* There is no guarantee that this event fires when an editor tab is closed, use the
             /// {@linkcode window.onDidChangeVisibleTextEditors onDidChangeVisibleTextEditors}-event to know when editors change.
-            /// 
+            ///
             /// *Note 2:* A document can be open but not shown in an editor which means this event can fire
             /// for a document that has not been shown in an editor.
             /// </summary>
@@ -8820,15 +9047,15 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract onDidChangeTextDocument: Event<TextDocumentChangeEvent>
             /// <summary>
             /// An event that is emitted when a <see cref="TextDocument">text document</see> will be saved to disk.
-            /// 
+            ///
             /// *Note 1:* Subscribers can delay saving by registering asynchronous work. For the sake of data integrity the editor
             /// might save without firing this event. For instance when shutting down with dirty files.
-            /// 
+            ///
             /// *Note 2:* Subscribers are called sequentially and they can <see cref="TextDocumentWillSaveEvent.waitUntil">delay</see> saving
             /// by registering asynchronous work. Protection against misbehaving listeners is implemented as such:
             ///   * there is an overall time budget that all listeners share and if that is exhausted no further listener is called
             ///   * listeners that take a long time or produce errors frequently will not be called anymore
-            /// 
+            ///
             /// The current thresholds are 1.5 seconds as overall time budget and a listener can misbehave 3 times before being ignored.
             /// </summary>
             abstract onWillSaveTextDocument: Event<TextDocumentWillSaveEvent>
@@ -8839,10 +9066,10 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// <summary>
             /// Open a notebook. Will return early if this notebook is already <see cref="notebook.notebookDocuments">loaded</see>. Otherwise
             /// the notebook is loaded and the {@linkcode notebook.onDidOpenNotebookDocument onDidOpenNotebookDocument}-event fires.
-            /// 
+            ///
             /// *Note* that the lifecycle of the returned notebook is owned by the editor and not by the extension. That means an
             /// {@linkcode notebook.onDidCloseNotebookDocument onDidCloseNotebookDocument}-event can occur at any time after.
-            /// 
+            ///
             /// *Note* that opening a notebook does not show a notebook editor. This function only returns a notebook document which
             /// can be showns in a notebook editor but it can also be used for other things.
             /// </summary>
@@ -8860,7 +9087,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract openNotebookDocument: notebookType: string * ?content: NotebookData -> Thenable<NotebookDocument>
             /// <summary>
             /// Register a <see cref="NotebookSerializer">notebook serializer</see>.
-            /// 
+            ///
             /// A notebook serializer must be contributed through the <c>notebooks</c> extension point. When opening a notebook file, the editor will send
             /// the <c>onNotebook:&lt;notebookType&gt;</c> activation event, and extensions must register their serializer in return.
             /// </summary>
@@ -8873,72 +9100,72 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract onDidOpenNotebookDocument: Event<NotebookDocument>
             /// <summary>
             /// An event that is emitted when a <see cref="NotebookDocument">notebook</see> is disposed.
-            /// 
+            ///
             /// *Note 1:* There is no guarantee that this event fires when an editor tab is closed.
-            /// 
+            ///
             /// *Note 2:* A notebook can be open but not shown in an editor which means this event can fire
             /// for a notebook that has not been shown in an editor.
             /// </summary>
             abstract onDidCloseNotebookDocument: Event<NotebookDocument>
             /// An event that is emitted when files are being created.
-            /// 
+            ///
             /// *Note 1:* This event is triggered by user gestures, like creating a file from the
             /// explorer, or from the {@linkcode workspace.applyEdit}-api. This event is *not* fired when
             /// files change on disk, e.g triggered by another application, or when using the
             /// {@linkcode FileSystem workspace.fs}-api.
-            /// 
+            ///
             /// *Note 2:* When this event is fired, edits to files that are are being created cannot be applied.
             abstract onWillCreateFiles: Event<FileWillCreateEvent>
             /// An event that is emitted when files have been created.
-            /// 
+            ///
             /// *Note:* This event is triggered by user gestures, like creating a file from the
             /// explorer, or from the {@linkcode workspace.applyEdit}-api, but this event is *not* fired when
             /// files change on disk, e.g triggered by another application, or when using the
             /// {@linkcode FileSystem workspace.fs}-api.
             abstract onDidCreateFiles: Event<FileCreateEvent>
             /// An event that is emitted when files are being deleted.
-            /// 
+            ///
             /// *Note 1:* This event is triggered by user gestures, like deleting a file from the
             /// explorer, or from the {@linkcode workspace.applyEdit}-api, but this event is *not* fired when
             /// files change on disk, e.g triggered by another application, or when using the
             /// {@linkcode FileSystem workspace.fs}-api.
-            /// 
+            ///
             /// *Note 2:* When deleting a folder with children only one event is fired.
             abstract onWillDeleteFiles: Event<FileWillDeleteEvent>
             /// An event that is emitted when files have been deleted.
-            /// 
+            ///
             /// *Note 1:* This event is triggered by user gestures, like deleting a file from the
             /// explorer, or from the {@linkcode workspace.applyEdit}-api, but this event is *not* fired when
             /// files change on disk, e.g triggered by another application, or when using the
             /// {@linkcode FileSystem workspace.fs}-api.
-            /// 
+            ///
             /// *Note 2:* When deleting a folder with children only one event is fired.
             abstract onDidDeleteFiles: Event<FileDeleteEvent>
             /// An event that is emitted when files are being renamed.
-            /// 
+            ///
             /// *Note 1:* This event is triggered by user gestures, like renaming a file from the
             /// explorer, and from the {@linkcode workspace.applyEdit}-api, but this event is *not* fired when
             /// files change on disk, e.g triggered by another application, or when using the
             /// {@linkcode FileSystem workspace.fs}-api.
-            /// 
+            ///
             /// *Note 2:* When renaming a folder with children only one event is fired.
             abstract onWillRenameFiles: Event<FileWillRenameEvent>
             /// An event that is emitted when files have been renamed.
-            /// 
+            ///
             /// *Note 1:* This event is triggered by user gestures, like renaming a file from the
             /// explorer, and from the {@linkcode workspace.applyEdit}-api, but this event is *not* fired when
             /// files change on disk, e.g triggered by another application, or when using the
             /// {@linkcode FileSystem workspace.fs}-api.
-            /// 
+            ///
             /// *Note 2:* When renaming a folder with children only one event is fired.
             abstract onDidRenameFiles: Event<FileRenameEvent>
             /// <summary>
             /// Get a workspace configuration object.
-            /// 
+            ///
             /// When a section-identifier is provided only that part of the configuration
             /// is returned. Dots in the section-identifier are interpreted as child-access,
             /// like <c>{ myExt: { setting: { doIt: true }}}</c> and <c>getConfiguration('myExt.setting').get('doIt') === true</c>.
-            /// 
+            ///
             /// When a scope is provided configuration confined to that scope is returned. Scope can be a resource or a language identifier or both.
             /// </summary>
             /// <param name="section">A dot-separated identifier.</param>
@@ -8955,7 +9182,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract registerTaskProvider: ``type``: string * provider: TaskProvider -> Disposable
             /// <summary>
             /// Register a filesystem provider for a given scheme, e.g. <c>ftp</c>.
-            /// 
+            ///
             /// There can only be one provider per scheme and an error is being thrown when a scheme
             /// has been claimed by another provider or when it is reserved.
             /// </summary>
@@ -8992,16 +9219,16 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// <summary>
     /// Namespace for participating in language-specific editor <see href="https://code.visualstudio.com/docs/editor/editingevolved">features</see>,
     /// like IntelliSense, code actions, diagnostics etc.
-    /// 
+    ///
     /// Many programming languages exist and there is huge variety in syntaxes, semantics, and paradigms. Despite that, features
     /// like automatic word-completion, code navigation, or code checking have become popular across different tools for different
     /// programming languages.
-    /// 
+    ///
     /// The editor provides an API that makes it simple to provide such common features by having all UI and actions already in place and
     /// by allowing you to participate by providing data only. For instance, to contribute a hover all you have to do is provide a function
     /// that can be called with a <see cref="TextDocument" /> and a <see cref="Position" /> returning hover info. The rest, like tracking the
     /// mouse, positioning the hover, keeping the hover stable etc. is taken care of by the editor.
-    /// 
+    ///
     /// <code lang="javascript">
     /// languages.registerHoverProvider('javascript', {
     ///      provideHover(document, position, token) {
@@ -9009,7 +9236,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     ///      }
     /// });
     /// </code>
-    /// 
+    ///
     /// Registration is done using a <see cref="DocumentSelector">document selector</see> which is either a language id, like <c>javascript</c> or
     /// a more complex <see cref="DocumentFilter">filter</see> like <c>{ language: 'typescript', scheme: 'file' }</c>. Matching a document against such
     /// a selector will result in a <see cref="languages.match">score</see> that is used to determine if and how a provider shall be used. When
@@ -9026,7 +9253,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// <summary>
             /// Set (and change) the <see cref="TextDocument.languageId">language</see> that is associated
             /// with the given document.
-            /// 
+            ///
             /// *Note* that calling this function will trigger the {@linkcode workspace.onDidCloseTextDocument onDidCloseTextDocument} event
             /// followed by the {@linkcode workspace.onDidOpenTextDocument onDidOpenTextDocument} event.
             /// </summary>
@@ -9037,34 +9264,42 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// <summary>
             /// Compute the match between a document <see cref="DocumentSelector">selector</see> and a document. Values
             /// greater than zero mean the selector matches the document.
-            /// 
+            ///
             /// A match is computed according to these rules:
             /// 1. When {@linkcode DocumentSelector} is an array, compute the match for each contained <c>DocumentFilter</c> or language identifier and take the maximum value.
             /// 2. A string will be desugared to become the <c>language</c>-part of a {@linkcode DocumentFilter}, so <c>"fooLang"</c> is like <c>{ language: "fooLang" }</c>.
             /// 3. A {@linkcode DocumentFilter} will be matched against the document by comparing its parts with the document. The following rules apply:
-            ///   1. When the <c>DocumentFilter</c> is empty (<c>{}</c>) the result is <c>0</c>
-            ///   2. When <c>scheme</c>, <c>language</c>, or <c>pattern</c> are defined but one doesn't match, the result is <c>0</c>
-            ///   3. Matching against <c>*</c> gives a score of <c>5</c>, matching via equality or via a glob-pattern gives a score of <c>10</c>
-            ///   4. The result is the maximum value of each match
-            /// 
+            ///     1. When the <c>DocumentFilter</c> is empty (<c>{}</c>) the result is <c>0</c>
+            ///     2. When <c>scheme</c>, <c>language</c>, <c>pattern</c>, or <c>notebook</c> are defined but one doesn't match, the result is <c>0</c>
+            ///     3. Matching against <c>*</c> gives a score of <c>5</c>, matching via equality or via a glob-pattern gives a score of <c>10</c>
+            ///     4. The result is the maximum value of each match
+            ///
             /// Samples:
             /// <code lang="js">
             /// // default document from disk (file-scheme)
             /// doc.uri; //'file:///my/file.js'
             /// doc.languageId; // 'javascript'
             /// match('javascript', doc); // 10;
-            /// match({language: 'javascript'}, doc); // 10;
-            /// match({language: 'javascript', scheme: 'file'}, doc); // 10;
+            /// match({ language: 'javascript' }, doc); // 10;
+            /// match({ language: 'javascript', scheme: 'file' }, doc); // 10;
             /// match('*', doc); // 5
             /// match('fooLang', doc); // 0
             /// match(['fooLang', '*'], doc); // 5
-            /// 
+            ///
             /// // virtual document, e.g. from git-index
             /// doc.uri; // 'git:/my/file.js'
             /// doc.languageId; // 'javascript'
             /// match('javascript', doc); // 10;
-            /// match({language: 'javascript', scheme: 'git'}, doc); // 10;
+            /// match({ language: 'javascript', scheme: 'git' }, doc); // 10;
             /// match('*', doc); // 5
+            ///
+            /// // notebook cell document
+            /// doc.uri; // `vscode-notebook-cell:///my/notebook.ipynb#gl65s2pmha`;
+            /// doc.languageId; // 'python'
+            /// match({ notebookType: 'jupyter-notebook' }, doc) // 10
+            /// match({ notebookType: 'fooNotebook', language: 'python' }, doc) // 0
+            /// match({ language: 'python' }, doc) // 10
+            /// match({ notebookType: '*' }, doc) // 5
             /// </code>
             /// </summary>
             /// <param name="selector">A document selector.</param>
@@ -9093,13 +9328,13 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract createLanguageStatusItem: id: string * selector: DocumentSelector -> LanguageStatusItem
             /// <summary>
             /// Register a completion provider.
-            /// 
+            ///
             /// Multiple providers can be registered for a language. In that case providers are sorted
             /// by their <see cref="languages.match">score</see> and groups of equal score are sequentially asked for
             /// completion items. The process stops when one or many providers of a group return a
             /// result. A failing provider (rejected promise or exception) will not fail the whole
             /// operation.
-            /// 
+            ///
             /// A completion item provider can be associated with a set of <c>triggerCharacters</c>. When trigger
             /// characters are being typed, completions are requested but only from providers that registered
             /// the typed character. Because of that trigger characters should be different than <see cref="LanguageConfiguration.wordPattern">word characters</see>,
@@ -9112,7 +9347,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract registerCompletionItemProvider: selector: DocumentSelector * provider: CompletionItemProvider * [<ParamArray>] triggerCharacters: string[] -> Disposable
             /// <summary>
             /// Register a code action provider.
-            /// 
+            ///
             /// Multiple providers can be registered for a language. In that case providers are asked in
             /// parallel and the results are merged. A failing provider (rejected promise or exception) will
             /// not cause a failure of the whole operation.
@@ -9124,7 +9359,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract registerCodeActionsProvider: selector: DocumentSelector * provider: CodeActionProvider * ?metadata: CodeActionProviderMetadata -> Disposable
             /// <summary>
             /// Register a code lens provider.
-            /// 
+            ///
             /// Multiple providers can be registered for a language. In that case providers are asked in
             /// parallel and the results are merged. A failing provider (rejected promise or exception) will
             /// not cause a failure of the whole operation.
@@ -9135,7 +9370,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract registerCodeLensProvider: selector: DocumentSelector * provider: CodeLensProvider -> Disposable
             /// <summary>
             /// Register a definition provider.
-            /// 
+            ///
             /// Multiple providers can be registered for a language. In that case providers are asked in
             /// parallel and the results are merged. A failing provider (rejected promise or exception) will
             /// not cause a failure of the whole operation.
@@ -9146,7 +9381,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract registerDefinitionProvider: selector: DocumentSelector * provider: DefinitionProvider -> Disposable
             /// <summary>
             /// Register an implementation provider.
-            /// 
+            ///
             /// Multiple providers can be registered for a language. In that case providers are asked in
             /// parallel and the results are merged. A failing provider (rejected promise or exception) will
             /// not cause a failure of the whole operation.
@@ -9157,7 +9392,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract registerImplementationProvider: selector: DocumentSelector * provider: ImplementationProvider -> Disposable
             /// <summary>
             /// Register a type definition provider.
-            /// 
+            ///
             /// Multiple providers can be registered for a language. In that case providers are asked in
             /// parallel and the results are merged. A failing provider (rejected promise or exception) will
             /// not cause a failure of the whole operation.
@@ -9168,7 +9403,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract registerTypeDefinitionProvider: selector: DocumentSelector * provider: TypeDefinitionProvider -> Disposable
             /// <summary>
             /// Register a declaration provider.
-            /// 
+            ///
             /// Multiple providers can be registered for a language. In that case providers are asked in
             /// parallel and the results are merged. A failing provider (rejected promise or exception) will
             /// not cause a failure of the whole operation.
@@ -9179,7 +9414,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract registerDeclarationProvider: selector: DocumentSelector * provider: DeclarationProvider -> Disposable
             /// <summary>
             /// Register a hover provider.
-            /// 
+            ///
             /// Multiple providers can be registered for a language. In that case providers are asked in
             /// parallel and the results are merged. A failing provider (rejected promise or exception) will
             /// not cause a failure of the whole operation.
@@ -9191,7 +9426,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// <summary>
             /// Register a provider that locates evaluatable expressions in text documents.
             /// The editor will evaluate the expression in the active debug session and will show the result in the debug hover.
-            /// 
+            ///
             /// If multiple providers are registered for a language an arbitrary provider will be used.
             /// </summary>
             /// <param name="selector">A selector that defines the documents this provider is applicable to.</param>
@@ -9202,7 +9437,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// Register a provider that returns data for the debugger's 'inline value' feature.
             /// Whenever the generic debugger has stopped in a source file, providers registered for the language of the file
             /// are called to return textual data that will be shown in the editor at the end of lines.
-            /// 
+            ///
             /// Multiple providers can be registered for a language. In that case providers are asked in
             /// parallel and the results are merged. A failing provider (rejected promise or exception) will
             /// not cause a failure of the whole operation.
@@ -9213,7 +9448,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract registerInlineValuesProvider: selector: DocumentSelector * provider: InlineValuesProvider -> Disposable
             /// <summary>
             /// Register a document highlight provider.
-            /// 
+            ///
             /// Multiple providers can be registered for a language. In that case providers are sorted
             /// by their <see cref="languages.match">score</see> and groups sequentially asked for document highlights.
             /// The process stops when a provider returns a <c>non-falsy</c> or <c>non-failure</c> result.
@@ -9224,7 +9459,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract registerDocumentHighlightProvider: selector: DocumentSelector * provider: DocumentHighlightProvider -> Disposable
             /// <summary>
             /// Register a document symbol provider.
-            /// 
+            ///
             /// Multiple providers can be registered for a language. In that case providers are asked in
             /// parallel and the results are merged. A failing provider (rejected promise or exception) will
             /// not cause a failure of the whole operation.
@@ -9236,7 +9471,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract registerDocumentSymbolProvider: selector: DocumentSelector * provider: DocumentSymbolProvider * ?metaData: DocumentSymbolProviderMetadata -> Disposable
             /// <summary>
             /// Register a workspace symbol provider.
-            /// 
+            ///
             /// Multiple providers can be registered. In that case providers are asked in parallel and
             /// the results are merged. A failing provider (rejected promise or exception) will not cause
             /// a failure of the whole operation.
@@ -9246,7 +9481,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract registerWorkspaceSymbolProvider: provider: WorkspaceSymbolProvider -> Disposable
             /// <summary>
             /// Register a reference provider.
-            /// 
+            ///
             /// Multiple providers can be registered for a language. In that case providers are asked in
             /// parallel and the results are merged. A failing provider (rejected promise or exception) will
             /// not cause a failure of the whole operation.
@@ -9257,7 +9492,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract registerReferenceProvider: selector: DocumentSelector * provider: ReferenceProvider -> Disposable
             /// <summary>
             /// Register a rename provider.
-            /// 
+            ///
             /// Multiple providers can be registered for a language. In that case providers are sorted
             /// by their <see cref="languages.match">score</see> and asked in sequence. The first provider producing a result
             /// defines the result of the whole operation.
@@ -9268,7 +9503,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract registerRenameProvider: selector: DocumentSelector * provider: RenameProvider -> Disposable
             /// <summary>
             /// Register a semantic tokens provider for a whole document.
-            /// 
+            ///
             /// Multiple providers can be registered for a language. In that case providers are sorted
             /// by their <see cref="languages.match">score</see> and the best-matching provider is used. Failure
             /// of the selected provider will cause a failure of the whole operation.
@@ -9279,13 +9514,13 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract registerDocumentSemanticTokensProvider: selector: DocumentSelector * provider: DocumentSemanticTokensProvider * legend: SemanticTokensLegend -> Disposable
             /// <summary>
             /// Register a semantic tokens provider for a document range.
-            /// 
+            ///
             /// *Note:* If a document has both a <c>DocumentSemanticTokensProvider</c> and a <c>DocumentRangeSemanticTokensProvider</c>,
             /// the range provider will be invoked only initially, for the time in which the full document provider takes
             /// to resolve the first request. Once the full document provider resolves the first request, the semantic tokens
             /// provided via the range provider will be discarded and from that point forward, only the document provider
             /// will be used.
-            /// 
+            ///
             /// Multiple providers can be registered for a language. In that case providers are sorted
             /// by their <see cref="languages.match">score</see> and the best-matching provider is used. Failure
             /// of the selected provider will cause a failure of the whole operation.
@@ -9296,7 +9531,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract registerDocumentRangeSemanticTokensProvider: selector: DocumentSelector * provider: DocumentRangeSemanticTokensProvider * legend: SemanticTokensLegend -> Disposable
             /// <summary>
             /// Register a formatting provider for a document.
-            /// 
+            ///
             /// Multiple providers can be registered for a language. In that case providers are sorted
             /// by their <see cref="languages.match">score</see> and the best-matching provider is used. Failure
             /// of the selected provider will cause a failure of the whole operation.
@@ -9307,11 +9542,11 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract registerDocumentFormattingEditProvider: selector: DocumentSelector * provider: DocumentFormattingEditProvider -> Disposable
             /// <summary>
             /// Register a formatting provider for a document range.
-            /// 
+            ///
             /// *Note:* A document range provider is also a <see cref="DocumentFormattingEditProvider">document formatter</see>
             /// which means there is no need to <see cref="languages.registerDocumentFormattingEditProvider">register</see> a document
             /// formatter when also registering a range provider.
-            /// 
+            ///
             /// Multiple providers can be registered for a language. In that case providers are sorted
             /// by their <see cref="languages.match">score</see> and the best-matching provider is used. Failure
             /// of the selected provider will cause a failure of the whole operation.
@@ -9322,7 +9557,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract registerDocumentRangeFormattingEditProvider: selector: DocumentSelector * provider: DocumentRangeFormattingEditProvider -> Disposable
             /// <summary>
             /// Register a formatting provider that works on type. The provider is active when the user enables the setting <c>editor.formatOnType</c>.
-            /// 
+            ///
             /// Multiple providers can be registered for a language. In that case providers are sorted
             /// by their <see cref="languages.match">score</see> and the best-matching provider is used. Failure
             /// of the selected provider will cause a failure of the whole operation.
@@ -9335,7 +9570,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract registerOnTypeFormattingEditProvider: selector: DocumentSelector * provider: OnTypeFormattingEditProvider * firstTriggerCharacter: string * [<ParamArray>] moreTriggerCharacter: string[] -> Disposable
             /// <summary>
             /// Register a signature help provider.
-            /// 
+            ///
             /// Multiple providers can be registered for a language. In that case providers are sorted
             /// by their <see cref="languages.match">score</see> and called sequentially until a provider returns a
             /// valid result.
@@ -9349,7 +9584,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract registerSignatureHelpProvider: selector: DocumentSelector * provider: SignatureHelpProvider * metadata: SignatureHelpProviderMetadata -> Disposable
             /// <summary>
             /// Register a document link provider.
-            /// 
+            ///
             /// Multiple providers can be registered for a language. In that case providers are asked in
             /// parallel and the results are merged. A failing provider (rejected promise or exception) will
             /// not cause a failure of the whole operation.
@@ -9360,7 +9595,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract registerDocumentLinkProvider: selector: DocumentSelector * provider: DocumentLinkProvider -> Disposable
             /// <summary>
             /// Register a color provider.
-            /// 
+            ///
             /// Multiple providers can be registered for a language. In that case providers are asked in
             /// parallel and the results are merged. A failing provider (rejected promise or exception) will
             /// not cause a failure of the whole operation.
@@ -9371,7 +9606,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract registerColorProvider: selector: DocumentSelector * provider: DocumentColorProvider -> Disposable
             /// <summary>
             /// Register a inlay hints provider.
-            /// 
+            ///
             /// Multiple providers can be registered for a language. In that case providers are asked in
             /// parallel and the results are merged. A failing provider (rejected promise or exception) will
             /// not cause a failure of the whole operation.
@@ -9382,12 +9617,12 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract registerInlayHintsProvider: selector: DocumentSelector * provider: InlayHintsProvider -> Disposable
             /// <summary>
             /// Register a folding range provider.
-            /// 
+            ///
             /// Multiple providers can be registered for a language. In that case providers are asked in
             /// parallel and the results are merged.
             /// If multiple folding ranges start at the same position, only the range of the first registered provider is used.
             /// If a folding range overlaps with an other range that has a smaller position, it is also ignored.
-            /// 
+            ///
             /// A failing provider (rejected promise or exception) will
             /// not cause a failure of the whole operation.
             /// </summary>
@@ -9397,7 +9632,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract registerFoldingRangeProvider: selector: DocumentSelector * provider: FoldingRangeProvider -> Disposable
             /// <summary>
             /// Register a selection range provider.
-            /// 
+            ///
             /// Multiple providers can be registered for a language. In that case providers are asked in
             /// parallel and the results are merged. A failing provider (rejected promise or exception) will
             /// not cause a failure of the whole operation.
@@ -9418,7 +9653,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract registerTypeHierarchyProvider: selector: DocumentSelector * provider: TypeHierarchyProvider -> Disposable
             /// <summary>
             /// Register a linked editing range provider.
-            /// 
+            ///
             /// Multiple providers can be registered for a language. In that case providers are sorted
             /// by their <see cref="languages.match">score</see> and the best-matching provider that has a result is used. Failure
             /// of the selected provider will cause a failure of the whole operation.
@@ -9446,7 +9681,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// <summary>
     /// Represents a cell of a <see cref="NotebookDocument">notebook</see>, either a <see cref="NotebookCellKind.Code">code</see>-cell
     /// or <see cref="NotebookCellKind.Markup">markup</see>-cell.
-    /// 
+    ///
     /// NotebookCell instances are immutable and are kept in sync for as long as they are part of their notebook.
     /// </summary>
     type [<AllowNullLiteral>] NotebookCell =
@@ -9500,7 +9735,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     type [<AllowNullLiteral>] NotebookDocument =
         /// <summary>
         /// The associated uri for this notebook.
-        /// 
+        ///
         /// *Note* that most notebooks use the <c>file</c>-scheme, which means they are files on disk. However, **not** all notebooks are
         /// saved on disk and therefore the <c>scheme</c> must be checked before trying to access the underlying file or siblings on disk.
         /// </summary>
@@ -9583,7 +9818,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     type [<AllowNullLiteral>] NotebookCellOutputItem =
         /// The mime type which determines how the {@linkcode NotebookCellOutputItem.data data}-property
         /// is interpreted.
-        /// 
+        ///
         /// Notebooks have built-in support for certain mime-types, extensions can add support for new
         /// types and override existing types.
         abstract mime: string with get, set
@@ -9594,7 +9829,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     type [<AllowNullLiteral>] NotebookCellOutputItemStatic =
         /// <summary>
         /// Factory function to create a <c>NotebookCellOutputItem</c> from a string.
-        /// 
+        ///
         /// *Note* that an UTF-8 encoder is used to create bytes for the string.
         /// </summary>
         /// <param name="value">A string.</param>
@@ -9604,7 +9839,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// <summary>
         /// Factory function to create a <c>NotebookCellOutputItem</c> from
         /// a JSON object.
-        /// 
+        ///
         /// *Note* that this function is not expecting "stringified JSON" but
         /// an object that can be stringified. This function will throw an error
         /// when the passed value cannot be JSON-stringified.
@@ -9647,7 +9882,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     type [<AllowNullLiteral>] NotebookCellOutput =
         /// The output items of this output. Each item must represent the same result. _Note_ that repeated
         /// MIME types per output is invalid and that the editor will just pick one of them.
-        /// 
+        ///
         /// <code lang="ts">
         /// new vscode.NotebookCellOutput([
         ///      vscode.NotebookCellOutputItem.text('Hello', 'text/plain'),
@@ -9672,20 +9907,20 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         [<EmitConstructor>] abstract Create: items: ResizeArray<NotebookCellOutputItem> * ?metadata: NotebookCellOutputStaticMetadata -> NotebookCellOutput
 
     /// <summary>
-    /// Typescript interface contains an <see href="https://www.typescriptlang.org/docs/handbook/2/objects.html#index-signatures">index signature</see> (like <c>{ [key:string]: string }</c>).  
-    /// Unlike an indexer in F#, index signatures index over a type's members. 
-    /// 
+    /// Typescript interface contains an <see href="https://www.typescriptlang.org/docs/handbook/2/objects.html#index-signatures">index signature</see> (like <c>{ [key:string]: string }</c>).
+    /// Unlike an indexer in F#, index signatures index over a type's members.
+    ///
     /// As such an index signature cannot be implemented via regular F# Indexer (<c>Item</c> property),
     /// but instead by just specifying fields.
-    /// 
-    /// Easiest way to declare such a type is with an Anonymous Record and force it into the function.  
-    /// For example:  
+    ///
+    /// Easiest way to declare such a type is with an Anonymous Record and force it into the function.
+    /// For example:
     /// <code lang="fsharp">
     /// type I =
     ///     [&lt;EmitIndexer&gt;]
     ///     abstract Item: string -&gt; string
     /// let f (i: I) = jsNative
-    /// 
+    ///
     /// let t = {| Value1 = "foo"; Value2 = "bar" |}
     /// f (!! t)
     /// </code>
@@ -9722,7 +9957,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
 
     /// <summary>
     /// Raw representation of a notebook.
-    /// 
+    ///
     /// Extensions are responsible for creating {@linkcode NotebookData} so that the editor
     /// can create a {@linkcode NotebookDocument}.
     /// </summary>
@@ -9735,7 +9970,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
 
     /// <summary>
     /// Raw representation of a notebook.
-    /// 
+    ///
     /// Extensions are responsible for creating {@linkcode NotebookData} so that the editor
     /// can create a {@linkcode NotebookDocument}.
     /// </summary>
@@ -9747,7 +9982,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
 
     /// <summary>
     /// The notebook serializer enables the editor to open notebook files.
-    /// 
+    ///
     /// At its core the editor only knows a <see cref="NotebookData">notebook data structure</see> but not
     /// how that data structure is written to a file, nor how it is read from a file. The
     /// notebook serializer bridges this gap by deserializing bytes into notebook data and
@@ -9767,7 +10002,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
 
     /// <summary>
     /// Notebook content options define what parts of a notebook are persisted. Note
-    /// 
+    ///
     /// For instance, a notebook serializer can opt-out of saving outputs and in that case the editor doesn't mark a
     /// notebooks as <see cref="NotebookDocument.isDirty">dirty</see> when its output has changed.
     /// </summary>
@@ -9797,20 +10032,20 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
 
     /// <summary>
     /// A notebook controller represents an entity that can execute notebook cells. This is often referred to as a kernel.
-    /// 
+    ///
     /// There can be multiple controllers and the editor will let users choose which controller to use for a certain notebook. The
     /// {@linkcode NotebookController.notebookType notebookType}-property defines for what kind of notebooks a controller is for and
     /// the {@linkcode NotebookController.updateNotebookAffinity updateNotebookAffinity}-function allows controllers to set a preference
     /// for specific notebook documents. When a controller has been selected its
     /// <see cref="NotebookController.onDidChangeSelectedNotebooks">onDidChangeSelectedNotebooks</see>-event fires.
-    /// 
+    ///
     /// When a cell is being run the editor will invoke the {@linkcode NotebookController.executeHandler executeHandler} and a controller
     /// is expected to create and finalize a <see cref="NotebookCellExecution">notebook cell execution</see>. However, controllers are also free
     /// to create executions by themselves.
     /// </summary>
     type [<AllowNullLiteral>] NotebookController =
         /// The identifier of this notebook controller.
-        /// 
+        ///
         /// _Note_ that controllers are remembered by their identifier and that extensions should use
         /// stable identifiers across sessions.
         abstract id: string
@@ -9819,12 +10054,12 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// An array of language identifiers that are supported by this
         /// controller. Any language identifier from {@linkcode languages.getLanguages getLanguages}
         /// is possible. When falsy all languages are supported.
-        /// 
+        ///
         /// Samples:
         /// <code lang="js">
         /// // support JavaScript and TypeScript
         /// myController.supportedLanguages = ['javascript', 'typescript']
-        /// 
+        ///
         /// // support all languages
         /// myController.supportedLanguages = undefined; // falsy
         /// myController.supportedLanguages = []; // falsy
@@ -9841,10 +10076,10 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract supportsExecutionOrder: bool option with get, set
         /// <summary>
         /// Create a cell execution task.
-        /// 
+        ///
         /// _Note_ that there can only be one execution per cell at a time and that an error is thrown if
         /// a cell execution is created while another is still active.
-        /// 
+        ///
         /// This should be used in response to the <see cref="NotebookController.executeHandler">execution handler</see>
         /// being called or when cell execution has been started else, e.g when a cell was already
         /// executing or when cell execution was triggered from another source.
@@ -9859,24 +10094,24 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract executeHandler: (ResizeArray<NotebookCell> -> NotebookDocument -> NotebookController -> U2<unit, Thenable<unit>>) with get, set
         /// <summary>
         /// Optional interrupt handler.
-        /// 
+        ///
         /// By default cell execution is canceled via <see cref="NotebookCellExecution.token">tokens</see>. Cancellation
         /// tokens require that a controller can keep track of its execution so that it can cancel a specific execution at a later
         /// point. Not all scenarios allow for that, eg. REPL-style controllers often work by interrupting whatever is currently
         /// running. For those cases the interrupt handler exists - it can be thought of as the equivalent of <c>SIGINT</c>
         /// or <c>Control+C</c> in terminals.
-        /// 
+        ///
         /// _Note_ that supporting <see cref="NotebookCellExecution.token">cancellation tokens</see> is preferred and that interrupt handlers should
         /// only be used when tokens cannot be supported.
         /// </summary>
         abstract interruptHandler: (NotebookDocument -> U2<unit, Thenable<unit>>) option with get, set
         /// <summary>
         /// An event that fires whenever a controller has been selected or un-selected for a notebook document.
-        /// 
+        ///
         /// There can be multiple controllers for a notebook and in that case a controllers needs to be _selected_. This is a user gesture
         /// and happens either explicitly or implicitly when interacting with a notebook for which a controller was _suggested_. When possible,
         /// the editor _suggests_ a controller that is most likely to be _selected_.
-        /// 
+        ///
         /// _Note_ that controller selection is persisted (by the controllers <see cref="NotebookController.id">id</see>) and restored as soon as a
         /// controller is re-created or as a notebook is <see cref="workspace.onDidOpenNotebookDocument">opened</see>.
         /// </summary>
@@ -9894,7 +10129,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// <summary>
     /// A NotebookCellExecution is how <see cref="NotebookController">notebook controller</see> modify a notebook cell as
     /// it is executing.
-    /// 
+    ///
     /// When a cell execution object is created, the cell enters the {@linkcode NotebookCellExecutionState.Pending Pending} state.
     /// When {@linkcode NotebookCellExecution.start start(...)} is called on the execution task, it enters the {@linkcode NotebookCellExecutionState.Executing Executing} state. When
     /// {@linkcode NotebookCellExecution.end end(...)} is called, it enters the {@linkcode NotebookCellExecutionState.Idle Idle} state.
@@ -9905,7 +10140,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// <summary>
         /// A cancellation token which will be triggered when the cell execution is canceled
         /// from the UI.
-        /// 
+        ///
         /// _Note_ that the cancellation token will not be triggered when the <see cref="NotebookController">controller</see>
         /// that created this execution uses an <see cref="NotebookController.interruptHandler">interrupt-handler</see>.
         /// </summary>
@@ -9975,9 +10210,9 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract alignment: NotebookCellStatusBarAlignment with get, set
         /// <summary>
         /// An optional {@linkcode Command} or identifier of a command to run on click.
-        /// 
+        ///
         /// The command must be <see cref="commands.getCommands">known</see>.
-        /// 
+        ///
         /// Note that if this is a {@linkcode Command} object, only the {@linkcode Command.command command} and {@linkcode Command.arguments arguments}
         /// are used by the editor.
         /// </summary>
@@ -10008,9 +10243,9 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
 
     /// <summary>
     /// Namespace for notebooks.
-    /// 
+    ///
     /// The notebooks functionality is composed of three loosely coupled components:
-    /// 
+    ///
     /// 1. <see cref="NotebookSerializer" /> enable the editor to open, show, and save notebooks
     /// 2. <see cref="NotebookController" /> own the execution of notebooks, e.g they create output from code cells.
     /// 3. NotebookRenderer present notebook output in the editor. They run in a separate context.
@@ -10031,7 +10266,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract registerNotebookCellStatusBarItemProvider: notebookType: string * provider: NotebookCellStatusBarItemProvider -> Disposable
             /// <summary>
             /// Creates a new messaging instance used to communicate with a specific renderer.
-            /// 
+            ///
             /// * *Note 1:* Extensions can only create renderer that they have defined in their <c>package.json</c>-file
             /// * *Note 2:* A renderer only has access to messaging if <c>requiresMessaging</c> is set to <c>always</c> or <c>optional</c> in
             /// its <c>notebookRenderer</c> contribution.
@@ -10168,7 +10403,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// <summary>
         /// The UI-visible count of <see cref="SourceControlResourceState">resource states</see> of
         /// this source control.
-        /// 
+        ///
         /// If undefined, this source control will
         /// - display its UI-visible count as zero, and
         /// - contribute the count of its <see cref="SourceControlResourceState">resource states</see> to the UI-visible aggregated count for all source controls
@@ -10177,17 +10412,17 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// <summary>An optional <see cref="QuickDiffProvider">quick diff provider</see>.</summary>
         abstract quickDiffProvider: QuickDiffProvider option with get, set
         /// Optional commit template string.
-        /// 
+        ///
         /// The Source Control viewlet will populate the Source Control
         /// input with this value when appropriate.
         abstract commitTemplate: string option with get, set
         /// Optional accept input command.
-        /// 
+        ///
         /// This command will be invoked when the user accepts the value
         /// in the Source Control input.
         abstract acceptInputCommand: Command option with get, set
         /// Optional status bar commands.
-        /// 
+        ///
         /// These commands will be displayed in the editor's status bar.
         abstract statusBarCommands: ResizeArray<Command> option with get, set
         /// <summary>Create a new <see cref="SourceControlResourceGroup">resource group</see>.</summary>
@@ -10578,7 +10813,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// Registering a single provider with resolve methods for different trigger kinds, results in the same resolve methods called multiple times.
             /// More than one provider can be registered for the same type.
             /// </summary>
-            /// <param name="type">The debug type for which the provider is registered.</param>
+            /// <param name="debugType">The debug type for which the provider is registered.</param>
             /// <param name="provider">The <see cref="DebugConfigurationProvider">debug configuration provider</see> to register.</param>
             /// <param name="triggerKind">The <see cref="DebugConfigurationProviderTrigger">trigger</see> for which the 'provideDebugConfiguration' method of the provider is registered. If <c>triggerKind</c> is missing, the value <c>DebugConfigurationProviderTriggerKind.Initial</c> is assumed.</param>
             /// <returns>A <see cref="Disposable" /> that unregisters this provider when being disposed.</returns>
@@ -10622,7 +10857,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// Converts a "Source" descriptor object received via the Debug Adapter Protocol into a Uri that can be used to load its contents.
             /// If the source descriptor is based on a path, a file Uri is returned.
             /// If the source descriptor uses a reference number, a specific debug Uri (scheme 'debug') is constructed that requires a corresponding ContentProvider and a running debug session
-            /// 
+            ///
             /// If the "Source" descriptor has insufficient information for creating the Uri, an error is thrown.
             /// </summary>
             /// <param name="source">An object conforming to the <see href="https://microsoft.github.io/debug-adapter-protocol/specification#Types_Source">Source</see> type defined in the Debug Adapter Protocol.</param>
@@ -10633,10 +10868,10 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// <summary>
     /// Namespace for dealing with installed extensions. Extensions are represented
     /// by an <see cref="Extension" />-interface which enables reflection on them.
-    /// 
+    ///
     /// Extension writers can provide APIs to other extensions by returning their API public
     /// surface from the <c>activate</c>-call.
-    /// 
+    ///
     /// <code lang="javascript">
     /// export function activate(context: vscode.ExtensionContext) {
     ///      let api = {
@@ -10654,11 +10889,11 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// When depending on the API of another extension add an <c>extensionDependencies</c>-entry
     /// to <c>package.json</c>, and use the <see cref="extensions.getExtension">getExtension</see>-function
     /// and the <see cref="Extension.exports">exports</see>-property, like below:
-    /// 
+    ///
     /// <code lang="javascript">
     /// let mathExt = extensions.getExtension('genius.math');
     /// let importedApi = mathExt.exports;
-    /// 
+    ///
     /// console.log(importedApi.mul(42, 1));
     /// </code>
     /// </summary>
@@ -10728,7 +10963,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// <summary>The optional human-readable label describing the <see cref="CommentThread">Comment Thread</see></summary>
         abstract label: string option with get, set
         /// Dispose this comment thread.
-        /// 
+        ///
         /// Once disposed, this comment thread will be removed from visible editors and Comment Panel when appropriate.
         abstract dispose: unit -> unit
 
@@ -10820,7 +11055,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract options: CommentOptions option with get, set
         /// <summary>
         /// Optional commenting range provider. Provide a list <see cref="Range">ranges</see> which support commenting to any given resource uri.
-        /// 
+        ///
         /// If not provided, users can leave comments in any document opened in the editor.
         /// </summary>
         abstract commentingRangeProvider: CommentingRangeProvider option with get, set
@@ -10836,7 +11071,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract reactionHandler: (Comment -> CommentReaction -> Thenable<unit>) option with get, set
         /// <summary>
         /// Dispose this comment controller.
-        /// 
+        ///
         /// Once disposed, all <see cref="CommentThread">comment threads</see> created by this comment controller will also be removed from the editor
         /// and Comments Panel.
         /// </summary>
@@ -10876,44 +11111,44 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     type [<AllowNullLiteral>] AuthenticationGetSessionOptions =
         /// <summary>
         /// Whether the existing user session preference should be cleared.
-        /// 
+        ///
         /// For authentication providers that support being signed into multiple accounts at once, the user will be
         /// prompted to select an account to use when <see cref="authentication.getSession">getSession</see> is called. This preference
         /// is remembered until <see cref="authentication.getSession">getSession</see> is called with this flag.
-        /// 
+        ///
         /// Defaults to false.
         /// </summary>
         abstract clearSessionPreference: bool option with get, set
         /// <summary>
         /// Whether login should be performed if there is no matching session.
-        /// 
+        ///
         /// If true, a modal dialog will be shown asking the user to sign in. If false, a numbered badge will be shown
         /// on the accounts activity bar icon. An entry for the extension will be added under the menu to sign in. This
         /// allows quietly prompting the user to sign in.
-        /// 
+        ///
         /// If there is a matching session but the extension has not been granted access to it, setting this to true
         /// will also result in an immediate modal dialog, and false will add a numbered badge to the accounts icon.
-        /// 
+        ///
         /// Defaults to false.
-        /// 
+        ///
         /// Note: you cannot use this option with <see cref="AuthenticationGetSessionOptions.silent">silent</see>.
         /// </summary>
         abstract createIfNone: bool option with get, set
         /// Whether we should attempt to reauthenticate even if there is already a session available.
-        /// 
+        ///
         /// If true, a modal dialog will be shown asking the user to sign in again. This is mostly used for scenarios
         /// where the token needs to be re minted because it has lost some authorization.
-        /// 
+        ///
         /// Defaults to false.
         abstract forceNewSession: U2<bool, {| detail: string |}> option with get, set
         /// <summary>
         /// Whether we should show the indication to sign in in the Accounts menu.
-        /// 
+        ///
         /// If false, the user will be shown a badge on the Accounts menu with an option to sign in for the extension.
         /// If true, no indication will be shown.
-        /// 
+        ///
         /// Defaults to false.
-        /// 
+        ///
         /// Note: you cannot use this option with any other options that prompt the user like <see cref="AuthenticationGetSessionOptions.createIfNone">createIfNone</see>.
         /// </summary>
         abstract silent: bool option with get, set
@@ -10965,11 +11200,11 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract getSessions: ?scopes: ResizeArray<string> -> Thenable<ResizeArray<AuthenticationSession>>
         /// <summary>
         /// Prompts a user to login.
-        /// 
+        ///
         /// If login is successful, the onDidChangeSessions event should be fired.
-        /// 
+        ///
         /// If login fails, a rejected promise should be returned.
-        /// 
+        ///
         /// If the provider has specified that it does not support multiple accounts,
         /// then this should never be called if there is already an existing session matching these
         /// scopes.
@@ -10979,9 +11214,9 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract createSession: scopes: ResizeArray<string> -> Thenable<AuthenticationSession>
         /// <summary>
         /// Removes the session corresponding to session id.
-        /// 
+        ///
         /// If the removal is successful, the onDidChangeSessions event should be fired.
-        /// 
+        ///
         /// If a session cannot be removed, the provider should reject with an error message.
         /// </summary>
         /// <param name="sessionId">The id of the session to remove.</param>
@@ -10996,7 +11231,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// registered, or if the user does not consent to sharing authentication information with
             /// the extension. If there are multiple sessions with the same scopes, the user will be shown a
             /// quickpick to select which account they would like to use.
-            /// 
+            ///
             /// Currently, there are only two authentication providers that are contributed from built in extensions
             /// to the editor that implement GitHub and Microsoft authentication: their providerId's are 'github' and 'microsoft'.
             /// </summary>
@@ -11010,7 +11245,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             /// registered, or if the user does not consent to sharing authentication information with
             /// the extension. If there are multiple sessions with the same scopes, the user will be shown a
             /// quickpick to select which account they would like to use.
-            /// 
+            ///
             /// Currently, there are only two authentication providers that are contributed from built in extensions
             /// to the editor that implement GitHub and Microsoft authentication: their providerId's are 'github' and 'microsoft'.
             /// </summary>
@@ -11026,7 +11261,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
             abstract onDidChangeSessions: Event<AuthenticationSessionsChangeEvent>
             /// <summary>
             /// Register an authentication provider.
-            /// 
+            ///
             /// There can only be one provider per id and an error is being thrown when an id
             /// has already been used by another provider. Ids are case-sensitive.
             /// </summary>
@@ -11083,7 +11318,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     type [<AllowNullLiteral>] TestRunProfile =
         /// <summary>
         /// Label shown to the user in the UI.
-        /// 
+        ///
         /// Note that the label has some significance if the user requests that
         /// tests be re-run in a certain way. For example, if tests were run
         /// normally and the user requests to re-run them in debug mode, the editor
@@ -11147,11 +11382,11 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// A collection of "top-level" <see cref="TestItem" /> instances, which can in
         /// turn have their own <see cref="TestItem.children">children</see> to form the
         /// "test tree."
-        /// 
+        ///
         /// The extension controls when to add tests. For example, extensions should
         /// add tests for a file when <see cref="vscode.workspace.onDidOpenTextDocument" />
         /// fires in order for decorations for tests within a file to be visible.
-        /// 
+        ///
         /// However, the editor may sometimes explicitly request children using the
         /// <see cref="resolveHandler" /> See the documentation on that method for more details.
         /// </summary>
@@ -11175,13 +11410,13 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// children of a test item, if the <see cref="TestItem.canResolveChildren" /> is
         /// <c>true</c>. When called, the item should discover children and call
         /// <see cref="vscode.tests.createTestItem" /> as children are discovered.
-        /// 
+        ///
         /// Generally the extension manages the lifecycle of test items, but under
         /// certain conditions the editor may request the children of a specific
         /// item to be loaded. For example, if the user requests to re-run tests
         /// after reloading the editor, the editor may need to call this method
         /// to resolve the previously-run tests.
-        /// 
+        ///
         /// The item in the explorer will automatically be marked as "busy" until
         /// the function returns or the returned thenable resolves.
         /// </summary>
@@ -11195,7 +11430,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// UI, and this method will be invoked when it's clicked. When called,
         /// the extension should scan the workspace for any new, changed, or
         /// removed tests.
-        /// 
+        ///
         /// It's recommended that extensions try to update tests in realtime, using
         /// a <see cref="FileSystemWatcher" /> for example, and use this method as a fallback.
         /// </summary>
@@ -11206,7 +11441,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// <see cref="TestRunProfile" /> when a request is made to execute tests, and may
         /// also be called if a test run is detected externally. Once created, tests
         /// that are included in the request will be moved into the queued state.
-        /// 
+        ///
         /// All runs created using the same <c>request</c> instance will be grouped
         /// together. This is useful if, for example, a single suite of tests is
         /// run on multiple platforms.
@@ -11251,7 +11486,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// created by passing a request to <see cref="tests.runTests" />. The TestRunRequest
     /// contains information about which tests should be run, which should not be
     /// run, and how they are run (via the <see cref="TestRunRequest.profile">profile</see>).
-    /// 
+    ///
     /// In general, TestRunRequests are created by the editor and pass to
     /// <see cref="TestRunProfile.runHandler" />, however you can also create test
     /// requests and runs outside of the <c>runHandler</c>.
@@ -11262,14 +11497,14 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// all of the included tests and all their children, excluding any tests
         /// that appear in <see cref="TestRunRequest.exclude" />. If this property is
         /// undefined, then the extension should simply run all tests.
-        /// 
+        ///
         /// The process of running tests should resolve the children of any test
         /// items who have not yet been resolved.
         /// </summary>
         abstract ``include``: ResizeArray<TestItem> option
         /// An array of tests the user has marked as excluded from the test included
         /// in this run; exclusions should apply after inclusions.
-        /// 
+        ///
         /// May be omitted if no exclusions were requested. Test controllers should
         /// not run excluded tests or any children of excluded tests.
         abstract exclude: ResizeArray<TestItem> option
@@ -11283,13 +11518,13 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
     /// created by passing a request to <see cref="tests.runTests" />. The TestRunRequest
     /// contains information about which tests should be run, which should not be
     /// run, and how they are run (via the <see cref="TestRunRequest.profile">profile</see>).
-    /// 
+    ///
     /// In general, TestRunRequests are created by the editor and pass to
     /// <see cref="TestRunProfile.runHandler" />, however you can also create test
     /// requests and runs outside of the <c>runHandler</c>.
     /// </summary>
     type [<AllowNullLiteral>] TestRunRequestStatic =
-        /// <param name="tests">Array of specific tests to run, or undefined to run all tests</param>
+        /// <param name="include">Array of specific tests to run, or undefined to run all tests</param>
         /// <param name="exclude">An array of tests to exclude from the run.</param>
         /// <param name="profile">The run profile used for this request.</param>
         [<EmitConstructor>] abstract Create: ?``include``: ResizeArray<TestItem> * ?exclude: ResizeArray<TestItem> * ?profile: TestRunProfile -> TestRunRequest
@@ -11319,7 +11554,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// <see cref="TestMessage">TestMessages</see> to describe the failure.
         /// </summary>
         /// <param name="test">Test item to update.</param>
-        /// <param name="messages">Messages associated with the test failure.</param>
+        /// <param name="message">Messages associated with the test failure.</param>
         /// <param name="duration">How long the test took to execute, in milliseconds.</param>
         abstract failed: test: TestItem * message: U2<TestMessage, ResizeArray<TestMessage>> * ?duration: float -> unit
         /// <summary>
@@ -11329,7 +11564,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// executed at all, from a compilation error for example.
         /// </summary>
         /// <param name="test">Test item to update.</param>
-        /// <param name="messages">Messages associated with the test failure.</param>
+        /// <param name="message">Messages associated with the test failure.</param>
         /// <param name="duration">How long the test took to execute, in milliseconds.</param>
         abstract errored: test: TestItem * message: U2<TestMessage, ResizeArray<TestMessage>> * ?duration: float -> unit
         /// <summary>Indicates a test has passed.</summary>
@@ -11370,7 +11605,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         /// Adds the test item to the children. If an item with the same ID already
         /// exists, it'll be replaced.
         /// </summary>
-        /// <param name="items">Item to add.</param>
+        /// <param name="item">Item to add.</param>
         abstract add: item: TestItem -> unit
         /// <summary>Removes a single test item from the collection.</summary>
         /// <param name="itemId">Item ID to delete.</param>
@@ -11382,7 +11617,7 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
 
     /// <summary>
     /// An item shown in the "test explorer" view.
-    /// 
+    ///
     /// A <c>TestItem</c> can represent either a test suite or a test itself, since
     /// they both have similar capabilities.
     /// </summary>
@@ -11412,18 +11647,18 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract tags: ResizeArray<TestTag> with get, set
         /// <summary>
         /// Indicates whether this test item may have children discovered by resolving.
-        /// 
+        ///
         /// If true, this item is shown as expandable in the Test Explorer view and
         /// expanding the item will cause <see cref="TestController.resolveHandler" />
         /// to be invoked with the item.
-        /// 
+        ///
         /// Default to <c>false</c>.
         /// </summary>
         abstract canResolveChildren: bool with get, set
         /// <summary>
         /// Controls whether the item is shown as "busy" in the Test Explorer view.
         /// This is useful for showing status while discovering children.
-        /// 
+        ///
         /// Defaults to <c>false</c>.
         /// </summary>
         abstract busy: bool with get, set
@@ -11439,12 +11674,12 @@ line completions were {@link CompletionItemProvider.provideCompletionItems reque
         abstract sortText: string option with get, set
         /// <summary>
         /// Location of the test item in its <see cref="TestItem.uri">uri</see>.
-        /// 
+        ///
         /// This is only meaningful if the <c>uri</c> points to a file.
         /// </summary>
         abstract range: Range option with get, set
         /// Optional error encountered while loading the test.
-        /// 
+        ///
         /// Note that this is not a test result and should only be used to represent errors in
         /// test discovery, such as syntax errors.
         abstract error: U2<string, MarkdownString> option with get, set

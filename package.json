@@ -43,7 +43,7 @@
     "@vscode/debugadapter": "^1.54.0",
     "@vscode/debugprotocol": "^1.54.0",
     "babel-loader": "^8.2.3",
-    "ts2fable": "0.8.0-build.638",
+    "ts2fable": "^0.8.0-build.644",
     "vscode-dts": "^0.3.3",
     "vscode-languageclient": "^7.0.0",
     "webpack": "^5.70.0",
