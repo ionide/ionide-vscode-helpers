@@ -47,6 +47,10 @@ module Process =
     let isWin () = platform = "win32"
     let isMono () = platform <> "win32"
 
+    let onClose (f : int option -> string option -> unit) (proc : ChildProcess) =
+        proc.on("close", f) |> ignore
+        proc
+
     let onExit (f : int option -> string option -> unit) (proc : ChildProcess) =
         proc.on("exit", f) |> ignore
         proc
@@ -154,7 +158,7 @@ module Process =
             |> onOutput (fun e -> stdout.Add(string e))
             |> onError (fun e -> error <- Some e)
             |> onErrorOutput (fun e -> stderr.Add(string e))
-            |> onExit (fun code signal ->
+            |> onClose (fun code signal ->
                 resolve (unbox error, String.concat "\n" stdout, String.concat "\n" stderr)
             )
             |> ignore
