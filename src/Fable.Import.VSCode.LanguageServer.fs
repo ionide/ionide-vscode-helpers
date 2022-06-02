@@ -34,7 +34,6 @@ module rec LanguageServer =
         type InitializeResult = obj
         type InitializeError = obj
         type ServerCapabilities = obj
-        type DocumentSelector = U2<string, DocumentFilter>[]
         type ColorProviderMiddleware = obj
         type ImplementationMiddleware = obj
         type TypeDefinitionMiddleware = obj
@@ -89,7 +88,7 @@ module rec LanguageServer =
             interface end
 
         type [<AllowNullLiteral>] LanguageClientOptions =
-            abstract documentSelector: U2<DocumentSelector, ResizeArray<string>> option with get, set
+            abstract documentSelector: DocumentSelector option with get, set
             abstract synchronize: SynchronizeOptions option with get, set
             abstract diagnosticCollectionName: string option with get, set
             abstract outputChannel: OutputChannel option with get, set

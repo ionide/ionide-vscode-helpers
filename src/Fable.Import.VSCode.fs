@@ -1985,9 +1985,18 @@ This method shows unexpected behavior and will be removed in the next major upda
     /// &lt;caption&gt;A language filter that applies to all package.json paths&lt;/caption&gt;
     /// { language: 'json', pattern: '**​/package.json' }
     /// </example>
-    type [<AllowNullLiteral>] DocumentFilter =
+    type [<AllowNullLiteral>] TextDocumentFilter =
         /// <summary>A language id, like <c>typescript</c>.</summary>
-        abstract language: string option
+        abstract language: string option with get, set
+        /// <summary>A Uri <see cref="Uri.scheme">scheme</see>, like <c>file</c> or <c>untitled</c>.</summary>
+        abstract scheme: string option with get, set
+        /// <summary>
+        /// A <see cref="GlobPattern">glob pattern</see> that is matched on the absolute path of the document. Use a <see cref="RelativePattern">relative pattern</see>
+        /// to filter documents to a <see cref="WorkspaceFolder">workspace folder</see>.
+        /// </summary>
+        abstract pattern: GlobPattern option with get, set
+
+    type NotebookDocumentFilter =
         /// <summary>
         /// The <see cref="NotebookDocument.notebookType">type</see> of a notebook, like <c>jupyter-notebook</c>. This allows
         /// to narrow down on the type of a notebook that a <see cref="NotebookCell.document">cell document</see> belongs to.
@@ -1999,14 +2008,29 @@ This method shows unexpected behavior and will be removed in the next major upda
         /// &lt;caption&gt;Match python document inside jupyter notebook that aren't stored yet (<c>untitled</c>)&lt;/caption&gt;
         /// { language: 'python', notebookType: 'jupyter-notebook', scheme: 'untitled' }
         /// </example>
-        abstract notebookType: string option
-        /// <summary>A Uri <see cref="Uri.scheme">scheme</see>, like <c>file</c> or <c>untitled</c>.</summary>
-        abstract scheme: string option
-        /// <summary>
-        /// A <see cref="GlobPattern">glob pattern</see> that is matched on the absolute path of the document. Use a <see cref="RelativePattern">relative pattern</see>
-        /// to filter documents to a <see cref="WorkspaceFolder">workspace folder</see>.
-        /// </summary>
-        abstract pattern: GlobPattern option
+        abstract notebookType: string option with get, set
+        abstract scheme : string option with get, set
+        abstract pattern : GlobPattern option with get, set
+
+    ///<summary>
+    /// A notebook cell text document filter denotes a cell text document by different properties.
+    /// @since 3.17.0
+    ///</summary>
+    type [<AllowNullLiteral>] NotebookCellTextDocumentFilter =
+
+        ///A filter that matches against the notebook
+        ///containing the notebook cell. If a string
+        ///value is provided it matches against the
+        ///notebook type. '*' matches every notebook.
+        abstract notebook: U2<string, NotebookDocumentFilter> with get, set
+        ///A language id like `python`.
+        ///
+        ///Will be matched against the language id of the
+        ///notebook cell document. '*' matches every language.
+        abstract language : string option with get, set
+
+
+    type DocumentFilter = U2<TextDocumentFilter, NotebookCellTextDocumentFilter>
 
     /// <summary>
     /// A language selector is the combination of one or many language identifiers
@@ -2019,7 +2043,7 @@ This method shows unexpected behavior and will be removed in the next major upda
     /// </summary>
     /// <example>let sel:DocumentSelector = { scheme: 'file', language: 'typescript' };</example>
     type DocumentSelector =
-        U3<DocumentFilter, string, ReadonlyArray<U2<DocumentFilter, string>>>
+        U2<string, DocumentFilter>[]
 
     /// <summary>
     /// A provider result represents the values a provider, like the {@linkcode HoverProvider},
