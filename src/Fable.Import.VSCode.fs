@@ -1890,7 +1890,7 @@ This method shows unexpected behavior and will be removed in the next major upda
         /// A human-readable string which is presented as diagnostic message.
         /// Return <c>undefined</c>, <c>null</c>, or the empty string when 'value' is valid.
         /// </returns>
-        abstract validateInput: value: string -> U2<string, Thenable<string option>> option
+        abstract validateInput: (string -> U2<string, Thenable<string option>> option) with get, set
 
     /// <summary>
     /// A relative pattern is a helper to construct glob patterns that are matched
