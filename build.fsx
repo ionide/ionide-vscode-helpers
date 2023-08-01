@@ -7,7 +7,16 @@ open Fake.JavaScript
 open Fake.DotNet
 open Fake.IO
 
-let runFable args = 
+module BuildParameters =
+    let common (defaults:MSBuild.CliArguments) =
+        { defaults with
+            Verbosity = Some MSBuildVerbosity.Minimal
+            // see https://github.com/fsprojects/FAKE/issues/2515#issue-622856864
+            // this avoids Fake to crasing while trying to load MSBuild 15.0:
+            DisableInternalBinLog = true
+        }
+
+let runFable args =
     DotNet.exec id "fable" args
     |> fun res -> if not res.OK then failwithf "ExitCode was %i" res.ExitCode
 
@@ -15,13 +24,13 @@ Target.create "YarnInstall" <| fun _ ->
     Yarn.install id
 
 Target.create "DotNetRestore" <| fun _ ->
-    DotNet.restore id "src"
+    DotNet.restore (fun o -> {o with MSBuildParams = BuildParameters.common o.MSBuildParams} ) "src"
 
 Target.create "CleanFable" <| fun _ ->
     Shell.cleanDir "release"
 
 Target.create "BuildDotnet" <| fun _ ->
-    DotNet.build id "src"
+    DotNet.build (fun o -> {o with MSBuildParams = BuildParameters.common o.MSBuildParams} ) "src"
 
 Target.create "BuildFable" <| fun _ ->
     runFable "src --outDir release"
