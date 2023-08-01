@@ -208,6 +208,7 @@ module rec LanguageServer =
             abstract registerBuiltinFeatures: unit -> unit
             abstract logFailedRequest: ``type``: RPCMessageType * error: obj option -> unit
 
+
     type [<AllowNullLiteral>] ExecutableOptions =
         abstract cwd: string option with get, set
         abstract stdio: U2<string, ResizeArray<string>> option with get, set
@@ -256,7 +257,7 @@ module rec LanguageServer =
         abstract detached: bool with get, set
 
     type ServerOptions =
-        U7<Executable, obj, obj, obj, obj, NodeModule, (unit -> Promise<U4<ChildProcess, StreamInfo, Client.MessageTransports, ChildProcessInfo>>)>
+        U5<Executable, {| run: Executable; debug: Executable |}, {| run: NodeModule; debug: NodeModule |}, NodeModule, (unit -> Promise<U4<ChildProcess, StreamInfo, Client.MessageTransports, ChildProcessInfo>>)>
 
     type [<AllowNullLiteral>] [<Import("LanguageClient","vscode-languageclient")>] LanguageClient(id: string, name: string, serverOptions: ServerOptions, clientOptions: Client.LanguageClientOptions, forceDebug: bool) =
         //Inharited from BaseClient
@@ -278,8 +279,7 @@ module rec LanguageServer =
         member __.error(message: string, ?data: obj): unit = jsNative
         member __.needsStart(): bool = jsNative
         member __.needsStop(): bool = jsNative
-        member __.onReady(): Promise<unit> = jsNative
-        member __.start(): Disposable = jsNative
+        member __.start() : Promise<unit> = jsNative
         member __.logFailedRequest(``type``: Client.RPCMessageType, error: obj option): unit = jsNative
 
         //LanguageClient
